@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://dq2a7aswihx4k"]
+
+[ext_resource type="Script" uid="uid://burolfo5durhn" path="res://root.gd" id="1_jnlp7"]
+[ext_resource type="Environment" uid="uid://duerqcteomv8c" path="res://environment.tres" id="1_pyidc"]
+[ext_resource type="Shader" uid="uid://bw2i3ekhkysjk" path="res://hologram.gdshader" id="2_28aoi"]
+[ext_resource type="Script" uid="uid://hir4fmmsoqad" path="res://orbit.gd" id="2_vvh5c"]
+[ext_resource type="Shader" uid="uid://c8567ojouh3jw" path="res://crt.gdshader" id="3_l8v81"]
+[ext_resource type="Script" uid="uid://ex1p00qwppgq" path="res://camera_rig.gd" id="3_vyht1"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_l8v81"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vyht1"]
+resource_local_to_scene = true
+shader = ExtResource("3_l8v81")
+shader_parameter/tex = SubResource("ViewportTexture_l8v81")
+shader_parameter/mask_type = 2
+shader_parameter/curve = 0.10000000475
+shader_parameter/color_offset = 0.3790000417525
+shader_parameter/mask_brightness = 1.0
+shader_parameter/aspect = 1.0
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_vvh5c"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_28aoi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l8v81"]
+render_priority = 0
+shader = ExtResource("2_28aoi")
+shader_parameter/modelColor = Color(0, 0, 0, 1)
+shader_parameter/wireframeColor = Color(1, 1, 1, 1)
+shader_parameter/width = 1.0
+shader_parameter/modelOpacity = 0.0
+shader_parameter/filtered = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jnlp7"]
+render_priority = 0
+shader = ExtResource("2_28aoi")
+shader_parameter/modelColor = Color(0, 0, 0, 1)
+shader_parameter/wireframeColor = Color(1, 1, 0, 1)
+shader_parameter/width = 0.0
+shader_parameter/modelOpacity = 0.0
+shader_parameter/filtered = false
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_vvh5c"]
+
+[node name="Root" type="Node" unique_id=1087528853]
+script = ExtResource("1_jnlp7")
+
+[node name="Control" type="Control" parent="." unique_id=177449796]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=726503050]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control" unique_id=593410506]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="CRT" type="ColorRect" parent="Control/MarginContainer" unique_id=503229564]
+material = SubResource("ShaderMaterial_vyht1")
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1201804918]
+size = Vector2i(1152, 648)
+
+[node name="World" type="Node3D" parent="SubViewport" unique_id=1076262961]
+
+[node name="Rig" type="Node3D" parent="SubViewport/World" unique_id=1691242263]
+script = ExtResource("3_vyht1")
+scroll_speed = 30.0
+zoom_speed = 15.0
+rotation_speed = 0.5
+
+[node name="Rotation" type="Node3D" parent="SubViewport/World/Rig" unique_id=1628630816]
+
+[node name="Elevation" type="Node3D" parent="SubViewport/World/Rig/Rotation" unique_id=1482809283]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport/World/Rig/Rotation/Elevation" unique_id=1615311676]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 54.168507)
+environment = ExtResource("1_pyidc")
+attributes = SubResource("CameraAttributesPractical_vvh5c")
+projection = 1
+fov = 42.6
+size = 100.0
+
+[node name="Objects" type="Node3D" parent="SubViewport/World" unique_id=931689893]
+
+[node name="Star" type="MeshInstance3D" parent="SubViewport/World/Objects" unique_id=1282507423]
+mesh = SubResource("SphereMesh_28aoi")
+surface_material_override/0 = SubResource("ShaderMaterial_l8v81")
+
+[node name="Orbit" type="MeshInstance3D" parent="SubViewport/World/Objects" unique_id=1020509787]
+material_override = SubResource("ShaderMaterial_jnlp7")
+mesh = SubResource("ImmediateMesh_vvh5c")
+script = ExtResource("2_vvh5c")
+apoapsis = 50.0
+
+[node name="Inside Monitor" type="CanvasLayer" parent="SubViewport" unique_id=407828508]
+
+[node name="Root" type="Control" parent="SubViewport/Inside Monitor" unique_id=574358151]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="SubViewport/Inside Monitor/Root" unique_id=1881207964]
+layout_mode = 0
+offset_right = 79.0
+offset_bottom = 23.0
+text = "Test Label"
+
+[node name="Outside Monitor" type="CanvasLayer" parent="." unique_id=1396720116]
+
+[node name="Root" type="Control" parent="Outside Monitor" unique_id=532881787]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="Outside Monitor/Root" unique_id=1694923937]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -79.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "Test Label"

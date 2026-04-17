@@ -1,0 +1,11 @@
+[gd_resource type="Environment" format=3 uid="uid://duerqcteomv8c"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pq8q7"]
+
+[sub_resource type="Sky" id="Sky_pyidc"]
+sky_material = SubResource("ProceduralSkyMaterial_pq8q7")
+
+[resource]
+background_mode = 1
+background_color = Color(0.26293245, 0.26293245, 0.26293242, 1)
+sky = SubResource("Sky_pyidc")
