@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://buiens2v32lae"]
+
+[ext_resource type="Script" uid="uid://npj2ocvvhdtt" path="res://picker.gd" id="1_88u2o"]
+[ext_resource type="Script" uid="uid://dw44p3pv86480" path="res://selector.gd" id="1_h7pvn"]
+[ext_resource type="Script" uid="uid://c2k6hup3mx6m8" path="res://ship_builder.gd" id="2_km8dr"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_2ek40"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_km8dr"]
+diffuse_mode = 3
+albedo_color = Color(1, 0.18752176, 0.5425988, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_2ek40"]
+radius = 0.083561085
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2ek40"]
+
+[sub_resource type="Sky" id="Sky_h7pvn"]
+sky_material = SubResource("ProceduralSkyMaterial_2ek40")
+
+[sub_resource type="Environment" id="Environment_88u2o"]
+background_mode = 2
+sky = SubResource("Sky_h7pvn")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+
+[node name="Root" type="Node" unique_id=327275411]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=175577256]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1774207958]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control" unique_id=71957870]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -129.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_88u2o")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/PanelContainer" unique_id=1633081529]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PanelContainer/MarginContainer" unique_id=2087218650]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/PanelContainer/MarginContainer/HBoxContainer" unique_id=1306893846]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="ShipBuilder" type="Node3D" parent="." unique_id=1670657943]
+script = ExtResource("2_km8dr")
+
+[node name="Test" type="Node3D" parent="ShipBuilder" unique_id=761190123]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ShipBuilder/Test" unique_id=635839134]
+mesh = SubResource("BoxMesh_2ek40")
+surface_material_override/0 = SubResource("StandardMaterial3D_km8dr")
+
+[node name="Snap_Center" type="Area3D" parent="ShipBuilder/Test" unique_id=861276937]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipBuilder/Test/Snap_Center" unique_id=1679134472]
+shape = SubResource("SphereShape3D_2ek40")
+
+[node name="Snap_NW" type="Area3D" parent="ShipBuilder/Test" unique_id=1058718449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.35, 0.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipBuilder/Test/Snap_NW" unique_id=1629966709]
+shape = SubResource("SphereShape3D_2ek40")
+
+[node name="Snap_NE" type="Area3D" parent="ShipBuilder/Test" unique_id=2036801885]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.35, 0.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipBuilder/Test/Snap_NE" unique_id=2087593547]
+shape = SubResource("SphereShape3D_2ek40")
+
+[node name="Snap_SE" type="Area3D" parent="ShipBuilder/Test" unique_id=1912252933]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, -0.35, 0.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipBuilder/Test/Snap_SE" unique_id=571087982]
+shape = SubResource("SphereShape3D_2ek40")
+
+[node name="Snap_SW" type="Area3D" parent="ShipBuilder/Test" unique_id=315586620]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, -0.35, 0.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipBuilder/Test/Snap_SW" unique_id=189636581]
+shape = SubResource("SphereShape3D_2ek40")
+
+[node name="Node3D" type="Node3D" parent="ShipBuilder" unique_id=820902203]
+transform = Transform3D(0.7062053, 0.30753466, -0.6377276, 0, 0.90073615, 0.43436664, 0.7080071, -0.30675203, 0.63610464, 0, 0, 0)
+
+[node name="Node3D" type="Node3D" parent="ShipBuilder/Node3D" unique_id=1616023994]
+transform = Transform3D(1, 0, 0, 0, 1, 1.4901161e-08, 0, 0, 1, 0, 0, 3.031661)
+script = ExtResource("1_h7pvn")
+
+[node name="Camera3D" type="Camera3D" parent="ShipBuilder/Node3D/Node3D" unique_id=2066184344]
+transform = Transform3D(1, 0, 0, 0, 1, 1.4901161e-08, 0, 0, 1, 0, 0, 0)
+environment = SubResource("Environment_88u2o")
+
+[node name="RayCast3D" type="RayCast3D" parent="ShipBuilder/Node3D/Node3D" unique_id=36898932]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 1.4901161e-08, 0, 1.4901161e-08, 1, 0, 0, 0)
+collide_with_areas = true
+collide_with_bodies = false

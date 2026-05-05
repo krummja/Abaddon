@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d38abhbsdg10k"]
 
-[ext_resource type="Shader" uid="uid://c6adt6vq2yj4h" path="res://vhs.gdshader" id="1_ttscc"]
+[ext_resource type="Shader" uid="uid://c6adt6vq2yj4h" path="res://shaders/vhs.gdshader" id="1_ttscc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h2lus"]
 shader = ExtResource("1_ttscc")
