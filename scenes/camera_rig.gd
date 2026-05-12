@@ -22,6 +22,7 @@ func _ready() -> void:
     _distance = default_distance
     _rotation = rotation_arm.transform.basis.get_rotation_quaternion().get_euler().y
     _elevation = elevation_arm.transform.basis.get_rotation_quaternion().get_euler().x
+    _elevation -= PI / 2
 
 func _process(delta: float) -> void:
     _process_transform(delta)

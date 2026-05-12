@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://b7xerdvkegbff"]
+
+[ext_resource type="Script" uid="uid://fhfsw0fc8vuh" path="res://assets/camera_rig/camera_rig.gd" id="1_q3x65"]
+
+[sub_resource type="Environment" id="Environment_qt7cu"]
+background_mode = 1
+
+[node name="TranslationRig" type="Node3D" unique_id=677542807 node_paths=PackedStringArray("TranslationRig", "RotationRig", "Camera", "Target")]
+script = ExtResource("1_q3x65")
+TranslationRig = NodePath(".")
+RotationRig = NodePath("RotationRig")
+Camera = NodePath("RotationRig/Camera3D")
+Target = NodePath("Target")
+
+[node name="RotationRig" type="Node3D" parent="." unique_id=2091813331]
+transform = Transform3D(1, 0, 0, 0, 0.79265153, 0.6096748, 0, -0.6096748, 0.79265153, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="RotationRig" unique_id=664047707]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.610357)
+environment = SubResource("Environment_qt7cu")
+
+[node name="Target" type="Marker3D" parent="." unique_id=844119422]

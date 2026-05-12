@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://buiens2v32lae"]
 
-[ext_resource type="Script" uid="uid://npj2ocvvhdtt" path="res://picker.gd" id="1_88u2o"]
-[ext_resource type="Script" uid="uid://dw44p3pv86480" path="res://selector.gd" id="1_h7pvn"]
-[ext_resource type="Script" uid="uid://c2k6hup3mx6m8" path="res://ship_builder.gd" id="2_km8dr"]
+[ext_resource type="Script" uid="uid://npj2ocvvhdtt" path="res://scripts/picker.gd" id="1_88u2o"]
+[ext_resource type="Script" uid="uid://dw44p3pv86480" path="res://scripts/selector.gd" id="1_h7pvn"]
+[ext_resource type="Script" uid="uid://c2k6hup3mx6m8" path="res://scripts/ship_builder.gd" id="2_km8dr"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_2ek40"]
 

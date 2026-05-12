@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://c2dcur14jtkw3"]
+
+[ext_resource type="Script" uid="uid://cusff8xq1gtyx" path="res://abaddon.gd" id="1_3s3d0"]
+[ext_resource type="Script" uid="uid://d0pux0b0r37c0" path="res://ui_overlay_debug.gd" id="2_docra"]
+[ext_resource type="Script" uid="uid://cvbyrpgvj0rko" path="res://assets/grid_controller/grid_controller.gd" id="2_el2q1"]
+[ext_resource type="PackedScene" uid="uid://b7xerdvkegbff" path="res://assets/camera_rig/camera_rig.tscn" id="2_xyc5y"]
+[ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
+
+[node name="Abaddon" type="Node" unique_id=288616275]
+script = ExtResource("1_3s3d0")
+
+[node name="SubjectView" type="Node3D" parent="." unique_id=1893150557]
+visible = false
+
+[node name="SystemView" type="Node3D" parent="." unique_id=1752446934]
+
+[node name="GridController" type="Node3D" parent="SystemView" unique_id=1633805402 node_paths=PackedStringArray("target_position")]
+script = ExtResource("2_el2q1")
+grid_section = ExtResource("3_el2q1")
+target_position = NodePath("../CameraRig/Target")
+metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
+
+[node name="CameraRig" parent="SystemView" unique_id=321885689 instance=ExtResource("2_xyc5y")]
+zoom_step = 2.0
+max_key_rotation_speed = 0.2
+
+[node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
+visible = false
+
+[node name="Overlay" type="CanvasLayer" parent="." unique_id=882580652]
+
+[node name="Debug" type="Control" parent="Overlay" unique_id=936406861]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_docra")
+
+[node name="MarginContainer" type="MarginContainer" parent="Overlay/Debug" unique_id=1321700259]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="Overlay/Debug/MarginContainer" unique_id=2045455060]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "View"
+
+[editable path="SystemView/CameraRig"]
