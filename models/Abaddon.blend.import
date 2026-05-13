@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bxtrhar5v2lhx"
-path="res://.godot/imported/Abaddon.blend-1152c59bd76e694a5f7f227e00b72f4e.scn"
+valid=false
 
 [deps]
 
 source_file="res://models/Abaddon.blend"
-dest_files=["res://.godot/imported/Abaddon.blend-1152c59bd76e694a5f7f227e00b72f4e.scn"]
 
 [params]
 

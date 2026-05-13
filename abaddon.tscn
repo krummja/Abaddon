@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://b7xerdvkegbff" path="res://assets/camera_rig/camera_rig.tscn" id="2_xyc5y"]
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
 
+[sub_resource type="Environment" id="Environment_el2q1"]
+background_mode = 1
+
 [node name="Abaddon" type="Node" unique_id=288616275]
 script = ExtResource("1_3s3d0")
 
@@ -14,10 +17,14 @@ visible = false
 
 [node name="SystemView" type="Node3D" parent="." unique_id=1752446934]
 
-[node name="GridController" type="Node3D" parent="SystemView" unique_id=1633805402 node_paths=PackedStringArray("target_position")]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SystemView" unique_id=1790852728]
+environment = SubResource("Environment_el2q1")
+
+[node name="GridController" type="Node3D" parent="SystemView" unique_id=1633805402 node_paths=PackedStringArray("target")]
 script = ExtResource("2_el2q1")
 grid_section = ExtResource("3_el2q1")
-target_position = NodePath("../CameraRig/Target")
+target = NodePath("../CameraRig/Target")
+section_scale = 100
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
 [node name="CameraRig" parent="SystemView" unique_id=321885689 instance=ExtResource("2_xyc5y")]

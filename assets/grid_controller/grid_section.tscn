@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://boyewgtfnhw51"]
 
-[ext_resource type="Shader" uid="uid://sgwkwu58cl67" path="res://shaders/grid.gdshader" id="1_n4eqr"]
+[ext_resource type="Shader" uid="uid://dqfkeqndwtg2o" path="res://assets/grid_controller/grid.gdshader" id="1_n4eqr"]
+[ext_resource type="Script" uid="uid://di4mb45efixm4" path="res://assets/grid_controller/grid_section.gd" id="2_a0wmw"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_xyc5y"]
 size = Vector2(100, 100)
@@ -22,3 +23,4 @@ shader_parameter/fadeEnd = 50.0
 [node name="GridSection" type="MeshInstance3D" unique_id=1688194540]
 mesh = SubResource("PlaneMesh_xyc5y")
 surface_material_override/0 = SubResource("ShaderMaterial_el2q1")
+script = ExtResource("2_a0wmw")
