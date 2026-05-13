@@ -70,7 +70,7 @@ var _target_rotation: Quaternion
 
 var _impulse: float
 var _target_zoom: float
-var _motion_modifier: float
+# var _motion_modifier: float
 
 ## Flags
 
@@ -139,6 +139,7 @@ func _process(delta: float) -> void:
     _get_keyboard_input()
     _get_scroll_wheel_input(delta)
 
+func _physics_process(delta: float) -> void:
     if not _is_traversing:
         _update_velocity_step(delta)
         _update_position_step(delta)
@@ -214,7 +215,7 @@ func _update_velocity_step(delta: float) -> void:
     _last_position = _origin
 
 func _update_position_step(delta: float) -> void:
-    if _target_position.length() > 0.1:
+    if _target_position.length() > 0:
         _impulse = lerpf(_impulse, max_impulse, delta * acceleration)
         translate(_target_position * _impulse * delta)
     else:
@@ -228,7 +229,7 @@ func _update_rotation_step(delta: float) -> void:
     var start: Quaternion = _rotation_basis.get_rotation_quaternion().normalized()
     var end: Quaternion = _target_rotation.normalized()
     var result: Quaternion = start.slerp(end, delta * rotation_damping)
-    _rotation_basis = Basis(result)
+    _rotation_basis = Basis(result.normalized())
 
 func _update_traversal(_delta: float) -> void:
     if len(_traversal_steps) > 0:
@@ -256,4 +257,5 @@ func _set_target_zoom(value: float) -> void:
     _target_zoom = clampf(_target_zoom, min_altitude, max_altitude)
 
 func _draw_debug() -> void:
-    pass
+    DebugDraw3D.draw_position(Target.global_transform)
+    DebugDraw3D.draw_position(Target.transform, Color(0, 1, 0, 1))

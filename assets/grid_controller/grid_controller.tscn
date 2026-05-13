@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://don4huj235lh8"]
+
+[ext_resource type="Script" uid="uid://cvbyrpgvj0rko" path="res://assets/grid_controller/grid_controller.gd" id="1_ufiv2"]
+[ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="2_qexyj"]
+
+[node name="GridController" type="Node3D" unique_id=2056574370 node_paths=PackedStringArray("target")]
+script = ExtResource("1_ufiv2")
+grid_section = ExtResource("2_qexyj")
+target = NodePath("")
+section_scale = 100
+metadata/_custom_type_script = "uid://cvbyrpgvj0rko"

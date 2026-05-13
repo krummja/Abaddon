@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cwjs5f8og0yuq"]
+
+[ext_resource type="Script" uid="uid://dxpd0kfmkq2wf" path="res://ui/property_list/property_list.gd" id="1_ngoe5"]
+
+[node name="PropertyList" type="VBoxContainer" unique_id=1564709245]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ngoe5")
+properties = Dictionary[String, String]({
+"Test": "Value",
+"Test 2": "Value 2"
+})

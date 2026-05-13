@@ -20,7 +20,15 @@ shader_parameter/useFade = true
 shader_parameter/fadeStart = 30.0
 shader_parameter/fadeEnd = 50.0
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_a0wmw"]
+size = Vector3(100, 1, 100)
+
 [node name="GridSection" type="MeshInstance3D" unique_id=1688194540]
 mesh = SubResource("PlaneMesh_xyc5y")
 surface_material_override/0 = SubResource("ShaderMaterial_el2q1")
 script = ExtResource("2_a0wmw")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=386651198]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=314929830]
+shape = SubResource("BoxShape3D_a0wmw")

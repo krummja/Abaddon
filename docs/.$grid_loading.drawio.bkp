@@ -130,15 +130,6 @@
         <mxCell id="CRFN_uhjGPK3EhjeEvNp-45" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;" value="" vertex="1">
           <mxGeometry height="100" width="100" x="1050" y="150" as="geometry" />
         </mxCell>
-        <mxCell id="2ZQ-1gXYXBch-o2JdoUi-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=none;strokeColor=#b85450;dashed=1;strokeWidth=2;dashPattern=1 1;" value="" vertex="1">
-          <mxGeometry height="220" width="220" x="-110" y="-110" as="geometry" />
-        </mxCell>
-        <mxCell id="2ZQ-1gXYXBch-o2JdoUi-6" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=none;strokeColor=#b85450;dashed=1;strokeWidth=2;dashPattern=1 1;" value="" vertex="1">
-          <mxGeometry height="220" width="220" x="390" y="-50" as="geometry" />
-        </mxCell>
-        <mxCell id="2ZQ-1gXYXBch-o2JdoUi-7" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=none;strokeColor=#b85450;dashed=1;strokeWidth=2;dashPattern=1 1;" value="" vertex="1">
-          <mxGeometry height="220" width="220" x="850" y="-40" as="geometry" />
-        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

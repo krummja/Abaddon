@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://e7srpj8pvydv"]
+
+[ext_resource type="Script" uid="uid://cxfvhn403o5rf" path="res://ui/property/property.gd" id="1_huh6l"]
+
+[node name="Property" type="HBoxContainer" unique_id=1601127850]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+alignment = 1
+script = ExtResource("1_huh6l")
+
+[node name="Label" type="Label" parent="." unique_id=1716939673]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "[label]"
+
+[node name="Value" type="Label" parent="." unique_id=42715746]
+layout_mode = 2
+text = "[value]"
+horizontal_alignment = 2

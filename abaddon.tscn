@@ -1,13 +1,26 @@
 [gd_scene format=3 uid="uid://c2dcur14jtkw3"]
 
 [ext_resource type="Script" uid="uid://cusff8xq1gtyx" path="res://abaddon.gd" id="1_3s3d0"]
-[ext_resource type="Script" uid="uid://d0pux0b0r37c0" path="res://ui_overlay_debug.gd" id="2_docra"]
 [ext_resource type="Script" uid="uid://cvbyrpgvj0rko" path="res://assets/grid_controller/grid_controller.gd" id="2_el2q1"]
 [ext_resource type="PackedScene" uid="uid://b7xerdvkegbff" path="res://assets/camera_rig/camera_rig.tscn" id="2_xyc5y"]
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
+[ext_resource type="PackedScene" uid="uid://7b6lfjrg6vgb" path="res://ui/debug.tscn" id="5_el2q1"]
+[ext_resource type="Script" uid="uid://bden175cerqx7" path="res://ui/property_list/property_binding.gd" id="6_ncjc0"]
 
 [sub_resource type="Environment" id="Environment_el2q1"]
 background_mode = 1
+
+[sub_resource type="Resource" id="Resource_ncjc0"]
+script = ExtResource("6_ncjc0")
+watched_node_path = NodePath("../../../../SystemView/CameraRig/Target")
+watched_node_property = "global_position.y"
+metadata/_custom_type_script = "uid://bden175cerqx7"
+
+[sub_resource type="Resource" id="Resource_kearp"]
+script = ExtResource("6_ncjc0")
+watched_node_path = NodePath("../../../../SystemView/CameraRig/RotationRig/Camera3D")
+watched_node_property = "global_position.y"
+metadata/_custom_type_script = "uid://bden175cerqx7"
 
 [node name="Abaddon" type="Node" unique_id=288616275]
 script = ExtResource("1_3s3d0")
@@ -20,15 +33,20 @@ visible = false
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SystemView" unique_id=1790852728]
 environment = SubResource("Environment_el2q1")
 
-[node name="GridController" type="Node3D" parent="SystemView" unique_id=1633805402 node_paths=PackedStringArray("target")]
+[node name="GridController" type="Node3D" parent="SystemView" unique_id=216860937 node_paths=PackedStringArray("target")]
 script = ExtResource("2_el2q1")
+debug = true
 grid_section = ExtResource("3_el2q1")
 target = NodePath("../CameraRig/Target")
-section_scale = 100
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
 [node name="CameraRig" parent="SystemView" unique_id=321885689 instance=ExtResource("2_xyc5y")]
+debug = true
+max_impulse = 10.0
+vertical_damping = 0.0
 zoom_step = 2.0
+zoom_speed = 4.0
+max_altitude = 100.0
 max_key_rotation_speed = 0.2
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
@@ -36,32 +54,13 @@ visible = false
 
 [node name="Overlay" type="CanvasLayer" parent="." unique_id=882580652]
 
-[node name="Debug" type="Control" parent="Overlay" unique_id=936406861]
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("2_docra")
+[node name="Debug" parent="Overlay" unique_id=910382636 instance=ExtResource("5_el2q1")]
 
-[node name="MarginContainer" type="MarginContainer" parent="Overlay/Debug" unique_id=1321700259]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="Label" type="Label" parent="Overlay/Debug/MarginContainer" unique_id=2045455060]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "View"
+[node name="PropertyList" parent="Overlay/Debug/MarginContainer" parent_id_path=PackedInt32Array(910382636, 345972230) index="0" unique_id=1441833313]
+properties = Dictionary[String, ExtResource("6_ncjc0")]({
+"Camera": SubResource("Resource_kearp"),
+"Target": SubResource("Resource_ncjc0")
+})
 
 [editable path="SystemView/CameraRig"]
+[editable path="Overlay/Debug"]

@@ -5,6 +5,8 @@
 [sub_resource type="Environment" id="Environment_qt7cu"]
 background_mode = 1
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_i66p4"]
+
 [node name="TranslationRig" type="Node3D" unique_id=677542807 node_paths=PackedStringArray("TranslationRig", "RotationRig", "Camera", "Target")]
 script = ExtResource("1_q3x65")
 TranslationRig = NodePath(".")
@@ -20,3 +22,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.610357)
 environment = SubResource("Environment_qt7cu")
 
 [node name="Target" type="Marker3D" parent="." unique_id=844119422]
+
+[node name="Area3D" type="Area3D" parent="Target" unique_id=40871583]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Target/Area3D" unique_id=1958150026]
+shape = SubResource("SphereShape3D_i66p4")
