@@ -21,7 +21,7 @@ shader_parameter/fadeStart = 30.0
 shader_parameter/fadeEnd = 50.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a0wmw"]
-size = Vector3(100, 1, 100)
+size = Vector3(100, 10, 100)
 
 [node name="GridSection" type="MeshInstance3D" unique_id=1688194540]
 mesh = SubResource("PlaneMesh_xyc5y")

@@ -1,10 +1,13 @@
 class_name GridSection
 extends MeshInstance3D
 
-signal section_entered
-signal section_exited
+signal section_entered(section: GridSection)
+signal section_exited(section: GridSection)
+signal section_destroyed(section: GridSection)
 
 @export var debug: bool = false
+
+@onready var boundary := $Area3D
 
 var _mesh: PlaneMesh:
     get:
@@ -12,14 +15,23 @@ var _mesh: PlaneMesh:
 
 var _size: int = 100
 var _debug_color: Color = Color(1, 0, 0, 1)
-
-@onready var boundary := $Area3D
+var _collision_occurred: bool = false
+var _exited: bool = false
+var _destroying: bool = false
 
 func _ready():
-    boundary.connect("area_entered", _on_area_entered)
-    boundary.connect("area_exited", _on_area_exited)
+    add_to_group("sections")
+    boundary.monitoring = false
+    boundary.connect("area_entered", _boundary_entered)
+    boundary.connect("area_exited", _boundary_exited)
+    set_physics_process(true)
+    boundary.monitoring = true
 
 func _physics_process(_delta: float) -> void:
+    if _exited and _collision_occurred:
+        disable_boundary()
+    _collision_occurred = false
+
     if debug:
         _draw_debug()
 
@@ -31,6 +43,22 @@ func set_size(size: int) -> void:
     _mesh.size.x = size
     _mesh.size.y = size
 
+func enable_boundary() -> void:
+    boundary.monitoring = true
+
+func disable_boundary() -> void:
+    # boundary.monitoring = false
+    boundary.set_deferred("monitoring", false)
+
+func destroy() -> void:
+    _destroying = true
+
+    disable_boundary()
+    boundary.queue_free()
+    remove_from_group("sections")
+    queue_free()
+    section_destroyed.emit(self)
+
 func _draw_debug() -> void:
     DebugDraw3D.draw_box(
         global_position,
@@ -40,10 +68,17 @@ func _draw_debug() -> void:
         true,
     )
 
-func _on_area_entered(_area: Area3D) -> void:
-    section_entered.emit()
+func _boundary_entered(_area: Area3D) -> void:
+    _exited = false
+    _collision_occurred = true
+    section_entered.emit(self)
     _debug_color = Color(0, 1, 0, 1)
 
-func _on_area_exited(_area: Area3D) -> void:
-    section_exited.emit()
+func _boundary_exited(_area: Area3D) -> void:
+    if _destroying:
+        return
+
+    _exited = true
+    _collision_occurred = true
+    section_exited.emit(self)
     _debug_color = Color(1, 0, 0, 1)

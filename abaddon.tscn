@@ -10,15 +10,15 @@
 [sub_resource type="Environment" id="Environment_el2q1"]
 background_mode = 1
 
-[sub_resource type="Resource" id="Resource_ncjc0"]
-script = ExtResource("6_ncjc0")
-watched_node_path = NodePath("../../../../SystemView/CameraRig/Target")
-watched_node_property = "global_position.y"
-metadata/_custom_type_script = "uid://bden175cerqx7"
-
 [sub_resource type="Resource" id="Resource_kearp"]
 script = ExtResource("6_ncjc0")
 watched_node_path = NodePath("../../../../SystemView/CameraRig/RotationRig/Camera3D")
+watched_node_property = "global_position.y"
+metadata/_custom_type_script = "uid://bden175cerqx7"
+
+[sub_resource type="Resource" id="Resource_ncjc0"]
+script = ExtResource("6_ncjc0")
+watched_node_path = NodePath("../../../../SystemView/CameraRig/Target")
 watched_node_property = "global_position.y"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
@@ -35,7 +35,6 @@ environment = SubResource("Environment_el2q1")
 
 [node name="GridController" type="Node3D" parent="SystemView" unique_id=216860937 node_paths=PackedStringArray("target")]
 script = ExtResource("2_el2q1")
-debug = true
 grid_section = ExtResource("3_el2q1")
 target = NodePath("../CameraRig/Target")
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
