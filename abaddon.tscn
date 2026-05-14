@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://b7xerdvkegbff" path="res://assets/camera_rig/camera_rig.tscn" id="2_xyc5y"]
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
 [ext_resource type="PackedScene" uid="uid://7b6lfjrg6vgb" path="res://ui/debug.tscn" id="5_el2q1"]
+[ext_resource type="Script" uid="uid://cigah52mptwrw" path="res://assets/simulation/simulation.gd" id="5_nv1jb"]
+[ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/simulation/body.tscn" id="6_kearp"]
 [ext_resource type="Script" uid="uid://bden175cerqx7" path="res://ui/property_list/property_binding.gd" id="6_ncjc0"]
 
 [sub_resource type="Environment" id="Environment_el2q1"]
@@ -47,6 +49,12 @@ zoom_step = 2.0
 zoom_speed = 4.0
 max_altitude = 100.0
 max_key_rotation_speed = 0.2
+
+[node name="Simulation" type="Node3D" parent="SystemView" unique_id=1727701426]
+script = ExtResource("5_nv1jb")
+body_count = 1000
+body_scene = ExtResource("6_kearp")
+metadata/_custom_type_script = "uid://cigah52mptwrw"
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false

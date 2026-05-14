@@ -47,7 +47,6 @@ func enable_boundary() -> void:
     boundary.monitoring = true
 
 func disable_boundary() -> void:
-    # boundary.monitoring = false
     boundary.set_deferred("monitoring", false)
 
 func destroy() -> void:

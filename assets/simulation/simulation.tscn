@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b2di2ubo5adtr"]
+
+[ext_resource type="Script" uid="uid://cigah52mptwrw" path="res://assets/simulation/simulation.gd" id="1_hmwmq"]
+
+[node name="Simulation" type="Node3D" unique_id=2132601006]
+script = ExtResource("1_hmwmq")

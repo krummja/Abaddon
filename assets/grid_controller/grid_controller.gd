@@ -34,7 +34,9 @@ func _physics_process(_delta: float) -> void:
         _draw_debug()
 
 func populate_sections() -> void:
-    print("[%d][%d] Populating Sections" % [_enter_call_id, _exit_call_id])
+    if debug:
+        print("[%d][%d] Populating Sections" % [_enter_call_id, _exit_call_id])
+
     for direction in _directions:
         create_section(direction)
 
@@ -73,17 +75,20 @@ func destroy_section(section: GridSection) -> void:
     section.destroy()
 
 func _section_entered(_section: GridSection) -> void:
-    print("[%d][%d] Entered %s" % [_enter_call_id, _exit_call_id, _section.name])
-    _enter_call_id += 1
+    if debug:
+        print("[%d][%d] Entered %s" % [_enter_call_id, _exit_call_id, _section.name])
+        _enter_call_id += 1
 
 func _section_exited(_section: GridSection) -> void:
-    print("[%d][%d] *** Exited %s" % [_enter_call_id, _exit_call_id, _section.name])
+    if debug:
+        print("[%d][%d] *** Exited %s" % [_enter_call_id, _exit_call_id, _section.name])
+        _exit_call_id += 1
     destroy_sections()
     populate_sections()
-    _exit_call_id += 1
 
 func _section_destroyed(_section: GridSection) -> void:
-    print("[%d][%d] %s Destroyed" % [_enter_call_id, _exit_call_id, _section.name])
+    if debug:
+        print("[%d][%d] %s Destroyed" % [_enter_call_id, _exit_call_id, _section.name])
 
 func _draw_debug() -> void:
     DebugDraw3D.draw_position(global_transform)
