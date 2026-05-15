@@ -1,0 +1,11 @@
+[project]
+name = "abaddon"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "devtools>=0.12.2",
+    "numpy>=2.4.4",
+    "polars>=1.40.1",
+]

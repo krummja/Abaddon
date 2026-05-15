@@ -1,59 +1,58 @@
 class_name Simulation
 extends Node3D
 
-@export var body_count: int = 10
-@export var body_scene: PackedScene
+@export var min_distance: float = 0.01
+@export var debug: bool = false
+@export var modifier: float = 1.0
 
-var _params: Array[BodyParameters] = []
+@onready var body_manager: BodyManager = $BodyManager
 
-func _ready():
-    parameterize()
+func _ready() -> void:
+    body_manager.generate()
+    body_manager.build(self)
 
-    for i in range(0, body_count):
-        var body_param = _params[i]
-        var body: Body = body_scene.instantiate()
-        body.position = body_param.position
-        # body.pos = body_param.position
-        # body.vel = body_param.velocity
-        # body.acc = Vector3.ONE * body_param.acceleration
-        body.name = "%d" % i
-        add_child(body)
+func _process(delta: float) -> void:
+    for i in range(body_manager.body_count):
+        var b1 = body_manager.body_parameters[i]
 
-func parameterize() -> void:
-    for i in range(0, body_count):
-        var a = randf() * TAU
-        var pos_sin = sin(a)
-        var pos_cos = cos(a)
+        var p1 = b1.position
+        var m1 = b1.mass
 
-        var r_values = []
-        for j in range(0, 6):
-            r_values.append(randf())
-        var r0 = r_values.reduce(func(accum, elem): return accum + elem, 0)
-        var r1 = abs(r0 / 3.0 - 1.0)
-        var pos = Vector3(pos_cos, 0, pos_sin) * sqrt(body_count) * 10 * r1
-        var vel = Vector3(pos_sin, 0, -pos_cos)
-        _params.append(BodyParameters.new(pos, vel, r1, 1.0))
+        for j in range(i+1, body_manager.body_count):
+            var b2 = body_manager.body_parameters[j]
 
-    _params.sort_custom(_sort_bodies)
-    for i in range(0, body_count):
-        var v = sqrt(i / _params[i].position.length())
-        _params[i].velocity *= v
+            var p2 = b2.position
+            var m2 = b2.mass
 
-# func _process(_delta: float) -> void:
-#     for i in range(0, len(_params)):
-#         var p1 = _params[i].position
-#         for j in range(0, len(_params)):
-#             if j != i:
-#                 var p2 = _params[j].position
-#                 var m2 = _params[j].mass
+            var r = p2 - p1
+            var mag_sq = r.x * r.x + r.y * r.y
+            var mag = sqrt(mag_sq)
+            var tmp = r / (maxf(mag_sq, min_distance ) * mag)
+            b1.acceleration += m2 * tmp
+            b2.acceleration -= m1 * tmp
 
-#                 var r = p2 - p1
-#                 var mag_sq = r.x + r.y * r.y
-#                 var mag = sqrt(mag_sq)
-#                 var a1 = (m2 / (mag_sq * mag)) * r
-#                 _params[i].acceleration += a1
+        var body_path = body_manager.body_map[i]
+        var body: Body = get_node(body_path)
 
-func _sort_bodies(a: BodyParameters, b: BodyParameters) -> bool:
-    if a.position.length_squared() > b.position.length_squared():
-        return true
-    return false
+        # Update the actual body
+        body.position = b1.position
+
+        # Update parameters for the next step
+        b1.position += b1.velocity * delta * modifier
+        b1.velocity += b1.acceleration * delta * modifier
+        b1.acceleration = Vector3.ZERO
+
+    if debug:
+        _draw_debug()
+
+func _draw_debug() -> void:
+    for i in range(body_manager.body_count):
+        var body = body_manager.body_parameters[i]
+        DebugDraw3D.draw_line(body.position, body.position + body.velocity)
+
+        var pos = Vector3(
+            body.position.x + 0.5,
+            body.position.y + 0.5,
+            body.position.z + 0.5,
+        )
+        DebugDraw3D.draw_text(pos, "%1.2v" % body.position)
