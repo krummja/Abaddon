@@ -46,7 +46,7 @@ void fragment() {
 	// calculate fragment position in world space
 	vec3 posWorld;
 
-	posWorld.y = -centerOffset.y;
+	posWorld.y = centerOffset.y;
 	posWorld.xz = CAMERA_POSITION_WORLD.xz + ty * rayWorld.xz;
 
 	// calculate planar distance from camera to fragment (used for fading)

@@ -4,9 +4,8 @@
 [ext_resource type="Script" uid="uid://cvbyrpgvj0rko" path="res://assets/grid_controller/grid_controller.gd" id="2_el2q1"]
 [ext_resource type="PackedScene" uid="uid://b7xerdvkegbff" path="res://assets/camera_rig/camera_rig.tscn" id="2_xyc5y"]
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
-[ext_resource type="Script" uid="uid://cjoy3ymnxdlkm" path="res://assets/simulation/body_manager.gd" id="5_e5w7c"]
 [ext_resource type="PackedScene" uid="uid://7b6lfjrg6vgb" path="res://ui/debug.tscn" id="5_el2q1"]
-[ext_resource type="Script" uid="uid://cigah52mptwrw" path="res://assets/simulation/simulation.gd" id="5_nv1jb"]
+[ext_resource type="Script" uid="uid://c1w5n5i03m2r0" path="res://assets/simulation/n_body_simulation.gd" id="5_nv1jb"]
 [ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/simulation/body.tscn" id="6_kearp"]
 [ext_resource type="Script" uid="uid://bden175cerqx7" path="res://ui/property_list/property_binding.gd" id="6_ncjc0"]
 
@@ -51,18 +50,34 @@ grid_section = ExtResource("3_el2q1")
 target = NodePath("../CameraRig/Target")
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
-[node name="Simulation" type="Node3D" parent="SystemView" unique_id=1727701426]
+[node name="NBodySimulation" type="Node3D" parent="SystemView" unique_id=135045573]
 script = ExtResource("5_nv1jb")
-min_distance = 0.475
 debug = true
-modifier = 0.26
-metadata/_custom_type_script = "uid://cigah52mptwrw"
-
-[node name="BodyManager" type="Node3D" parent="SystemView/Simulation" unique_id=1576794855]
-script = ExtResource("5_e5w7c")
+generative = false
+count_bodies = 30
+gravity = 1.0
+time_multiplier = 0.1
 body_scene = ExtResource("6_kearp")
-body_count = 10
-metadata/_custom_type_script = "uid://cjoy3ymnxdlkm"
+
+[node name="Star" parent="SystemView/NBodySimulation" unique_id=281731595 instance=ExtResource("6_kearp")]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 10.699117)
+mass = 1000.0
+
+[node name="Body2" parent="SystemView/NBodySimulation" unique_id=1787102854 instance=ExtResource("6_kearp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.8060083)
+debug = true
+point_count = 300
+point_rate = 6
+mass = 1.0
+velocity = Vector3(8, 0, 0)
+
+[node name="Body3" parent="SystemView/NBodySimulation" unique_id=1233588968 instance=ExtResource("6_kearp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -114.15642)
+debug = true
+point_count = 300
+point_rate = 6
+mass = 4.0
+velocity = Vector3(0.5, 0, 0)
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false

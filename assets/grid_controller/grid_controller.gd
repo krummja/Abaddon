@@ -60,7 +60,8 @@ func create_section(direction: Vector2) -> GridSection:
         .snapped(Vector3(section_scale, 0, section_scale))
     )
 
-    add_child(section)
+    # add_child(section)
+    call_deferred("add_child", section)
 
     section.section_entered.connect(_section_entered)
     section.section_exited.connect(_section_exited)
