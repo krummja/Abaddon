@@ -1,5 +1,5 @@
 class_name OctreeNode
-extends Resource
+extends RefCounted
 
 var bounds: AABB
 var mass: float = 0.0
@@ -57,7 +57,7 @@ func prepare_debug(indent: String = "") -> void:
     debug_str = indent + str(self) + "\n"
     debug_str += indent + "mass %d" % mass + "\n"
     debug_str += indent + "bounds %s" % bounds + "\n"
-    debug_str += indent + "body %s" % body + "\n"
+    debug_str += indent + "body %s" % _body + "\n"
 
     for n in nodes:
         n.prepare_debug(indent + "-")

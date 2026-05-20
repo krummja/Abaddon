@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://clyd7kd80etby"]
+
+[ext_resource type="Script" uid="uid://b5pfia0b7eatm" path="res://scripts/event_bus/event_bus.gd" id="1_ql4vm"]
+[ext_resource type="Script" uid="uid://bv4d73lnolf85" path="res://scripts/event_bus/event_bus_service.gd" id="2_uc15o"]
+
+[node name="EventBus" type="Node" unique_id=1901625504]
+script = ExtResource("1_ql4vm")
+metadata/_custom_type_script = "uid://b5pfia0b7eatm"
+
+[node name="EventBusService" type="Node" parent="." unique_id=1066659389]
+script = ExtResource("2_uc15o")
+metadata/_custom_type_script = "uid://bv4d73lnolf85"

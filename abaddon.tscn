@@ -24,6 +24,12 @@ watched_node_path = NodePath("../../../../../SystemView/CameraRig/RotationRig/Ca
 watched_node_property = "global_position.y"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
+[sub_resource type="Resource" id="Resource_e5w7c"]
+script = ExtResource("6_ncjc0")
+watched_node_path = NodePath("../../../../../SystemView/NBodySimulation")
+watched_node_property = "time_multiplier"
+metadata/_custom_type_script = "uid://bden175cerqx7"
+
 [node name="Abaddon" type="Node" unique_id=288616275]
 script = ExtResource("1_3s3d0")
 
@@ -52,32 +58,22 @@ metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
 [node name="NBodySimulation" type="Node3D" parent="SystemView" unique_id=135045573]
 script = ExtResource("5_nv1jb")
-debug = true
-generative = false
-count_bodies = 30
-gravity = 1.0
-time_multiplier = 0.1
+gravity = 7.01
 body_scene = ExtResource("6_kearp")
 
-[node name="Star" parent="SystemView/NBodySimulation" unique_id=281731595 instance=ExtResource("6_kearp")]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 10.699117)
+[node name="Star" parent="SystemView/NBodySimulation" unique_id=281731595 node_paths=PackedStringArray("target") instance=ExtResource("6_kearp")]
+transform = Transform3D(4.84, 0, 0, 0, 4.84, 0, 0, 0, 4.84, 0, 0, 3.1583)
+point_count = 300
+mass = 972.96
+velocity = Vector3(-0.28, 0, 0)
+target = NodePath("../../CameraRig/Target")
+
+[node name="Star2" parent="SystemView/NBodySimulation" unique_id=1817395884 node_paths=PackedStringArray("target") instance=ExtResource("6_kearp")]
+transform = Transform3D(7.165, 0, 0, 0, 7.165, 0, 0, 0, 7.165, 0, 0, -10.97554)
+point_count = 300
 mass = 1000.0
-
-[node name="Body2" parent="SystemView/NBodySimulation" unique_id=1787102854 instance=ExtResource("6_kearp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.8060083)
-debug = true
-point_count = 300
-point_rate = 6
-mass = 1.0
-velocity = Vector3(8, 0, 0)
-
-[node name="Body3" parent="SystemView/NBodySimulation" unique_id=1233588968 instance=ExtResource("6_kearp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -114.15642)
-debug = true
-point_count = 300
-point_rate = 6
-mass = 4.0
-velocity = Vector3(0.5, 0, 0)
+velocity = Vector3(0.41, 0, 0)
+target = NodePath("../../CameraRig/Target")
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false
@@ -89,8 +85,23 @@ visible = false
 [node name="PropertyList" parent="Overlay/Debug/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(910382636, 318166508) index="1" unique_id=1441833313]
 properties = Dictionary[String, ExtResource("6_ncjc0")]({
 "Camera": SubResource("Resource_kearp"),
-"Target": SubResource("Resource_ncjc0")
+"Target": SubResource("Resource_ncjc0"),
+"TimeMultiplier": SubResource("Resource_e5w7c")
 })
+
+[node name="TimeControl" parent="Overlay/Debug/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(910382636, 318166508) index="2" unique_id=1628605944 node_paths=PackedStringArray("slower_button", "faster_button")]
+slower_button = NodePath("MarginContainer/HBoxContainer/Slower")
+faster_button = NodePath("MarginContainer/HBoxContainer/Faster")
+
+[node name="Slower" type="Button" parent="Overlay/Debug/MarginContainer/VBoxContainer/TimeControl/MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(910382636, 619718193) index="0" unique_id=1124343573]
+layout_mode = 2
+disabled = true
+text = "<<<"
+
+[node name="Faster" type="Button" parent="Overlay/Debug/MarginContainer/VBoxContainer/TimeControl/MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(910382636, 619718193) index="3" unique_id=1214827235]
+layout_mode = 2
+disabled = true
+text = ">>>"
 
 [editable path="SystemView/CameraRig"]
 [editable path="Overlay/Debug"]

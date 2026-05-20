@@ -5,12 +5,14 @@ extends Node3D
 @export var debug_bodies: bool = false
 
 @export_category("Setup Parameters")
-@export var generative: bool = true
-@export var count_bodies: int = 100
+@export var prewarm: bool = true
+@export var prewarm_duration: int = 2
+@export var prewarm_multiplier: float = 10.0
 
 @export_category("Simulation Parameters")
 @export var gravity: float = 10.0
 @export var time_multiplier: float = 1.0
+@export var max_time_multiplier: float = 10.0
 @export var theta: float = 0.5
 
 @export_category("References")
@@ -18,19 +20,50 @@ extends Node3D
 
 var _max_distance = 100
 var _next_center = Vector3(0, 0, 0)
+var _last_multiplier: float
 
 func _ready() -> void:
+    EventBus.service().subscribe(Events.TIME_CONTROL_PLAY_PRESSED, self, "_on_time_control_play_pressed")
+    EventBus.service().subscribe(Events.TIME_CONTROL_PAUSE_PRESSED, self, "_on_time_control_pause_pressed")
+    EventBus.service().subscribe(Events.TIME_CONTROL_SLOWER_PRESSED, self, "_on_time_control_slower_pressed")
+    EventBus.service().subscribe(Events.TIME_CONTROL_FASTER_PRESSED, self, "_on_time_control_faster_pressed")
+
+    _last_multiplier = time_multiplier
+
     if debug_bodies:
         for child in get_children():
             if "debug" in child:
                 child.debug = debug
 
-func _process(_delta: float) -> void:
-    if debug:
-        _debug_draw()
+    # _run_prewarm(0.0)
+
+func _on_time_control_play_pressed(_event: Event) -> void:
+    time_multiplier = _last_multiplier
+
+func _on_time_control_pause_pressed(_event: Event) -> void:
+    _last_multiplier = time_multiplier
+    time_multiplier = 0.0
+
+func _on_time_control_slower_pressed(_event: Event) -> void:
+    time_multiplier = max(0.0, time_multiplier - 0.5)
+
+func _on_time_control_faster_pressed(_event: Event) -> void:
+    time_multiplier = min(max_time_multiplier, time_multiplier + 0.5)
 
 func _physics_process(delta: float) -> void:
     _simulation_step(delta)
+
+func _run_prewarm(delta: float) -> void:
+    var _cached_multiplier = time_multiplier
+    time_multiplier = prewarm_multiplier
+
+    for body in get_children():
+        body.point_count *= prewarm_multiplier
+        # body.point_rate /= prewarm_multiplier
+
+    # var timer: SceneTreeTimer = get_tree().create_timer(prewarm_duration)
+    # print(timer.time_left)
+    # time_multiplier = _cached_multiplier
 
 func _simulation_step(delta: float) -> void:
     var half_size = Vector3(_max_distance, _max_distance, _max_distance)
@@ -56,8 +89,7 @@ func _simulation_step(delta: float) -> void:
     _max_distance += 1
 
     if debug:
-        octree.prepare_debug()
-        print(octree.debug_str)
+        _debug_draw_octree(octree)
 
 func _calculate_force(body: Body, octree_node: OctreeNode) -> Vector3:
     var force = Vector3()
@@ -88,23 +120,9 @@ func _calculate_force(body: Body, octree_node: OctreeNode) -> Vector3:
 
     return force
 
-func _debug_draw() -> void:
-    var star = get_child(0)
-
-    for body in get_children():
-        if body.name == "Star":
-            continue
-
-        DebugDraw3D.draw_line(star.position, body.position)
-        var midpoint = body.position / 2
-        var length = star.position.distance_to(body.position)
-        DebugDraw3D.draw_text(midpoint + Vector3(0, 1, 0), "%1.2f" % length)
-
 func _debug_draw_octree(octree: OctreeNode) -> void:
-    var debug_nodes = [octree]
-    for node in octree.nodes:
-        debug_nodes.append(node)
+    DebugDraw3D.draw_aabb(octree.bounds)
+    DebugDraw3D.draw_position(Transform3D(Basis(), octree.center_of_mass))
 
-    for debug_node in debug_nodes:
-        DebugDraw3D.draw_aabb(debug_node.bounds)
-        DebugDraw3D.draw_sphere(debug_node.center_of_mass)
+    for node in octree.nodes:
+        _debug_draw_octree(node)
