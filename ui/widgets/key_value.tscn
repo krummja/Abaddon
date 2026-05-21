@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://ckc35dafg0g4s"]
+
+[ext_resource type="Script" uid="uid://clwfrgoatogsb" path="res://ui/widgets/key_value.gd" id="1_edi31"]
+
+[node name="KeyValue" type="HBoxContainer" unique_id=583305439]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_edi31")
+
+[node name="Key" type="Label" parent="." unique_id=1687481583]
+layout_mode = 2
+text = "Key"
+
+[node name="Value" type="Label" parent="." unique_id=1359946345]
+layout_mode = 2
+text = "Value"

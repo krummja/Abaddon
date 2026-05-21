@@ -3,32 +3,33 @@
 [ext_resource type="Shader" uid="uid://dqfkeqndwtg2o" path="res://assets/grid_controller/grid.gdshader" id="1_n4eqr"]
 [ext_resource type="Script" uid="uid://di4mb45efixm4" path="res://assets/grid_controller/grid_section.gd" id="2_a0wmw"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_xyc5y"]
-size = Vector2(100, 100)
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_el2q1"]
-render_priority = 0
+render_priority = -1
 shader = ExtResource("1_n4eqr")
-shader_parameter/gridColor = Color(0.23392546, 0.23392546, 0.23392543, 1)
+shader_parameter/gridColor = Color(0.22352941, 0.22352941, 0.22352941, 0.48235294)
 shader_parameter/checkerColor = Color(0, 0, 0, 1)
 shader_parameter/unitSize = 4.0
-shader_parameter/subdivisions = 3
+shader_parameter/subdivisions = 5
 shader_parameter/majorLineThickness = 2.0
 shader_parameter/minorLineThickness = 1.0
-shader_parameter/minorLineAlpha = 0.3
+shader_parameter/minorLineAlpha = 1.0
 shader_parameter/useFade = true
 shader_parameter/fadeStart = 30.0
 shader_parameter/fadeEnd = 50.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xyc5y"]
+material = SubResource("ShaderMaterial_el2q1")
+size = Vector2(100, 100)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a0wmw"]
 size = Vector3(100, 10, 100)
 
 [node name="GridSection" type="MeshInstance3D" unique_id=1688194540]
 mesh = SubResource("PlaneMesh_xyc5y")
-surface_material_override/0 = SubResource("ShaderMaterial_el2q1")
 script = ExtResource("2_a0wmw")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=386651198]
+input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=314929830]
 shape = SubResource("BoxShape3D_a0wmw")

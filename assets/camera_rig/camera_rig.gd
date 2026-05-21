@@ -2,10 +2,12 @@ extends Node3D
 class_name CameraRig
 
 var MathUtils = load("res://scripts/math_utils.gd")
+const BodyEvents = preload("res://events/body_selected.gd")
 
 # Parameters
 
 @export var debug: bool = false
+@export var top_view: bool = false
 
 @export_group("Dependencies")
 
@@ -82,6 +84,9 @@ var _is_traversing: bool = false
 
 var _traversal_steps: Array[Vector3]
 
+## Input
+
+var _last_picked: Vector3
 
 # Properties
 
@@ -105,6 +110,11 @@ var _rotation_basis: Basis:
 # Methods
 
 func _ready() -> void:
+    EventBus.service().subscribe(Events.BODY_SELECTED, self, "_on_body_selected")
+
+    if top_view:
+        Camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+
     Camera.look_at(Target.global_transform.origin, Vector3.UP)
     _last_position = _origin
     _target_rotation = transform.basis.get_rotation_quaternion()
@@ -259,3 +269,10 @@ func _set_target_zoom(value: float) -> void:
 func _draw_debug() -> void:
     DebugDraw3D.draw_position(Target.global_transform)
     DebugDraw3D.draw_position(Target.transform, Color(0, 1, 0, 1))
+
+    if _last_picked:
+        DebugDraw3D.draw_line(Camera.position, _last_picked)
+
+func _on_body_selected(event: BodyEvents.BodySelectedEvent) -> void:
+    _traversal_steps.append(event.position - global_position)
+    _is_traversing = true

@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, unshaded;
+render_mode blend_mix, unshaded;
 
 uniform vec4 gridColor: source_color;
 uniform vec4 checkerColor: source_color;
@@ -15,7 +15,8 @@ uniform float fadeEnd = 10.0;
 
 instance uniform vec3 centerOffset = vec3(0.0, 0.0, 0.0);
 
-// calculate line mask, usning a bit of fwidth() magic to make line width not affected by perspective
+// calculate line mask, usning a bit of fwidth() magic to make line width not affected by
+// perspective
 float grid(vec2 pos, float unit, float thickness) {
     vec2 xDiv = dFdx(pos);
     vec2 yDiv = dFdy(pos);

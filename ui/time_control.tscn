@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://7lp27svodp6b"]
+
+[ext_resource type="Script" uid="uid://cf3147hcfh5k0" path="res://ui/time_control.gd" id="1_py8a5"]
+
+[node name="TimeControl" type="PanelContainer" unique_id=1510934750 node_paths=PackedStringArray("play_button", "pause_button", "slower_button", "faster_button")]
+size_flags_horizontal = 4
+script = ExtResource("1_py8a5")
+play_button = NodePath("MarginContainer/HBoxContainer/Play")
+pause_button = NodePath("MarginContainer/HBoxContainer/Pause")
+slower_button = NodePath("MarginContainer/HBoxContainer/Slower")
+faster_button = NodePath("MarginContainer/HBoxContainer/Faster")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1701278858]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=412929554]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 8
+
+[node name="Slower" type="Button" parent="MarginContainer/HBoxContainer" unique_id=665563860]
+layout_mode = 2
+disabled = true
+text = "<<<"
+
+[node name="Play" type="Button" parent="MarginContainer/HBoxContainer" unique_id=1563819937]
+layout_mode = 2
+text = "Play"
+
+[node name="Pause" type="Button" parent="MarginContainer/HBoxContainer" unique_id=1420915764]
+layout_mode = 2
+disabled = true
+text = "Pause"
+
+[node name="Faster" type="Button" parent="MarginContainer/HBoxContainer" unique_id=70035578]
+layout_mode = 2
+disabled = true
+text = ">>>"

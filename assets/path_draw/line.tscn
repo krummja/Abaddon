@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://mx6va17ty26n"]
+
+[node name="Line" type="Node3D" unique_id=297324161]
+
+[node name="Start" type="Marker3D" parent="." unique_id=642463897]
+
+[node name="End" type="Marker3D" parent="." unique_id=952905673]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)

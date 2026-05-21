@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dkta0cuexsjab"]
+
+[ext_resource type="Script" uid="uid://c1w5n5i03m2r0" path="res://assets/simulation/n_body_simulation.gd" id="1_ho773"]
+[ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/body/body.tscn" id="2_r7ymf"]
+
+[node name="NBodySimulation" type="Node3D" unique_id=1232233155]
+script = ExtResource("1_ho773")
+gravity = 7.01
+body_scene = ExtResource("2_r7ymf")
+
+[node name="Star" parent="." unique_id=281731595 node_paths=PackedStringArray("target") instance=ExtResource("2_r7ymf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.1583)
+point_count = 300
+mass = 972.96
+velocity = Vector3(-0.28, 0, 0)
+visual_radius = 0.5
+color = Color(0.21176471, 1, 1, 1)
+target = NodePath("")
+
+[node name="Star2" parent="." unique_id=1781311911 node_paths=PackedStringArray("target") instance=ExtResource("2_r7ymf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.97554)
+point_count = 300
+mass = 1000.0
+velocity = Vector3(0.41, 0, 0)
+visual_radius = 0.35
+color = Color(0, 0.77387697, 0.5335972, 1)
+target = NodePath("")

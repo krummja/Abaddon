@@ -5,9 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://b7xerdvkegbff" path="res://assets/camera_rig/camera_rig.tscn" id="2_xyc5y"]
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
 [ext_resource type="PackedScene" uid="uid://7b6lfjrg6vgb" path="res://ui/debug.tscn" id="5_el2q1"]
-[ext_resource type="Script" uid="uid://c1w5n5i03m2r0" path="res://assets/simulation/n_body_simulation.gd" id="5_nv1jb"]
-[ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/simulation/body.tscn" id="6_kearp"]
+[ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/body/body.tscn" id="5_l05gs"]
 [ext_resource type="Script" uid="uid://bden175cerqx7" path="res://ui/property_list/property_binding.gd" id="6_ncjc0"]
+[ext_resource type="Script" uid="uid://rcmv6abjwrwq" path="res://ui/game.gd" id="7_nv1jb"]
+[ext_resource type="Script" uid="uid://cru245ouwixd5" path="res://ui/fps_counter.gd" id="8_kearp"]
+[ext_resource type="PackedScene" uid="uid://ckc35dafg0g4s" path="res://ui/widgets/key_value.tscn" id="9_e5w7c"]
 
 [sub_resource type="Environment" id="Environment_el2q1"]
 background_mode = 1
@@ -24,11 +26,7 @@ watched_node_path = NodePath("../../../../../SystemView/CameraRig/RotationRig/Ca
 watched_node_property = "global_position.y"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
-[sub_resource type="Resource" id="Resource_e5w7c"]
-script = ExtResource("6_ncjc0")
-watched_node_path = NodePath("../../../../../SystemView/NBodySimulation")
-watched_node_property = "time_multiplier"
-metadata/_custom_type_script = "uid://bden175cerqx7"
+[sub_resource type="Theme" id="Theme_kearp"]
 
 [node name="Abaddon" type="Node" unique_id=288616275]
 script = ExtResource("1_3s3d0")
@@ -56,23 +54,22 @@ grid_section = ExtResource("3_el2q1")
 target = NodePath("../CameraRig/Target")
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
-[node name="NBodySimulation" type="Node3D" parent="SystemView" unique_id=135045573]
-script = ExtResource("5_nv1jb")
-gravity = 7.01
-body_scene = ExtResource("6_kearp")
+[node name="SystemObjects" type="Node3D" parent="SystemView" unique_id=1477719034]
 
-[node name="Star" parent="SystemView/NBodySimulation" unique_id=281731595 node_paths=PackedStringArray("target") instance=ExtResource("6_kearp")]
-transform = Transform3D(4.84, 0, 0, 0, 4.84, 0, 0, 0, 4.84, 0, 0, 3.1583)
-point_count = 300
-mass = 972.96
-velocity = Vector3(-0.28, 0, 0)
+[node name="Body" parent="SystemView/SystemObjects" unique_id=281731595 node_paths=PackedStringArray("target") instance=ExtResource("5_l05gs")]
+visual_radius = 0.21
+line_width = 0.02
 target = NodePath("../../CameraRig/Target")
 
-[node name="Star2" parent="SystemView/NBodySimulation" unique_id=1817395884 node_paths=PackedStringArray("target") instance=ExtResource("6_kearp")]
-transform = Transform3D(7.165, 0, 0, 0, 7.165, 0, 0, 0, 7.165, 0, 0, -10.97554)
-point_count = 300
-mass = 1000.0
-velocity = Vector3(0.41, 0, 0)
+[node name="Body2" parent="SystemView/SystemObjects" unique_id=553014625 node_paths=PackedStringArray("target") instance=ExtResource("5_l05gs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4175968, 1.307828, 6.0440655)
+visual_radius = 0.4
+line_width = 0.02
+target = NodePath("../../CameraRig/Target")
+
+[node name="Body3" parent="SystemView/SystemObjects" unique_id=148019069 node_paths=PackedStringArray("target") instance=ExtResource("5_l05gs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.62258, -16.54454, 6.0440674)
+line_width = 0.02
 target = NodePath("../../CameraRig/Target")
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
@@ -81,27 +78,133 @@ visible = false
 [node name="Overlay" type="CanvasLayer" parent="." unique_id=882580652]
 
 [node name="Debug" parent="Overlay" unique_id=910382636 instance=ExtResource("5_el2q1")]
+visible = false
 
 [node name="PropertyList" parent="Overlay/Debug/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(910382636, 318166508) index="1" unique_id=1441833313]
 properties = Dictionary[String, ExtResource("6_ncjc0")]({
 "Camera": SubResource("Resource_kearp"),
-"Target": SubResource("Resource_ncjc0"),
-"TimeMultiplier": SubResource("Resource_e5w7c")
+"Target": SubResource("Resource_ncjc0")
 })
 
-[node name="TimeControl" parent="Overlay/Debug/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(910382636, 318166508) index="2" unique_id=1628605944 node_paths=PackedStringArray("slower_button", "faster_button")]
-slower_button = NodePath("MarginContainer/HBoxContainer/Slower")
-faster_button = NodePath("MarginContainer/HBoxContainer/Faster")
+[node name="Game" type="Control" parent="Overlay" unique_id=1857539762]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("7_nv1jb")
 
-[node name="Slower" type="Button" parent="Overlay/Debug/MarginContainer/VBoxContainer/TimeControl/MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(910382636, 619718193) index="0" unique_id=1124343573]
-layout_mode = 2
-disabled = true
-text = "<<<"
+[node name="Root" type="VBoxContainer" parent="Overlay/Game" unique_id=2083410155]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Faster" type="Button" parent="Overlay/Debug/MarginContainer/VBoxContainer/TimeControl/MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(910382636, 619718193) index="3" unique_id=1214827235]
+[node name="Top" type="HBoxContainer" parent="Overlay/Game/Root" unique_id=1792862997]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-disabled = true
-text = ">>>"
+
+[node name="Panel4" type="Panel" parent="Overlay/Game/Root/Top" unique_id=655616661]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Main" type="HBoxContainer" parent="Overlay/Game/Root" unique_id=1215863927]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Left" type="VBoxContainer" parent="Overlay/Game/Root/Main" unique_id=417050650]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Overlay/Game/Root/Main/Left" unique_id=1576351907]
+layout_mode = 2
+theme = SubResource("Theme_kearp")
+theme_type_variation = &"LeftMargin"
+
+[node name="Panel" type="Panel" parent="Overlay/Game/Root/Main/Left/MarginContainer" unique_id=557226806]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="Panel2" type="Panel" parent="Overlay/Game/Root/Main/Left" unique_id=854704329]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="Panel3" type="Panel" parent="Overlay/Game/Root/Main/Left" unique_id=708919055]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Center" type="VBoxContainer" parent="Overlay/Game/Root/Main" unique_id=703197781]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Top" type="Panel" parent="Overlay/Game/Root/Main/Center" unique_id=530091627]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="View" type="MarginContainer" parent="Overlay/Game/Root/Main/Center" unique_id=1247834769]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FPS Counter" type="Label" parent="Overlay/Game/Root/Main/Center/View" unique_id=1475361918]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "FPS"
+script = ExtResource("8_kearp")
+
+[node name="Bottom" type="Panel" parent="Overlay/Game/Root/Main/Center" unique_id=355269099]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Right" type="VBoxContainer" parent="Overlay/Game/Root/Main" unique_id=890148304]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Overlay/Game/Root/Main/Right" unique_id=559578434]
+layout_mode = 2
+theme = SubResource("Theme_kearp")
+theme_type_variation = &"RightMargin"
+
+[node name="Panel" type="Panel" parent="Overlay/Game/Root/Main/Right/MarginContainer" unique_id=1467384840]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="Panel2" type="Panel" parent="Overlay/Game/Root/Main/Right" unique_id=2138491247]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="Panel3" type="Panel" parent="Overlay/Game/Root/Main/Right" unique_id=242320617]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Bottom" type="HBoxContainer" parent="Overlay/Game/Root" unique_id=913352140]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Panel4" type="Panel" parent="Overlay/Game/Root/Bottom" unique_id=714051988]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="KeyValue" parent="Overlay/Game" unique_id=583305439 instance=ExtResource("9_e5w7c")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+key = "Test"
+default_value = "Value"
 
 [editable path="SystemView/CameraRig"]
 [editable path="Overlay/Debug"]

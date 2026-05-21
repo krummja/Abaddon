@@ -1,12 +1,26 @@
 [gd_scene format=3 uid="uid://b7xerdvkegbff"]
 
 [ext_resource type="Script" uid="uid://fhfsw0fc8vuh" path="res://assets/camera_rig/camera_rig.gd" id="1_q3x65"]
+[ext_resource type="Texture2D" uid="uid://bqafrvx2g0fsr" path="res://textures/target_ring.png" id="2_q3x65"]
 
 [sub_resource type="Environment" id="Environment_qt7cu"]
 background_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_i66p4"]
 radius = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_88x28"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.61960787, 0.627451, 1)
+albedo_texture = ExtResource("2_q3x65")
+texture_filter = 4
+texture_repeat = false
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xhk1t"]
+material = SubResource("StandardMaterial3D_88x28")
+size = Vector2(1.5, 1.5)
+center_offset = Vector3(0, 0.05, 0)
 
 [node name="TranslationRig" type="Node3D" unique_id=677542807 node_paths=PackedStringArray("TranslationRig", "RotationRig", "Camera", "Target")]
 script = ExtResource("1_q3x65")
@@ -28,3 +42,6 @@ environment = SubResource("Environment_qt7cu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Target/Area3D" unique_id=1958150026]
 shape = SubResource("SphereShape3D_i66p4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target" unique_id=1829893423]
+mesh = SubResource("PlaneMesh_xhk1t")
