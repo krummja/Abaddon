@@ -15,6 +15,7 @@ const BodyEvents = preload("res://events/body_selected.gd")
 @export var RotationRig: Node3D
 @export var Camera: Camera3D
 @export var Target: Marker3D
+@export var Audio: AudioStreamPlayer3D
 
 @export_group("Controller Dynamics")
 
@@ -72,21 +73,19 @@ var _target_rotation: Quaternion
 
 var _impulse: float
 var _target_zoom: float
-# var _motion_modifier: float
 
 ## Flags
 
 var _is_panning: bool = false
 var _is_rotation_locked: bool = false
 var _is_traversing: bool = false
+var _is_audio_playing: bool = false
 
 ## Traversal
 
-var _traversal_steps: Array[Vector3]
+var _traversal_target: Vector3
+var _traversal_vector: Vector3
 
-## Input
-
-var _last_picked: Vector3
 
 # Properties
 
@@ -149,11 +148,17 @@ func _process(delta: float) -> void:
     _get_keyboard_input()
     _get_scroll_wheel_input(delta)
 
+    if not Audio.playing and (_velocity.length() > 0.1):
+        Audio.play()
+    if Audio.playing and (_velocity.length() <= 0.1):
+        Audio.stop()
+
 func _physics_process(delta: float) -> void:
     if not _is_traversing:
         _update_velocity_step(delta)
         _update_position_step(delta)
     else:
+        _update_velocity_step(delta)
         _update_traversal(delta)
 
     _update_rotation_step(delta)
@@ -241,15 +246,22 @@ func _update_rotation_step(delta: float) -> void:
     var result: Quaternion = start.slerp(end, delta * rotation_damping)
     _rotation_basis = Basis(result.normalized())
 
-func _update_traversal(_delta: float) -> void:
-    if len(_traversal_steps) > 0:
-        var next_step = _traversal_steps.pop_back()
-        translate(next_step)
+func _update_traversal(delta: float) -> void:
+    _traversal_vector = _traversal_target - global_position
+    var remaining_distance = _traversal_vector.length()
+
+    if remaining_distance > 0.01:
+        _impulse = lerpf(_impulse, max_impulse, delta * acceleration)
+        translate(_traversal_vector * _impulse * delta)
     else:
+        global_position = _traversal_target
+        _traversal_target = Vector3.ZERO
         _velocity = Vector3.ZERO
-        _target_position = Vector3.ZERO
-        _last_position = _origin
+        _origin = global_position
+        _impulse = 0.0
         _is_traversing = false
+
+    _traversal_vector = Vector3.ZERO
 
 func _update_camera_altitude(delta: float) -> void:
     var start_y: float = Camera.transform.origin.y
@@ -267,12 +279,16 @@ func _set_target_zoom(value: float) -> void:
     _target_zoom = clampf(_target_zoom, min_altitude, max_altitude)
 
 func _draw_debug() -> void:
-    DebugDraw3D.draw_position(Target.global_transform)
-    DebugDraw3D.draw_position(Target.transform, Color(0, 1, 0, 1))
+    DebugDraw3D.draw_line(global_position, _velocity + global_position, Color(0, 0, 1, 1))
 
-    if _last_picked:
-        DebugDraw3D.draw_line(Camera.position, _last_picked)
+    DebugDraw3D.draw_position(Transform3D(Basis(), _origin), Color(1, 0, 1, 1))
+    DebugDraw3D.draw_position(Transform3D(Basis(), _last_position), Color(1, 1, 0, 1))
+
+    DebugDraw3D.draw_text(global_position + Vector3.ONE + Vector3(0, 0.6, 0), "%1.2v" % _velocity)
+    DebugDraw3D.draw_text(global_position + Vector3.ONE + Vector3(0, 0.3, 0), "%1.2v" % _origin)
+    DebugDraw3D.draw_text(global_position + Vector3.ONE + Vector3(0, 0.0, 0), "%1.2v" % _last_position)
 
 func _on_body_selected(event: BodyEvents.BodySelectedEvent) -> void:
-    _traversal_steps.append(event.position - global_position)
+    var traversal_target = event.position
+    _traversal_target = traversal_target
     _is_traversing = true

@@ -14,16 +14,22 @@
 [sub_resource type="Environment" id="Environment_el2q1"]
 background_mode = 1
 
-[sub_resource type="Resource" id="Resource_kearp"]
+[sub_resource type="Resource" id="Resource_l05gs"]
 script = ExtResource("6_ncjc0")
-watched_node_path = NodePath("../../../../../SystemView/CameraRig/RotationRig/Camera3D")
+watched_node_path = NodePath("../../../../../SystemView/CameraRig/Target")
+watched_node_property = "global_position.x"
+metadata/_custom_type_script = "uid://bden175cerqx7"
+
+[sub_resource type="Resource" id="Resource_iee4p"]
+script = ExtResource("6_ncjc0")
+watched_node_path = NodePath("../../../../../SystemView/CameraRig/Target")
 watched_node_property = "global_position.y"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
-[sub_resource type="Resource" id="Resource_ncjc0"]
+[sub_resource type="Resource" id="Resource_pq7gu"]
 script = ExtResource("6_ncjc0")
-watched_node_path = NodePath("../../../../../SystemView/CameraRig/RotationRig/Camera3D")
-watched_node_property = "global_position.y"
+watched_node_path = NodePath("../../../../../SystemView/CameraRig/Target")
+watched_node_property = "global_position.z"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
 [sub_resource type="Theme" id="Theme_kearp"]
@@ -40,7 +46,6 @@ visible = false
 environment = SubResource("Environment_el2q1")
 
 [node name="CameraRig" parent="SystemView" unique_id=321885689 instance=ExtResource("2_xyc5y")]
-debug = true
 max_impulse = 10.0
 vertical_damping = 0.0
 zoom_step = 2.0
@@ -78,12 +83,13 @@ visible = false
 [node name="Overlay" type="CanvasLayer" parent="." unique_id=882580652]
 
 [node name="Debug" parent="Overlay" unique_id=910382636 instance=ExtResource("5_el2q1")]
-visible = false
+mouse_filter = 2
 
 [node name="PropertyList" parent="Overlay/Debug/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(910382636, 318166508) index="1" unique_id=1441833313]
 properties = Dictionary[String, ExtResource("6_ncjc0")]({
-"Camera": SubResource("Resource_kearp"),
-"Target": SubResource("Resource_ncjc0")
+"position x": SubResource("Resource_l05gs"),
+"position y": SubResource("Resource_iee4p"),
+"position z": SubResource("Resource_pq7gu")
 })
 
 [node name="Game" type="Control" parent="Overlay" unique_id=1857539762]

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://fhfsw0fc8vuh" path="res://assets/camera_rig/camera_rig.gd" id="1_q3x65"]
 [ext_resource type="Texture2D" uid="uid://bqafrvx2g0fsr" path="res://textures/target_ring.png" id="2_q3x65"]
+[ext_resource type="AudioStream" uid="uid://b41f6n156lac2" path="res://audio/scroll_whoosh.wav" id="3_88x28"]
 
 [sub_resource type="Environment" id="Environment_qt7cu"]
 background_mode = 1
@@ -22,12 +23,13 @@ material = SubResource("StandardMaterial3D_88x28")
 size = Vector2(1.5, 1.5)
 center_offset = Vector3(0, 0.05, 0)
 
-[node name="TranslationRig" type="Node3D" unique_id=677542807 node_paths=PackedStringArray("TranslationRig", "RotationRig", "Camera", "Target")]
+[node name="TranslationRig" type="Node3D" unique_id=677542807 node_paths=PackedStringArray("TranslationRig", "RotationRig", "Camera", "Target", "Audio")]
 script = ExtResource("1_q3x65")
 TranslationRig = NodePath(".")
 RotationRig = NodePath("RotationRig")
 Camera = NodePath("RotationRig/Camera3D")
 Target = NodePath("Target")
+Audio = NodePath("Audio")
 
 [node name="RotationRig" type="Node3D" parent="." unique_id=2091813331]
 transform = Transform3D(1, 0, 0, 0, 0.79265153, 0.6096748, 0, -0.6096748, 0.79265153, 0, 0, 0)
@@ -45,3 +47,7 @@ shape = SubResource("SphereShape3D_i66p4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Target" unique_id=1829893423]
 mesh = SubResource("PlaneMesh_xhk1t")
+
+[node name="Audio" type="AudioStreamPlayer3D" parent="." unique_id=833712861]
+stream = ExtResource("3_88x28")
+attenuation_model = 3
