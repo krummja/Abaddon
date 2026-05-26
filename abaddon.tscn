@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://hir4fmmsoqad" path="res://scripts/orbit.gd" id="6_46cdc"]
 [ext_resource type="Shader" uid="uid://es6hckno7wt6" path="res://shaders/circle.gdshader" id="6_mc0qy"]
 [ext_resource type="Script" uid="uid://bden175cerqx7" path="res://ui/property_list/property_binding.gd" id="6_ncjc0"]
+[ext_resource type="Script" uid="uid://chu7ve6iwmjjd" path="res://scripts/orbit_v2.gd" id="7_ik6f3"]
 [ext_resource type="Script" uid="uid://rcmv6abjwrwq" path="res://ui/game.gd" id="7_nv1jb"]
 [ext_resource type="Script" uid="uid://cru245ouwixd5" path="res://ui/fps_counter.gd" id="8_kearp"]
 [ext_resource type="PackedScene" uid="uid://ckc35dafg0g4s" path="res://ui/widgets/key_value.tscn" id="9_e5w7c"]
@@ -31,6 +32,9 @@ shader_parameter/line_color = Color(1, 0, 0, 1)
 material = SubResource("ShaderMaterial_ik6f3")
 size = Vector2(40, 40)
 orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ik6f3"]
+shading_mode = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mc0qy"]
 render_priority = 0
@@ -133,7 +137,18 @@ target = NodePath("../../CameraRig/Target")
 [node name="Body" type="Node3D" parent="SystemView/Orbits" unique_id=573135243]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=1111360667]
+visible = false
 mesh = SubResource("QuadMesh_nehkf")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=1338411526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.57153606, 0)
+material_override = SubResource("StandardMaterial3D_ik6f3")
+transparency = 0.67
+script = ExtResource("7_ik6f3")
+debug = true
+radius = 10.0
+width = 2.0
+resolution = 6
 
 [node name="Orbit" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=1940855072]
 visible = false

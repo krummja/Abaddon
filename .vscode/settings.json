@@ -3,5 +3,5 @@
         "**/*.uid": true,
         "**/*.import": true
     },
-    "godotTools.editorPath.godot4": "c:\\Godot\\Godot_v4.6.1-stable_win64.exe"
+    "godotTools.editorPath.godot4": "d:\\Godot\\Godot 4.6.1\\Godot_v4.6.1-stable_win64.exe"
 }
