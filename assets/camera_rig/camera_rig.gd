@@ -2,7 +2,8 @@ extends Node3D
 class_name CameraRig
 
 var MathUtils = load("res://scripts/math_utils.gd")
-const BodyEvents = preload("res://events/body_selected.gd")
+const BodyEvents = preload("res://events/body.gd")
+
 
 # Parameters
 
@@ -15,6 +16,7 @@ const BodyEvents = preload("res://events/body_selected.gd")
 @export var RotationRig: Node3D
 @export var Camera: Camera3D
 @export var Target: Marker3D
+@export var Heading: Node3D
 @export var Audio: AudioStreamPlayer3D
 
 @export_group("Controller Dynamics")
@@ -79,7 +81,6 @@ var _target_zoom: float
 var _is_panning: bool = false
 var _is_rotation_locked: bool = false
 var _is_traversing: bool = false
-var _is_audio_playing: bool = false
 
 ## Traversal
 
@@ -148,6 +149,14 @@ func _process(delta: float) -> void:
     _get_keyboard_input()
     _get_scroll_wheel_input(delta)
 
+    if not Heading.visible and _velocity.length() > 0.1:
+        Heading.visible = true
+    if Heading.visible and _velocity.length() <= 0.1:
+        Heading.visible = false
+
+    var heading = _calculate_heading()
+    Heading.rotation = heading
+
     if not Audio.playing and (_velocity.length() > 0.1):
         Audio.play()
     if Audio.playing and (_velocity.length() <= 0.1):
@@ -157,6 +166,7 @@ func _physics_process(delta: float) -> void:
     if not _is_traversing:
         _update_velocity_step(delta)
         _update_position_step(delta)
+
     else:
         _update_velocity_step(delta)
         _update_traversal(delta)
@@ -230,7 +240,7 @@ func _update_velocity_step(delta: float) -> void:
     _last_position = _origin
 
 func _update_position_step(delta: float) -> void:
-    if _target_position.length() > 0:
+    if _target_position.length() > 0.005:
         _impulse = lerpf(_impulse, max_impulse, delta * acceleration)
         translate(_target_position * _impulse * delta)
     else:
@@ -250,14 +260,16 @@ func _update_traversal(delta: float) -> void:
     _traversal_vector = _traversal_target - global_position
     var remaining_distance = _traversal_vector.length()
 
-    if remaining_distance > 0.01:
+    if remaining_distance > 0.005:
         _impulse = lerpf(_impulse, max_impulse, delta * acceleration)
         translate(_traversal_vector * _impulse * delta)
+
     else:
         global_position = _traversal_target
         _traversal_target = Vector3.ZERO
-        _velocity = Vector3.ZERO
         _origin = global_position
+        _last_position = global_position
+        _velocity = Vector3.ZERO
         _impulse = 0.0
         _is_traversing = false
 
@@ -278,17 +290,38 @@ func _set_target_zoom(value: float) -> void:
     _target_zoom = Camera.transform.origin.y + value * zoom_step
     _target_zoom = clampf(_target_zoom, min_altitude, max_altitude)
 
+func _calculate_heading() -> Vector3:
+    var a = position
+    var diff = (position + _velocity) - a
+    var dist = diff.length()
+
+    if is_zero_approx(dist):
+        return Vector3.ZERO
+
+    var t = Transform3D(Basis.looking_at(diff, Vector3.FORWARD), a)
+    var r = t.basis.get_euler()
+    return Vector3(0, r.y, 0)
+
+func _on_body_selected(event: BodyEvents.BodySelectedEvent) -> void:
+    _traversal_target = event.position
+    _is_traversing = true
+
 func _draw_debug() -> void:
-    DebugDraw3D.draw_line(global_position, _velocity + global_position, Color(0, 0, 1, 1))
+    DebugDraw3D.draw_line(global_position, global_position + _velocity, Color(0, 0, 1, 1))
 
     DebugDraw3D.draw_position(Transform3D(Basis(), _origin), Color(1, 0, 1, 1))
     DebugDraw3D.draw_position(Transform3D(Basis(), _last_position), Color(1, 1, 0, 1))
 
-    DebugDraw3D.draw_text(global_position + Vector3.ONE + Vector3(0, 0.6, 0), "%1.2v" % _velocity)
-    DebugDraw3D.draw_text(global_position + Vector3.ONE + Vector3(0, 0.3, 0), "%1.2v" % _origin)
-    DebugDraw3D.draw_text(global_position + Vector3.ONE + Vector3(0, 0.0, 0), "%1.2v" % _last_position)
+    var a = position
+    var diff = (position + _velocity) - a
+    var dist = diff.length()
 
-func _on_body_selected(event: BodyEvents.BodySelectedEvent) -> void:
-    var traversal_target = event.position
-    _traversal_target = traversal_target
-    _is_traversing = true
+    var text = ""
+
+    if is_zero_approx(dist):
+        text = "%1.2v" % Vector3.ZERO
+    else:
+        var t = Transform3D(Basis.looking_at(diff, Vector3.UP), a)
+        text = "%1.2v" % t.basis.get_euler()
+
+    DebugDraw3D.draw_text(global_position + Vector3.ONE, text)

@@ -1,7 +1,7 @@
 class_name Body
 extends Node3D
 
-const BodyEvents = preload("res://events/body_selected.gd")
+const BodyEvents = preload("res://events/body.gd")
 
 @export_category("Debug")
 @export var debug: bool = false
@@ -22,6 +22,7 @@ const BodyEvents = preload("res://events/body_selected.gd")
 @export var target: Marker3D
 
 @onready var sphere: MeshInstance3D = $Sphere
+# @onready var sphere: Sprite3D = $Sprite3D
 @onready var line: MeshInstance3D = $Line
 @onready var plane_indicator: MeshInstance3D = $PlaneIndicator
 @onready var collider: Area3D = $Area3D
@@ -29,39 +30,56 @@ const BodyEvents = preload("res://events/body_selected.gd")
 
 var _trail_points: PackedVector3Array = []
 var _tick_count: int = 0
+var _is_hovered: bool = false
 
 func _ready():
     add_to_group("bodies")
 
+    # Set up body collision for mouse picking
     var collision_sphere = SphereShape3D.new()
-    collision_sphere.radius = visual_radius * 1.1
+    collision_sphere.radius = visual_radius * 2.0
     collision_shape.shape = collision_sphere
-
     collider.input_event.connect(_on_input_event)
+    collider.mouse_entered.connect(_on_mouse_entered)
+    collider.mouse_exited.connect(_on_mouse_exited)
 
     sphere.mesh = sphere.mesh.duplicate()
-    sphere.mesh.material = sphere.mesh.material.duplicate()
 
+    # Duplicate the plane altitude line and its material
     line.mesh = line.mesh.duplicate()
     line.material_override = line.material_override.duplicate()
 
+    # Duplicate the plane intersect indicator and its material
     plane_indicator.mesh = plane_indicator.mesh.duplicate()
     plane_indicator.material_override = plane_indicator.material_override.duplicate()
 
-    var _sphere_mesh: SphereMesh = sphere.mesh
+    # Grab mesh references
+    var _sphere_mesh: SphereMesh = sphere.mesh;
     var _line_mesh: ImmediateMesh = line.mesh
     var _indicator_mesh: QuadMesh = plane_indicator.mesh
 
+    # Grab material references
     var _sphere_mat: ShaderMaterial = _sphere_mesh.material
+    _sphere_mesh.material = _sphere_mat.duplicate()
+
     var _line_mat: StandardMaterial3D = line.material_override
     var _indicator_mat: StandardMaterial3D = plane_indicator.material_override
 
-    _sphere_mesh.set_radius(visual_radius)
-    _sphere_mesh.set_height(visual_radius * 2)
+    # Set visual parameters of the sphere
+    _sphere_mesh.radius = visual_radius
+    _sphere_mesh.height = visual_radius * 2
+
+    # Set visual parameters of the intersect indicator
     _indicator_mesh.size = Vector2(visual_radius * 2, visual_radius * 2)
 
+    # Set the sphere's color
+    # sphere.modulate = color
     _sphere_mat.set_shader_parameter("color", color)
+
+    # Set the plane altitude line color
     _line_mat.albedo_color = line_color
+
+    # Set the intersect indicator line color
     _indicator_mat.albedo_color = line_color
 
 func _process(_delta: float) -> void:
@@ -111,20 +129,31 @@ func _draw_line() -> void:
 func _update_indicator() -> void:
     plane_indicator.global_position.y = target.global_position.y
     var distance = plane_indicator.global_position - sphere.global_position
-
-    # if distance < (visual_radius * 4):
     plane_indicator.visible = distance.length() > (visual_radius)
 
 func _draw_debug() -> void:
+    pass
     # DebugDraw3D.draw_line(position, position + velocity)
-    DebugDraw3D.draw_points(_trail_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.25)
+    # DebugDraw3D.draw_points(_trail_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.25)
 
 func _push_trail_point() -> void:
     if len(_trail_points) > point_count:
         _trail_points.remove_at(0)
     _trail_points.append(global_position)
 
+func _on_mouse_entered() -> void:
+    _is_hovered = true
+
+func _on_mouse_exited() -> void:
+    _is_hovered = false
+
 func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
+    if _is_hovered:
+        var camera = get_viewport().get_camera_3d()
+        var screen_pos = camera.unproject_position(global_position)
+        var body_hovered = BodyEvents.BodyHoveredEvent.new(screen_pos)
+        EventBus.service().broadcast(body_hovered)
+
     if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
         var body_selected = BodyEvents.BodySelectedEvent.new(global_position)
         EventBus.service().broadcast(body_selected)

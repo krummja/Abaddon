@@ -8,12 +8,10 @@
 render_priority = 1
 shader = ExtResource("2_m62ph")
 shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/outline_thickness = 0.05
+shader_parameter/outline_thickness = 0.0499999988824
 
 [sub_resource type="SphereMesh" id="SphereMesh_r8yxy"]
 material = SubResource("ShaderMaterial_d03ox")
-radius = 0.1
-height = 0.2
 radial_segments = 32
 rings = 16
 

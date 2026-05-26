@@ -19,6 +19,8 @@ const ARC_ACCURACY = 0.0001
 
 
 func _ready() -> void:
+    mesh = ImmediateMesh.new()
+
     set_orbit_parameters()
     position = calculate_focus()
 
