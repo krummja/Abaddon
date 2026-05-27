@@ -24,25 +24,56 @@ func _ready() -> void:
     var angle = 0
     var angle_step = 180.0 / resolution
 
-    for i in range(resolution):
-        var px = cos(angle) * radius
-        var py = sin(angle) * radius
+    verts.append(Vector3(0, 0, 0))  # 1
+    verts.append(Vector3(1, 0, 1))  # 2
+    verts.append(Vector3(1, 0, 3))  # 4
+    verts.append(Vector3(1, 0, 5))  # 6
+    verts.append(Vector3(1, 0, 7))  # 8
+    verts.append(Vector3(0, 0, 6))  # 7
+    verts.append(Vector3(0, 0, 4))  # 5
+    verts.append(Vector3(0, 0, 2))  # 3
 
-        var vert = Vector3(px, 1, py)
-        verts.append(vert)
-        normals.append(vert.normalized())
-        uvs.append(Vector2(0, 0))
-        angle += angle_step
+    uvs.append(Vector2(0, 0))
+    uvs.append(Vector2(0, 0))
+    uvs.append(Vector2(0, 0))
+    uvs.append(Vector2(0, 0))
+    uvs.append(Vector2(0, 0))
+    uvs.append(Vector2(0, 0))
+    uvs.append(Vector2(0, 0))
+    uvs.append(Vector2(0, 0))
 
-    for j in range(resolution):
-        var px = cos(angle) * inner_radius
-        var py = sin(angle) * inner_radius
+    for vert in verts:
+        var normal = vert.normalized()
+        normals.append(normal)
 
-        var vert = Vector3(px, 1, py)
-        verts.append(vert)
-        normals.append(vert.normalized())
-        uvs.append(Vector2(0, 0))
-        angle += angle_step
+    indices.append(0)
+    indices.append(1)
+    indices.append(7)
+    indices.append(2)
+    indices.append(6)
+    indices.append(3)
+    indices.append(5)
+    indices.append(4)
+
+    # for i in range(resolution):
+    #     var px = cos(angle) * radius
+    #     var py = sin(angle) * radius
+
+    #     var vert = Vector3(px, 1, py)
+    #     verts.append(vert)
+    #     normals.append(vert.normalized())
+    #     uvs.append(Vector2(0, 0))
+    #     angle += angle_step
+
+    # for j in range(resolution):
+    #     var px = cos(angle) * inner_radius
+    #     var py = sin(angle) * inner_radius
+
+    #     var vert = Vector3(px, 1, py)
+    #     verts.append(vert)
+    #     normals.append(vert.normalized())
+    #     uvs.append(Vector2(0, 0))
+    #     angle += angle_step
 
     surface_array[Mesh.ARRAY_VERTEX] = verts
     surface_array[Mesh.ARRAY_TEX_UV] = uvs
