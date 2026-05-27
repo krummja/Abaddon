@@ -5,8 +5,8 @@ extends MeshInstance3D
 @export var width: float = 1.0
 @export var resolution: int = 100
 
-var _vertices: Array[Vector3] = []
-var _indices: Array[int] = []
+var _vertices: PackedVector3Array = PackedVector3Array()
+var _indices: PackedInt32Array = PackedInt32Array()
 
 func _ready() -> void:
     mesh = ArrayMesh.new()
@@ -22,63 +22,59 @@ func _ready() -> void:
     var indices = PackedInt32Array()
 
     var angle = 0
-    var angle_step = 180.0 / resolution
+    var angle_step = 360.0 / resolution
 
-    verts.append(Vector3(0, 0, 0))  # 1
-    verts.append(Vector3(1, 0, 1))  # 2
-    verts.append(Vector3(1, 0, 3))  # 4
-    verts.append(Vector3(1, 0, 5))  # 6
-    verts.append(Vector3(1, 0, 7))  # 8
-    verts.append(Vector3(0, 0, 6))  # 7
-    verts.append(Vector3(0, 0, 4))  # 5
-    verts.append(Vector3(0, 0, 2))  # 3
+    # Create first vertex
+    var px = cos(deg_to_rad(angle)) * inner_radius
+    var py = sin(deg_to_rad(angle)) * inner_radius
+    var vertex = Vector3(px, 0, py)
 
-    uvs.append(Vector2(0, 0))
-    uvs.append(Vector2(0, 0))
-    uvs.append(Vector2(0, 0))
-    uvs.append(Vector2(0, 0))
-    uvs.append(Vector2(0, 0))
-    uvs.append(Vector2(0, 0))
-    uvs.append(Vector2(0, 0))
+    var current_idx = 0
+    verts.append(vertex)
+    _vertices.append(vertex)
+    normals.append(vertex.normalized())
     uvs.append(Vector2(0, 0))
 
-    for vert in verts:
-        var normal = vert.normalized()
-        normals.append(normal)
+    angle += angle_step / 2
+    current_idx += 1
 
-    indices.append(0)
-    indices.append(1)
-    indices.append(7)
-    indices.append(2)
-    indices.append(6)
-    indices.append(3)
-    indices.append(5)
-    indices.append(4)
+    # Outer circle
+    while current_idx <= resolution:
+        px = cos(deg_to_rad(angle)) * radius
+        py = sin(deg_to_rad(angle)) * radius
+        vertex = Vector3(px, 0, py)
+        verts.append(vertex)
+        _vertices.append(vertex)
+        normals.append(vertex.normalized())
+        uvs.append(Vector2(0, 0))
+        current_idx += 1
+        angle += angle_step
 
-    # for i in range(resolution):
-    #     var px = cos(angle) * radius
-    #     var py = sin(angle) * radius
+    current_idx = resolution * 2
 
-    #     var vert = Vector3(px, 1, py)
-    #     verts.append(vert)
-    #     normals.append(vert.normalized())
-    #     uvs.append(Vector2(0, 0))
-    #     angle += angle_step
+    angle += angle_step / 2
 
-    # for j in range(resolution):
-    #     var px = cos(angle) * inner_radius
-    #     var py = sin(angle) * inner_radius
+    while current_idx > resolution:
+        px = cos(deg_to_rad(angle)) * inner_radius
+        py = sin(deg_to_rad(angle)) * inner_radius
+        vertex = Vector3(px, 0, py)
+        verts.append(vertex)
+        _vertices.append(vertex)
+        normals.append(vertex.normalized())
+        uvs.append(Vector2(0, 0))
+        current_idx -= 1
+        angle += angle_step
 
-    #     var vert = Vector3(px, 1, py)
-    #     verts.append(vert)
-    #     normals.append(vert.normalized())
-    #     uvs.append(Vector2(0, 0))
-    #     angle += angle_step
+    indices.append_array(_build_indices())
+    _indices.append_array(_build_indices())
 
     surface_array[Mesh.ARRAY_VERTEX] = verts
     surface_array[Mesh.ARRAY_TEX_UV] = uvs
     surface_array[Mesh.ARRAY_NORMAL] = normals
     surface_array[Mesh.ARRAY_INDEX] = indices
+
+    print(verts)
+    print(indices)
 
     mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLE_STRIP, surface_array)
 
@@ -86,8 +82,27 @@ func _process(_delta: float) -> void:
     if debug:
         _draw_debug()
 
+func _build_indices() -> Array[int]:
+    var result: Array[int] = [0]
+    var left = 1
+    var right = (resolution * 2) - 1
+    var take_left = true
+
+    while left <= right:
+        if take_left:
+            result.append(left)
+            left += 1
+        else:
+            result.append(right)
+            right -= 1
+
+        take_left = not take_left
+
+    return result
+
 func _draw_debug() -> void:
-    for i in range(len(_indices)):
-        var index = _indices[i]
-        var vertex = _vertices[index]
-        DebugDraw3D.draw_text(Vector3(vertex.x, vertex.y + 1, vertex.z), "%d" % index, 64, Color(1, 0, 0, 1))
+    DebugDraw3D.draw_points(_vertices)
+
+    for i in _indices:
+        var vertex = _vertices[i]
+        DebugDraw3D.draw_text(vertex * 1.1, "%d" % i, 64, Color(1, 0, 0, 1))
