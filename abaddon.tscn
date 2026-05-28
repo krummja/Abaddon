@@ -6,13 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
 [ext_resource type="PackedScene" uid="uid://7b6lfjrg6vgb" path="res://ui/debug.tscn" id="5_el2q1"]
 [ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/body/body.tscn" id="5_l05gs"]
-[ext_resource type="Shader" uid="uid://dwg0ut3ylgwy" path="res://shaders/vertex_color.gdshader" id="6_0viut"]
-[ext_resource type="Script" uid="uid://hir4fmmsoqad" path="res://scripts/orbit.gd" id="6_46cdc"]
 [ext_resource type="Script" uid="uid://bden175cerqx7" path="res://ui/property_list/property_binding.gd" id="6_ncjc0"]
-[ext_resource type="Script" uid="uid://chu7ve6iwmjjd" path="res://scripts/orbit_v2.gd" id="7_ik6f3"]
 [ext_resource type="Script" uid="uid://rcmv6abjwrwq" path="res://ui/game.gd" id="7_nv1jb"]
 [ext_resource type="Script" uid="uid://cru245ouwixd5" path="res://ui/fps_counter.gd" id="8_kearp"]
 [ext_resource type="PackedScene" uid="uid://ckc35dafg0g4s" path="res://ui/widgets/key_value.tscn" id="9_e5w7c"]
+[ext_resource type="Script" uid="uid://dshol63272rhd" path="res://scripts/orbit_renderer.gd" id="9_ik6f3"]
 [ext_resource type="Script" uid="uid://dbxnsqcbfxs84" path="res://hover_indicator.gd" id="11_7yhey"]
 [ext_resource type="Texture2D" uid="uid://bqafrvx2g0fsr" path="res://textures/target_ring.png" id="11_pq7gu"]
 [ext_resource type="PackedScene" uid="uid://7lp27svodp6b" path="res://ui/time_control.tscn" id="12_pq7gu"]
@@ -20,16 +18,23 @@
 [sub_resource type="Environment" id="Environment_el2q1"]
 background_mode = 1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ik6f3"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0viut"]
 shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+texture_filter = 1
+texture_repeat = false
+grow = true
+point_size = 11.0
+proximity_fade_distance = 0.01
+distance_fade_mode = 2
+distance_fade_max_distance = 2.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mc0qy"]
-render_priority = 0
-shader = ExtResource("6_0viut")
-shader_parameter/albedo = Color(1, 0, 0, 1)
-shader_parameter/point_size = 10.80000016093296
-shader_parameter/uv1_scale = Vector3(1, 1, 1)
-shader_parameter/uv1_offset = Vector3(0, 0, 0)
+[sub_resource type="TorusMesh" id="TorusMesh_mc0qy"]
+material = SubResource("StandardMaterial3D_0viut")
+inner_radius = 29.9
+outer_radius = 30.0
+rings = 128
+ring_segments = 4
 
 [sub_resource type="Resource" id="Resource_l05gs"]
 script = ExtResource("6_ncjc0")
@@ -123,24 +128,21 @@ target = NodePath("../../CameraRig/Target")
 
 [node name="Body" type="Node3D" parent="SystemView/Orbits" unique_id=573135243]
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=1338411526]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.10900694, 0)
-material_override = SubResource("StandardMaterial3D_ik6f3")
-transparency = 0.5
-script = ExtResource("7_ik6f3")
-debug = true
-radius = 10.0
-width = 4.27
-resolution = 4
+[node name="Orbit" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=2113369753]
+mesh = SubResource("TorusMesh_mc0qy")
+script = ExtResource("9_ik6f3")
+radius = 30.0
 
-[node name="Orbit" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=1940855072]
-visible = false
-material_override = SubResource("ShaderMaterial_mc0qy")
-script = ExtResource("6_46cdc")
-sample_angle = 0.0051
-arc_length = 0.673
-apoapsis = 30.0
-periapsis = 30.0
+[node name="Orbit2" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=424487613]
+mesh = SubResource("TorusMesh_mc0qy")
+script = ExtResource("9_ik6f3")
+radius = 50.0
+
+[node name="Orbit3" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=125309937]
+transform = Transform3D(0.99886173, 0.047699198, 0, -0.047699198, 0.99886173, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TorusMesh_mc0qy")
+script = ExtResource("9_ik6f3")
+radius = 100.0
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false

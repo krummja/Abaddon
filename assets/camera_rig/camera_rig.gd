@@ -3,6 +3,7 @@ class_name CameraRig
 
 var MathUtils = load("res://scripts/math_utils.gd")
 const BodyEvents = preload("res://events/body.gd")
+const CameraEvents = preload("res://events/camera.gd")
 
 
 # Parameters
@@ -289,6 +290,9 @@ func _update_camera_altitude(delta: float) -> void:
 func _set_target_zoom(value: float) -> void:
     _target_zoom = Camera.transform.origin.y + value * zoom_step
     _target_zoom = clampf(_target_zoom, min_altitude, max_altitude)
+
+    var altitude_changed_event = CameraEvents.CameraAltitudeChangedEvent.new(_target_zoom, min_altitude, max_altitude)
+    EventBus.service().broadcast(altitude_changed_event)
 
 func _calculate_heading() -> Vector3:
     var a = position
