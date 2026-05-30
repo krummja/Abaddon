@@ -2,15 +2,25 @@
 
 [ext_resource type="Script" uid="uid://fhfsw0fc8vuh" path="res://assets/camera_rig/camera_rig.gd" id="1_q3x65"]
 [ext_resource type="Shader" uid="uid://dqec04vycu3qc" path="res://assets/camera_rig/depth_outline.gdshader" id="2_5va8v"]
-[ext_resource type="Texture2D" uid="uid://0e7cdu0hq08x" path="res://textures/triangle.png" id="2_88x28"]
-[ext_resource type="Texture2D" uid="uid://bqafrvx2g0fsr" path="res://textures/target_ring.png" id="2_xhk1t"]
 [ext_resource type="AudioStream" uid="uid://b41f6n156lac2" path="res://audio/scroll_whoosh.wav" id="3_88x28"]
 
 [sub_resource type="Environment" id="Environment_qt7cu"]
 background_mode = 1
-glow_intensity = 0.99
-glow_strength = 1.06
-glow_bloom = 0.06
+glow_enabled = true
+glow_levels/1 = 16.0
+glow_levels/2 = 4.0
+glow_levels/3 = 0.0
+glow_levels/4 = 0.0
+glow_normalized = true
+glow_intensity = 1.59
+glow_strength = 1.46
+glow_bloom = 0.14
+volumetric_fog_density = 0.0213
+volumetric_fog_emission = Color(0.20152658, 0.20152658, 0.20152658, 1)
+volumetric_fog_emission_energy = 0.0
+adjustment_enabled = true
+adjustment_brightness = 1.11
+adjustment_saturation = 1.24
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pneq3"]
 render_priority = 0
@@ -26,31 +36,23 @@ material = SubResource("ShaderMaterial_pneq3")
 [sub_resource type="SphereShape3D" id="SphereShape3D_i66p4"]
 radius = 0.1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5va8v"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(1, 0.61960787, 0.627451, 1)
-albedo_texture = ExtResource("2_xhk1t")
-texture_filter = 1
-texture_repeat = false
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_pneq3"]
-material = SubResource("StandardMaterial3D_5va8v")
-size = Vector2(3, 3)
-center_offset = Vector3(0, 0.05, 0)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_88x28"]
-transparency = 1
 shading_mode = 0
-albedo_color = Color(1, 0.61960787, 0.627451, 1)
-albedo_texture = ExtResource("2_88x28")
-texture_filter = 1
-texture_repeat = false
+albedo_color = Color(1, 0.5803922, 0.5647059, 1)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_xhk1t"]
+[sub_resource type="PrismMesh" id="PrismMesh_xhk1t"]
 material = SubResource("StandardMaterial3D_88x28")
-size = Vector2(0.5, 0.5)
-center_offset = Vector3(0, 0.05, 0)
+size = Vector3(0.75, 0.75, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pneq3"]
+shading_mode = 0
+albedo_color = Color(1, 0.5803922, 0.5647059, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_as7y3"]
+material = SubResource("StandardMaterial3D_pneq3")
+inner_radius = 1.8
+outer_radius = 2.1
+ring_segments = 7
 
 [node name="TranslationRig" type="Node3D" unique_id=677542807 node_paths=PackedStringArray("TranslationRig", "RotationRig", "Camera", "Target", "Heading", "Audio")]
 script = ExtResource("1_q3x65")
@@ -79,15 +81,49 @@ mesh = SubResource("QuadMesh_as7y3")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Target/Area3D" unique_id=1958150026]
 shape = SubResource("SphereShape3D_i66p4")
 
-[node name="PositionIndicator" type="MeshInstance3D" parent="Target" unique_id=1829893423]
-mesh = SubResource("PlaneMesh_pneq3")
+[node name="PositionIndicator" type="Node3D" parent="Target" unique_id=1842950934]
+
+[node name="Triangles" type="Node3D" parent="Target/PositionIndicator" unique_id=393835787]
+visible = false
+
+[node name="Indicator2" type="MeshInstance3D" parent="Target/PositionIndicator/Triangles" unique_id=1565495380]
+transform = Transform3D(1.9861638e-08, 1, 7.1054274e-15, -4.371139e-08, -3.5527137e-15, 1, 1, -1.9861641e-08, 4.3711385e-08, -1, 3.5527137e-15, 1.9861641e-08)
+transparency = 0.5
+mesh = SubResource("PrismMesh_xhk1t")
+
+[node name="Indicator3" type="MeshInstance3D" parent="Target/PositionIndicator/Triangles" unique_id=1450023340]
+transform = Transform3D(1, -6.3573026e-08, 7.1054274e-15, -1.0658141e-14, 4.371139e-08, 1, -6.3573026e-08, -1, 4.371138e-08, 6.3573026e-08, -4.371139e-08, 1)
+transparency = 0.5
+mesh = SubResource("PrismMesh_xhk1t")
+
+[node name="Indicator4" type="MeshInstance3D" parent="Target/PositionIndicator/Triangles" unique_id=1515243916]
+transform = Transform3D(-1, -2.3849747e-08, 7.1054274e-15, 3.5527137e-15, -4.371138e-08, 1, -2.3849749e-08, 1, 4.371138e-08, 2.3849747e-08, 4.371138e-08, -1)
+transparency = 0.5
+mesh = SubResource("PrismMesh_xhk1t")
+
+[node name="Indicator5" type="MeshInstance3D" parent="Target/PositionIndicator/Triangles" unique_id=618540508]
+transform = Transform3D(-1.07284414e-07, -1, 7.1054274e-15, 4.371138e-08, 5.1004106e-15, 1, -1, 1.0728442e-07, 4.3711385e-08, 1, -5.1004106e-15, -1.0728442e-07)
+transparency = 0.5
+mesh = SubResource("PrismMesh_xhk1t")
+
+[node name="Node3D" type="Node3D" parent="Target/PositionIndicator" unique_id=1554466782]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target/PositionIndicator/Node3D" unique_id=1647966936]
 
 [node name="HeadingIndicator" type="Node3D" parent="Target" unique_id=1003337822]
 
-[node name="HeadingIndicator" type="MeshInstance3D" parent="Target/HeadingIndicator" unique_id=330730962]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.85)
-mesh = SubResource("PlaneMesh_xhk1t")
+[node name="HeadingRing" type="MeshInstance3D" parent="Target/HeadingIndicator" unique_id=2033150226]
+transform = Transform3D(1, 0, 0, 0, 0.505, 0, 0, 0, 1, 0, 0.1, 0)
+visible = false
+transparency = 0.5
+mesh = SubResource("TorusMesh_as7y3")
+
+[node name="HeadingIndicator" type="MeshInstance3D" parent="Target/HeadingIndicator" unique_id=1274676455]
+transform = Transform3D(-1, 1.509958e-07, 6.600236e-15, 0, -4.371139e-08, 1, 1.509958e-07, 1, 4.371139e-08, 1.509958e-07, 0.09999996, 2.5)
+transparency = 0.5
+mesh = SubResource("PrismMesh_xhk1t")
 
 [node name="Audio" type="AudioStreamPlayer3D" parent="." unique_id=833712861]
 stream = ExtResource("3_88x28")
 attenuation_model = 3
+volume_db = -10.0

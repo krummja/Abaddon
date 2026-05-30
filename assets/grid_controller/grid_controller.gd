@@ -2,6 +2,7 @@ class_name GridController
 extends Node3D
 
 @export var debug: bool = false
+@export var enabled: bool = true
 
 @export var grid_section: PackedScene
 @export var target: Node3D
@@ -18,9 +19,13 @@ var _enter_call_id: int = 0
 var _exit_call_id: int = 0
 
 func _ready():
-    populate_sections()
+    if enabled:
+        populate_sections()
 
 func _process(_delta: float) -> void:
+    if not enabled:
+        return
+
     for section in get_tree().get_nodes_in_group("sections"):
         section.update_shader(
             target.global_position.x,

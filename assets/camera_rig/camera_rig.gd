@@ -49,6 +49,10 @@ const CameraEvents = preload("res://events/camera.gd")
 @export var max_key_rotation_speed: float = 0.1
 @export var rotation_damping: float = 10.0
 
+@export_subgroup("Heading")
+
+@export var heading_rotation_speed: float = 0.1
+
 
 # Variables
 
@@ -87,6 +91,10 @@ var _is_traversing: bool = false
 
 var _traversal_target: Vector3
 var _traversal_vector: Vector3
+
+var _theta: float
+
+var _heading_debug: Vector3
 
 
 # Properties
@@ -149,14 +157,12 @@ func _process(delta: float) -> void:
     _get_mouse_pan_input()
     _get_keyboard_input()
     _get_scroll_wheel_input(delta)
+    _calculate_heading()
 
     if not Heading.visible and _velocity.length() > 0.1:
         Heading.visible = true
     if Heading.visible and _velocity.length() <= 0.1:
         Heading.visible = false
-
-    var heading = _calculate_heading()
-    Heading.rotation = heading
 
     if not Audio.playing and (_velocity.length() > 0.1):
         Audio.play()
@@ -172,6 +178,7 @@ func _physics_process(delta: float) -> void:
         _update_velocity_step(delta)
         _update_traversal(delta)
 
+    _update_heading_rotation(delta)
     _update_rotation_step(delta)
     _update_camera_altitude(delta)
 
@@ -287,24 +294,27 @@ func _update_camera_altitude(delta: float) -> void:
     Camera.transform = _transform
     Camera.look_at(Target.global_transform.origin, Vector3.UP)
 
+func _update_heading_rotation(delta: float) -> void:
+    Heading.rotation.y += clamp(heading_rotation_speed * delta, 0, abs(_theta)) * sign(_theta)
+
 func _set_target_zoom(value: float) -> void:
     _target_zoom = Camera.transform.origin.y + value * zoom_step
     _target_zoom = clampf(_target_zoom, min_altitude, max_altitude)
 
-    var altitude_changed_event = CameraEvents.CameraAltitudeChangedEvent.new(_target_zoom, min_altitude, max_altitude)
+    var altitude_changed_event = CameraEvents.CameraAltitudeChangedEvent.new(
+        _target_zoom,
+        min_altitude,
+        max_altitude,
+    )
+
     EventBus.service().broadcast(altitude_changed_event)
 
-func _calculate_heading() -> Vector3:
+func _calculate_heading() -> void:
     var a = position
-    var diff = (position + _velocity) - a
-    var dist = diff.length()
+    var direction = (position + _velocity) - a
 
-    if is_zero_approx(dist):
-        return Vector3.ZERO
-
-    var t = Transform3D(Basis.looking_at(diff, Vector3.FORWARD), a)
-    var r = t.basis.get_euler()
-    return Vector3(0, r.y, 0)
+    if direction:
+        _theta = wrapf(atan2(direction.x, direction.z) - Heading.rotation.y, -PI, PI)
 
 func _on_body_selected(event: BodyEvents.BodySelectedEvent) -> void:
     _traversal_target = event.position
@@ -328,4 +338,13 @@ func _draw_debug() -> void:
         var t = Transform3D(Basis.looking_at(diff, Vector3.UP), a)
         text = "%1.2v" % t.basis.get_euler()
 
-    DebugDraw3D.draw_text(global_position + Vector3.ONE, text)
+    var text_pos = global_position + Vector3.ONE
+    DebugDraw3D.draw_text(text_pos, text)
+
+    text_pos = Vector3(
+        global_position.x - 1,
+        global_position.y + 1,
+        global_position.z - 1,
+    )
+
+    DebugDraw3D.draw_text(text_pos, "%1.2f" % _heading_debug.y)

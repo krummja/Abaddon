@@ -74,6 +74,7 @@ zoom_step = 2.0
 zoom_speed = 4.0
 max_altitude = 100.0
 max_key_rotation_speed = 0.2
+heading_rotation_speed = 8.0
 
 [node name="GridController" type="Node3D" parent="SystemView" unique_id=216860937 node_paths=PackedStringArray("target")]
 script = ExtResource("2_el2q1")
@@ -129,17 +130,20 @@ target = NodePath("../../CameraRig/Target")
 [node name="Body" type="Node3D" parent="SystemView/Orbits" unique_id=573135243]
 
 [node name="Orbit" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=2113369753]
+transparency = 0.3
 mesh = SubResource("TorusMesh_mc0qy")
 script = ExtResource("9_ik6f3")
 radius = 30.0
 
 [node name="Orbit2" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=424487613]
+transparency = 0.3
 mesh = SubResource("TorusMesh_mc0qy")
 script = ExtResource("9_ik6f3")
 radius = 50.0
 
 [node name="Orbit3" type="MeshInstance3D" parent="SystemView/Orbits/Body" unique_id=125309937]
 transform = Transform3D(0.99886173, 0.047699198, 0, -0.047699198, 0.99886173, 0, 0, 0, 1, 0, 0, 0)
+transparency = 0.3
 mesh = SubResource("TorusMesh_mc0qy")
 script = ExtResource("9_ik6f3")
 radius = 100.0
