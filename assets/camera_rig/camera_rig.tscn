@@ -4,9 +4,8 @@
 [ext_resource type="Shader" uid="uid://dqec04vycu3qc" path="res://assets/camera_rig/depth_outline.gdshader" id="2_5va8v"]
 [ext_resource type="AudioStream" uid="uid://b41f6n156lac2" path="res://audio/scroll_whoosh.wav" id="3_88x28"]
 
-[sub_resource type="Environment" id="Environment_qt7cu"]
+[sub_resource type="Environment" id="Environment_88x28"]
 background_mode = 1
-glow_enabled = true
 glow_levels/1 = 16.0
 glow_levels/2 = 4.0
 glow_levels/3 = 0.0
@@ -18,7 +17,6 @@ glow_bloom = 0.14
 volumetric_fog_density = 0.0213
 volumetric_fog_emission = Color(0.20152658, 0.20152658, 0.20152658, 1)
 volumetric_fog_emission_energy = 0.0
-adjustment_enabled = true
 adjustment_brightness = 1.11
 adjustment_saturation = 1.24
 
@@ -68,7 +66,7 @@ transform = Transform3D(1, 0, 0, 0, 0.8210196, 0.5708998, 0, -0.5708998, 0.82101
 
 [node name="Camera3D" type="Camera3D" parent="RotationRig" unique_id=664047707]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.610357)
-environment = SubResource("Environment_qt7cu")
+environment = SubResource("Environment_88x28")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RotationRig/Camera3D" unique_id=1141266324]
 transform = Transform3D(1.665, 0, 0, 0, -1.665, 1.4555891e-07, 0, -1.4555891e-07, -1.665, 0, 0, -0.89861965)
@@ -107,6 +105,7 @@ transparency = 0.5
 mesh = SubResource("PrismMesh_xhk1t")
 
 [node name="Node3D" type="Node3D" parent="Target/PositionIndicator" unique_id=1554466782]
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Target/PositionIndicator/Node3D" unique_id=1647966936]
 

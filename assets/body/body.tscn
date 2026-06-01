@@ -1,48 +1,17 @@
 [gd_scene format=3 uid="uid://8gmolpibigeu"]
 
 [ext_resource type="Script" uid="uid://ir1lelj3ugaj" path="res://assets/body/body.gd" id="1_r8yxy"]
-[ext_resource type="Shader" uid="uid://b4nfefyqc5fqo" path="res://assets/body/water_hologram.gdshader" id="2_bfv4e"]
+[ext_resource type="Shader" uid="uid://u77s1rcsuj1m" path="res://assets/body/body.gdshader" id="2_bfv4e"]
 [ext_resource type="Texture2D" uid="uid://cmppen8fryiio" path="res://textures/plane_indicator.png" id="3_d03ox"]
 
-[sub_resource type="Gradient" id="Gradient_bfv4e"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_hvvgp"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_g0f2a"]
-noise = SubResource("FastNoiseLite_hvvgp")
-color_ramp = SubResource("Gradient_bfv4e")
-
-[sub_resource type="Gradient" id="Gradient_7moen"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_8uqpk"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_v6d5e"]
-noise = SubResource("FastNoiseLite_8uqpk")
-color_ramp = SubResource("Gradient_7moen")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d03ox"]
-render_priority = 1
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hvvgp"]
+render_priority = 0
 shader = ExtResource("2_bfv4e")
-shader_parameter/time_speed = 0.055
-shader_parameter/surface_speed = 0.17
-shader_parameter/spin = 0.0
-shader_parameter/brightness = 0.36
-shader_parameter/color_intensity = 0.0
-shader_parameter/horizontal_frequency = 2.0
-shader_parameter/vertical_frequency = 2.0
-shader_parameter/size = 1.8050000000000002
-shader_parameter/banding_bias = 1.05
-shader_parameter/wave_texture = SubResource("NoiseTexture2D_v6d5e")
-shader_parameter/noise_texture = SubResource("NoiseTexture2D_g0f2a")
-shader_parameter/wave_height = 0.075
-shader_parameter/texture_height = 0.005
-shader_parameter/color1 = Color(0.9999998, 0.88948005, 0.9982316, 1)
-shader_parameter/color2 = Color(1, 0.75686276, 0.59607846, 1)
-shader_parameter/color3 = Color(0.99215686, 0.5882353, 0.44313726, 1)
-shader_parameter/color4 = Color(0.9882353, 0.54509807, 0.45490196, 1)
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/outline_thickness = 0.05
 
 [sub_resource type="SphereMesh" id="SphereMesh_r8yxy"]
-material = SubResource("ShaderMaterial_d03ox")
+material = SubResource("ShaderMaterial_hvvgp")
 radial_segments = 32
 rings = 16
 

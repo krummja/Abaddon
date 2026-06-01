@@ -1,3 +1,4 @@
+class_name OrbitRenderer
 extends MeshInstance3D
 
 const CameraEvents = preload("res://events/camera.gd")
