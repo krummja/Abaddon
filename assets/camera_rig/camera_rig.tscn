@@ -42,6 +42,17 @@ albedo_color = Color(1, 0.5803922, 0.5647059, 1)
 material = SubResource("StandardMaterial3D_88x28")
 size = Vector3(0.75, 0.75, 0.1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xhk1t"]
+shading_mode = 0
+albedo_color = Color(1, 0.5803922, 0.5647059, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_5va8v"]
+material = SubResource("StandardMaterial3D_xhk1t")
+inner_radius = 1.478
+outer_radius = 1.84
+rings = 32
+ring_segments = 16
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pneq3"]
 shading_mode = 0
 albedo_color = Color(1, 0.5803922, 0.5647059, 1)
@@ -105,9 +116,11 @@ transparency = 0.5
 mesh = SubResource("PrismMesh_xhk1t")
 
 [node name="Node3D" type="Node3D" parent="Target/PositionIndicator" unique_id=1554466782]
-visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Target/PositionIndicator/Node3D" unique_id=1647966936]
+transform = Transform3D(1, 0, 0, 0, 0.325, 0, 0, 0, 1, 0, 0.1, 0)
+transparency = 0.5
+mesh = SubResource("TorusMesh_5va8v")
 
 [node name="HeadingIndicator" type="Node3D" parent="Target" unique_id=1003337822]
 

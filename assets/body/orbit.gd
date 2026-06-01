@@ -1,3 +1,4 @@
+class_name Orbit
 extends MeshInstance3D
 
 const ARC_ACCURACY = 0.0001

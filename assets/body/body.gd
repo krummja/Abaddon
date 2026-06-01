@@ -22,7 +22,6 @@ const BodyEvents = preload("res://events/body.gd")
 @export var target: Marker3D
 
 @onready var sphere: MeshInstance3D = $Sphere
-# @onready var sphere: Sprite3D = $Sprite3D
 @onready var line: MeshInstance3D = $Line
 @onready var plane_indicator: MeshInstance3D = $PlaneIndicator
 @onready var collider: Area3D = $Area3D
@@ -132,9 +131,8 @@ func _update_indicator() -> void:
     plane_indicator.visible = distance.length() > (visual_radius)
 
 func _draw_debug() -> void:
-    pass
-    # DebugDraw3D.draw_line(position, position + velocity)
-    # DebugDraw3D.draw_points(_trail_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.25)
+    DebugDraw3D.draw_line(position, position + velocity)
+    DebugDraw3D.draw_points(_trail_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.25)
 
 func _push_trail_point() -> void:
     if len(_trail_points) > point_count:
