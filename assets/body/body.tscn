@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://8gmolpibigeu"]
 
-[ext_resource type="Script" uid="uid://ir1lelj3ugaj" path="res://assets/body/body.gd" id="1_r8yxy"]
+[ext_resource type="Script" uid="uid://dhbpfvgg0umap" path="res://assets/body/body_v1.gd" id="1_hvvgp"]
 [ext_resource type="Shader" uid="uid://u77s1rcsuj1m" path="res://assets/body/body.gdshader" id="2_bfv4e"]
 [ext_resource type="Texture2D" uid="uid://cmppen8fryiio" path="res://textures/plane_indicator.png" id="3_d03ox"]
 
@@ -15,16 +15,8 @@ material = SubResource("ShaderMaterial_hvvgp")
 radial_segments = 32
 rings = 16
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m62ph"]
-transparency = 1
-cull_mode = 2
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bfv4e"]
 shading_mode = 0
-albedo_color = Color(1, 1, 1, 0.27450982)
-texture_filter = 1
-billboard_mode = 2
-billboard_keep_scale = true
-distance_fade_min_distance = 25.0
-distance_fade_max_distance = 0.0
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_r8yxy"]
 
@@ -44,8 +36,9 @@ texture_repeat = false
 size = Vector2(0.25, 0.25)
 
 [node name="Body" type="Node3D" unique_id=281731595]
-script = ExtResource("1_r8yxy")
+script = ExtResource("1_hvvgp")
 line_color = Color(1, 1, 1, 0.27450982)
+line_width = 0.005
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1409409360]
 collision_layer = 3
@@ -57,7 +50,7 @@ priority = 3
 mesh = SubResource("SphereMesh_r8yxy")
 
 [node name="Line" type="MeshInstance3D" parent="." unique_id=158727634]
-material_override = SubResource("StandardMaterial3D_m62ph")
+material_override = SubResource("StandardMaterial3D_bfv4e")
 mesh = SubResource("ImmediateMesh_r8yxy")
 
 [node name="PlaneIndicator" type="MeshInstance3D" parent="." unique_id=993908766]

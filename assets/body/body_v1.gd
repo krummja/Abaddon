@@ -1,22 +1,17 @@
-class_name Body
+class_name BodyV1
 extends Node3D
 
 const BodyEvents = preload("res://events/body.gd")
 
 @export_category("Debug")
 @export var debug: bool = false
-@export var point_count: int = 100
-@export var point_rate: float = 4
-
-@export_category("Simulation Settings")
-@export var mass: float
-@export var velocity: Vector3
 
 @export_category("Visual Settings")
-@export var visual_radius: float = 0.1
+@export_range(0.1, 100, 0.1) var visual_radius: float = 1.0
 @export var color: Color = Color(1, 1, 1, 1)
 @export var line_color: Color = Color(1, 1, 1, 1)
 @export var line_width: float = 0.1
+@export_range(0.0, 1.0) var line_transparency: float = 0.75
 
 @export_category("References")
 @export var target: Marker3D
@@ -27,8 +22,6 @@ const BodyEvents = preload("res://events/body.gd")
 @onready var collider: Area3D = $Area3D
 @onready var collision_shape: CollisionShape3D = $Area3D/CollisionShape3D
 
-var _trail_points: PackedVector3Array = []
-var _tick_count: int = 0
 var _is_hovered: bool = false
 
 func _ready():
@@ -72,28 +65,27 @@ func _ready():
     _indicator_mesh.size = Vector2(visual_radius * 2, visual_radius * 2)
 
     # Set the sphere's color
-    # sphere.modulate = color
     _sphere_mat.set_shader_parameter("color", color)
 
     # Set the plane altitude line color
     _line_mat.albedo_color = line_color
+    line.transparency = line_transparency
 
     # Set the intersect indicator line color
     _indicator_mat.albedo_color = line_color
+    plane_indicator.transparency = line_transparency
 
 func _process(_delta: float) -> void:
     _draw_line()
     _update_indicator()
+    _update_line_facing()
 
     if debug:
         _draw_debug()
 
 func _physics_process(_delta: float) -> void:
     if debug:
-        _tick_count += 1
-        if _tick_count == point_rate:
-            _push_trail_point()
-            _tick_count = 0
+        pass
 
 func _draw_line() -> void:
     var start = global_position
@@ -130,14 +122,20 @@ func _update_indicator() -> void:
     var distance = plane_indicator.global_position - sphere.global_position
     plane_indicator.visible = distance.length() > (visual_radius)
 
-func _draw_debug() -> void:
-    DebugDraw3D.draw_line(position, position + velocity)
-    DebugDraw3D.draw_points(_trail_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.25)
+func _update_line_facing() -> void:
+    var camera_rig_root: Node3D = target.get_parent()
+    var camera: Camera3D = camera_rig_root.get_child(0).get_child(0)
+    var camera_position = camera.global_position
+    line.look_at(Vector3(camera_position.x, 0, camera_position.z), Vector3.UP, true)
 
-func _push_trail_point() -> void:
-    if len(_trail_points) > point_count:
-        _trail_points.remove_at(0)
-    _trail_points.append(global_position)
+func _draw_debug() -> void:
+    var camera_rig_root: Node3D = target.get_parent()
+    var camera: Camera3D = camera_rig_root.get_child(0).get_child(0)
+    var camera_position = camera.global_position
+    var line_end = Vector3(camera_position.x, 0, camera_position.z)
+    DebugDraw3D.draw_line(plane_indicator.global_position, line_end, Color(1, 0, 0, 1))
+    DebugDraw3D.draw_line(camera_position, line_end, Color(1, 0, 0, 1))
+    DebugDraw3D.draw_position(camera.global_transform)
 
 func _on_mouse_entered() -> void:
     _is_hovered = true

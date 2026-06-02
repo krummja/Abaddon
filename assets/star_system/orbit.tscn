@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bype8erdrpeef"]
+
+[ext_resource type="Script" uid="uid://hir4fmmsoqad" path="res://assets/body/orbit.gd" id="1_8bd6y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ik6f3"]
+shading_mode = 0
+albedo_color = Color(0.56, 0.56, 0.56, 1)
+
+[node name="Orbit" type="MeshInstance3D" unique_id=805737024]
+material_override = SubResource("StandardMaterial3D_ik6f3")
+transparency = 0.5
+script = ExtResource("1_8bd6y")
+metadata/_custom_type_script = "uid://hir4fmmsoqad"

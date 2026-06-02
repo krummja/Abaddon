@@ -31,4 +31,3 @@ static func SubdivideDistanceToPointsBounded(origin: Vector3, target: Vector3, s
     result_vectors = SubdivideDistanceToPoints(origin, direction, total_length, segments)
 
     return result_vectors
-

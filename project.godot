@@ -93,6 +93,10 @@ wheel_down={
 ]
 }
 
+[network]
+
+limits/debugger/max_chars_per_second=204800
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

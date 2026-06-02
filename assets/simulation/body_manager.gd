@@ -25,13 +25,13 @@ func reset() -> void:
     _body_parameters = []
     body_parameters = {}
     body_map = {}
-    print("Done! Body parameters cleared (Count: %d)" % len(_body_parameters))
+    print("Done! BodyV1 parameters cleared (Count: %d)" % len(_body_parameters))
 
 func build(simulation: Simulation) -> void:
-    print("Instantiating %d Body Objects..." % body_count)
+    print("Instantiating %d BodyV1 Objects..." % body_count)
     for i in range(body_count):
         var parameters = body_parameters[i]
-        var body: Body = body_scene.instantiate()
+        var body: BodyV1 = body_scene.instantiate()
         body.position = parameters.position
         body.name = "%d" % i
 

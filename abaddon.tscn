@@ -5,23 +5,18 @@
 [ext_resource type="PackedScene" uid="uid://b7xerdvkegbff" path="res://assets/camera_rig/camera_rig.tscn" id="2_xyc5y"]
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
 [ext_resource type="PackedScene" uid="uid://7b6lfjrg6vgb" path="res://ui/debug.tscn" id="5_el2q1"]
-[ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/body/body.tscn" id="5_l05gs"]
-[ext_resource type="Script" uid="uid://nb70h3kma578" path="res://assets/body/keplerian.gd" id="6_0viut"]
+[ext_resource type="Script" uid="uid://o21jrsl2vnd3" path="res://assets/star_system/star_system.gd" id="5_ik6f3"]
+[ext_resource type="PackedScene" uid="uid://dvsa6h3mljtvw" path="res://assets/star_system/keplerian.tscn" id="6_ik6f3"]
 [ext_resource type="Script" uid="uid://bden175cerqx7" path="res://ui/property_list/property_binding.gd" id="6_ncjc0"]
 [ext_resource type="Script" uid="uid://rcmv6abjwrwq" path="res://ui/game.gd" id="7_nv1jb"]
 [ext_resource type="Script" uid="uid://cru245ouwixd5" path="res://ui/fps_counter.gd" id="8_kearp"]
 [ext_resource type="PackedScene" uid="uid://ckc35dafg0g4s" path="res://ui/widgets/key_value.tscn" id="9_e5w7c"]
-[ext_resource type="Script" uid="uid://hir4fmmsoqad" path="res://assets/body/orbit.gd" id="9_nehkf"]
 [ext_resource type="Script" uid="uid://dbxnsqcbfxs84" path="res://hover_indicator.gd" id="11_7yhey"]
 [ext_resource type="Texture2D" uid="uid://bqafrvx2g0fsr" path="res://textures/target_ring.png" id="11_pq7gu"]
 [ext_resource type="PackedScene" uid="uid://7lp27svodp6b" path="res://ui/time_control.tscn" id="12_pq7gu"]
 
 [sub_resource type="Environment" id="Environment_el2q1"]
 background_mode = 1
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ik6f3"]
-shading_mode = 0
-albedo_color = Color(0.56, 0.56, 0.56, 1)
 
 [sub_resource type="Resource" id="Resource_l05gs"]
 script = ExtResource("6_ncjc0")
@@ -69,30 +64,12 @@ grid_section = ExtResource("3_el2q1")
 target = NodePath("../CameraRig/Target")
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
-[node name="Pickables" type="Node3D" parent="SystemView" unique_id=1477719034]
-
-[node name="Star" parent="SystemView/Pickables" unique_id=780803761 node_paths=PackedStringArray("target") instance=ExtResource("5_l05gs")]
-mass = 1000.0
-visual_radius = 0.5
-color = Color(1, 1, 0.6156863, 1)
-target = NodePath("../../CameraRig/Target")
-
-[node name="Orbits" type="Node3D" parent="SystemView" unique_id=1140681015]
-
-[node name="A" type="Node3D" parent="SystemView/Orbits" unique_id=573135243 node_paths=PackedStringArray("body", "orbit")]
-script = ExtResource("6_0viut")
-body = NodePath("Body")
-orbit = NodePath("Orbit")
-
-[node name="Body" parent="SystemView/Orbits/A" unique_id=281731595 node_paths=PackedStringArray("target") instance=ExtResource("5_l05gs")]
-target = NodePath("../../../CameraRig/Target")
-
-[node name="Orbit" type="MeshInstance3D" parent="SystemView/Orbits/A" unique_id=1628073413]
-material_override = SubResource("StandardMaterial3D_ik6f3")
-transparency = 0.5
-script = ExtResource("9_nehkf")
-apoapsis = 100.0
-periapsis = 30.0
+[node name="StarSystem" type="Node3D" parent="SystemView" unique_id=2084464824 node_paths=PackedStringArray("camera_rig")]
+script = ExtResource("5_ik6f3")
+size_scale_factor = 15.0
+camera_rig = NodePath("../CameraRig")
+body_scene = ExtResource("6_ik6f3")
+metadata/_custom_type_script = "uid://o21jrsl2vnd3"
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false
@@ -100,7 +77,6 @@ visible = false
 [node name="Overlay" type="CanvasLayer" parent="." unique_id=882580652]
 
 [node name="Debug" parent="Overlay" unique_id=910382636 instance=ExtResource("5_el2q1")]
-visible = false
 mouse_filter = 2
 
 [node name="PropertyList" parent="Overlay/Debug/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(910382636, 318166508) index="1" unique_id=1441833313]

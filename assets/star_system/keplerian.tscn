@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dvsa6h3mljtvw"]
+
+[ext_resource type="Script" uid="uid://nb70h3kma578" path="res://assets/body/keplerian.gd" id="1_xavve"]
+[ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/body/body.tscn" id="2_r1wxt"]
+[ext_resource type="PackedScene" uid="uid://bype8erdrpeef" path="res://assets/star_system/orbit.tscn" id="3_r1wxt"]
+
+[node name="Keplerian" type="Node3D" unique_id=630358398]
+script = ExtResource("1_xavve")
+debug = true
+body = ExtResource("2_r1wxt")
+orbit = ExtResource("3_r1wxt")
+metadata/_custom_type_script = "uid://nb70h3kma578"
