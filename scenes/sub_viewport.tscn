@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/camera_rig.gd" id="1_na3wh"]
 [ext_resource type="Environment" uid="uid://duerqcteomv8c" path="res://environments/environment.tres" id="2_cos2v"]
 [ext_resource type="Shader" uid="uid://bw2i3ekhkysjk" path="res://shaders/hologram.gdshader" id="3_xykf2"]
-[ext_resource type="Script" uid="uid://hir4fmmsoqad" path="res://assets/body/orbit.gd" id="4_gupjt"]
+[ext_resource type="Script" uid="uid://hir4fmmsoqad" path="res://assets/star_system/orbit.gd" id="4_gupjt"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_vvh5c"]
 

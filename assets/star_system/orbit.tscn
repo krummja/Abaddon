@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bype8erdrpeef"]
 
-[ext_resource type="Script" uid="uid://hir4fmmsoqad" path="res://assets/body/orbit.gd" id="1_8bd6y"]
+[ext_resource type="Script" uid="uid://hir4fmmsoqad" path="res://assets/star_system/orbit.gd" id="1_8bd6y"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ik6f3"]
 shading_mode = 0

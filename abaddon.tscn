@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://o21jrsl2vnd3" path="res://assets/star_system/star_system.gd" id="5_ik6f3"]
 [ext_resource type="PackedScene" uid="uid://dvsa6h3mljtvw" path="res://assets/star_system/keplerian.tscn" id="6_ik6f3"]
 [ext_resource type="Script" uid="uid://bden175cerqx7" path="res://ui/property_list/property_binding.gd" id="6_ncjc0"]
+[ext_resource type="Script" uid="uid://c3no7agcevjmi" path="res://assets/kepler_element.gd" id="7_0viut"]
 [ext_resource type="Script" uid="uid://rcmv6abjwrwq" path="res://ui/game.gd" id="7_nv1jb"]
 [ext_resource type="Script" uid="uid://cru245ouwixd5" path="res://ui/fps_counter.gd" id="8_kearp"]
 [ext_resource type="PackedScene" uid="uid://ckc35dafg0g4s" path="res://ui/widgets/key_value.tscn" id="9_e5w7c"]
@@ -17,6 +18,110 @@
 
 [sub_resource type="Environment" id="Environment_el2q1"]
 background_mode = 1
+
+[sub_resource type="Resource" id="Resource_mc0qy"]
+script = ExtResource("7_0viut")
+value = 0.3870993
+value_per_century = 5.5999999999999735e-06
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_ik6f3"]
+script = ExtResource("7_0viut")
+value = 0.2056359
+value_per_century = -4.389999999999998e-05
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_nehkf"]
+script = ExtResource("7_0viut")
+value = 7.004979
+value_per_century = -0.0129467
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_iwja3"]
+script = ExtResource("7_0viut")
+value = 252.2503235
+value_per_century = 35999.3724498
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_rnvub"]
+script = ExtResource("7_0viut")
+value = 77.4577963
+value_per_century = 0.3232736
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_w3byk"]
+script = ExtResource("7_0viut")
+value = 48.3307659
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_0viut"]
+script = ExtResource("7_0viut")
+value = 0.7233357
+value_per_century = 5.5999999999999735e-06
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_1mqg8"]
+script = ExtResource("7_0viut")
+value = 0.0067767
+value_per_century = -4.389999999999998e-05
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_cg03w"]
+script = ExtResource("7_0viut")
+value = 3.3946761
+value_per_century = -0.0129467
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_4dsch"]
+script = ExtResource("7_0viut")
+value = 181.9790995
+value_per_century = 35999.3724498
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_j7pim"]
+script = ExtResource("7_0viut")
+value = 131.6024672
+value_per_century = 0.3232736
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_r4c2d"]
+script = ExtResource("7_0viut")
+value = 76.6798426
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_6dgp8"]
+script = ExtResource("7_0viut")
+value = 1.0000026
+value_per_century = 5.5999999999999735e-06
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_e5j3x"]
+script = ExtResource("7_0viut")
+value = 0.0167112
+value_per_century = -4.389999999999998e-05
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_06qto"]
+script = ExtResource("7_0viut")
+value = -1.5299999999999992e-05
+value_per_century = -0.0129467
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_mlkkd"]
+script = ExtResource("7_0viut")
+value = 100.4645717
+value_per_century = 35999.3724498
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_0aqnt"]
+script = ExtResource("7_0viut")
+value = 102.9376819
+value_per_century = 0.3232736
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
+
+[sub_resource type="Resource" id="Resource_0da4t"]
+script = ExtResource("7_0viut")
+metadata/_custom_type_script = "uid://c3no7agcevjmi"
 
 [sub_resource type="Resource" id="Resource_l05gs"]
 script = ExtResource("6_ncjc0")
@@ -70,6 +175,36 @@ size_scale_factor = 15.0
 camera_rig = NodePath("../CameraRig")
 body_scene = ExtResource("6_ik6f3")
 metadata/_custom_type_script = "uid://o21jrsl2vnd3"
+
+[node name="Mercury" parent="SystemView/StarSystem" unique_id=630358398 instance=ExtResource("6_ik6f3")]
+debug = false
+body_name = "Mercury"
+semi_major_axis = SubResource("Resource_mc0qy")
+eccentricity = SubResource("Resource_ik6f3")
+inclination = SubResource("Resource_nehkf")
+mean_longitude = SubResource("Resource_iwja3")
+longitude_of_perihelion = SubResource("Resource_rnvub")
+longitude_of_ascending_node = SubResource("Resource_w3byk")
+
+[node name="Venus" parent="SystemView/StarSystem" unique_id=20451208 instance=ExtResource("6_ik6f3")]
+debug = false
+body_name = "Venus"
+semi_major_axis = SubResource("Resource_0viut")
+eccentricity = SubResource("Resource_1mqg8")
+inclination = SubResource("Resource_cg03w")
+mean_longitude = SubResource("Resource_4dsch")
+longitude_of_perihelion = SubResource("Resource_j7pim")
+longitude_of_ascending_node = SubResource("Resource_r4c2d")
+
+[node name="Earth" parent="SystemView/StarSystem" unique_id=2086410634 instance=ExtResource("6_ik6f3")]
+debug = false
+body_name = "Earth"
+semi_major_axis = SubResource("Resource_6dgp8")
+eccentricity = SubResource("Resource_e5j3x")
+inclination = SubResource("Resource_06qto")
+mean_longitude = SubResource("Resource_mlkkd")
+longitude_of_perihelion = SubResource("Resource_0aqnt")
+longitude_of_ascending_node = SubResource("Resource_0da4t")
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false
