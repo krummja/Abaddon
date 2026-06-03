@@ -1,3 +1,4 @@
+class_name MathUtils
 
 static func Vector2Clamp(vector: Vector2, min_v: float, max_v: float) -> Vector2:
     var x = clampf(vector.x, min_v, max_v)
@@ -31,3 +32,11 @@ static func SubdivideDistanceToPointsBounded(origin: Vector3, target: Vector3, s
     result_vectors = SubdivideDistanceToPoints(origin, direction, total_length, segments)
 
     return result_vectors
+
+static func GetAngularRadius(view_pos: Vector3, object_pos: Vector3, object_radius: float) -> float:
+    var distance = view_pos.distance_to(object_pos)
+    if distance == 0.0:
+        return 0.0
+
+    var angular_radius_rad = atan(object_radius / distance)
+    return rad_to_deg(angular_radius_rad)

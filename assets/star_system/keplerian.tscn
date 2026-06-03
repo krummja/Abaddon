@@ -1,55 +1,14 @@
 [gd_scene format=3 uid="uid://dvsa6h3mljtvw"]
 
 [ext_resource type="Script" uid="uid://nb70h3kma578" path="res://assets/star_system/keplerian.gd" id="1_xavve"]
-[ext_resource type="Script" uid="uid://c3no7agcevjmi" path="res://assets/kepler_element.gd" id="2_20s4a"]
-[ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/body/body.tscn" id="2_r1wxt"]
-
-[sub_resource type="Resource" id="Resource_7nios"]
-script = ExtResource("2_20s4a")
-value = 1.0000026
-value_per_century = 5.5999999999999735e-06
-metadata/_custom_type_script = "uid://c3no7agcevjmi"
-
-[sub_resource type="Resource" id="Resource_iao36"]
-script = ExtResource("2_20s4a")
-value = 0.9
-value_per_century = -4.389999999999998e-05
-metadata/_custom_type_script = "uid://c3no7agcevjmi"
-
-[sub_resource type="Resource" id="Resource_6qekf"]
-script = ExtResource("2_20s4a")
-value = 7.004979
-value_per_century = -0.0129467
-metadata/_custom_type_script = "uid://c3no7agcevjmi"
-
-[sub_resource type="Resource" id="Resource_q3pum"]
-script = ExtResource("2_20s4a")
-value = 100.4645717
-value_per_century = 35999.3724498
-metadata/_custom_type_script = "uid://c3no7agcevjmi"
-
-[sub_resource type="Resource" id="Resource_aeuj1"]
-script = ExtResource("2_20s4a")
-value = 102.9376819
-value_per_century = 0.3232736
-metadata/_custom_type_script = "uid://c3no7agcevjmi"
-
-[sub_resource type="Resource" id="Resource_gtf32"]
-script = ExtResource("2_20s4a")
-metadata/_custom_type_script = "uid://c3no7agcevjmi"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r1wxt"]
 shading_mode = 0
+albedo_color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="Keplerian" type="Node3D" unique_id=630358398]
 script = ExtResource("1_xavve")
 debug = true
-semi_major_axis = SubResource("Resource_7nios")
-eccentricity = SubResource("Resource_iao36")
-inclination = SubResource("Resource_6qekf")
-mean_longitude = SubResource("Resource_q3pum")
-longitude_of_perihelion = SubResource("Resource_aeuj1")
-longitude_of_ascending_node = SubResource("Resource_gtf32")
+body_name = "Earth"
 orbit_material = SubResource("StandardMaterial3D_r1wxt")
-body = ExtResource("2_r1wxt")
 metadata/_custom_type_script = "uid://nb70h3kma578"

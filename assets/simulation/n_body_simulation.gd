@@ -91,7 +91,7 @@ func _simulation_step(delta: float) -> void:
     if debug:
         _debug_draw_octree(octree)
 
-func _calculate_force(body: BodyV1, octree_node: OctreeNode) -> Vector3:
+func _calculate_force(body: Body, octree_node: OctreeNode) -> Vector3:
     var force = Vector3()
 
     # Calculate force from external nodes

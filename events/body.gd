@@ -3,16 +3,18 @@ class BodySelectedEvent extends Event:
 
     const ID = Events.BODY_SELECTED
 
-    func _init(body_position: Vector3) -> void:
+    func _init(p_position: Vector3) -> void:
         super(ID)
-        position = body_position
+        position = p_position
 
 
 class BodyHoveredEvent extends Event:
-    var position: Vector2
+    var world_position: Vector3
+    var screen_position: Vector2
 
     const ID = Events.BODY_HOVERED
 
-    func _init(screen_position: Vector2) -> void:
+    func _init(p_world_position: Vector3, p_screen_position: Vector2) -> void:
         super(ID)
-        position = screen_position
+        screen_position = p_screen_position
+        world_position = p_world_position

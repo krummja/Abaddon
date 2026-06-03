@@ -5,11 +5,11 @@ var bounds: AABB
 var mass: float = 0.0
 var center_of_mass: Vector3 = Vector3.ZERO
 
-var _body: BodyV1
+var _body: Body
 var _nodes: Array[OctreeNode] = []
 var debug_str: String = ""
 
-var body: BodyV1:
+var body: Body:
     get: return _body
 
 var nodes: Array[OctreeNode]:

@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://8gmolpibigeu"]
 
-[ext_resource type="Script" uid="uid://dhbpfvgg0umap" path="res://assets/body/body_v1.gd" id="1_hvvgp"]
+[ext_resource type="Script" uid="uid://c2ij57p2qel4n" path="res://assets/body/body.gd" id="1_bfv4e"]
 [ext_resource type="Shader" uid="uid://u77s1rcsuj1m" path="res://assets/body/body.gdshader" id="2_bfv4e"]
 [ext_resource type="Texture2D" uid="uid://cmppen8fryiio" path="res://textures/plane_indicator.png" id="3_d03ox"]
+[ext_resource type="Texture2D" uid="uid://bqafrvx2g0fsr" path="res://textures/target_ring.png" id="4_hvvgp"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bfv4e"]
+radius = 0.6
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hvvgp"]
 render_priority = 0
@@ -35,16 +39,83 @@ texture_repeat = false
 [sub_resource type="QuadMesh" id="QuadMesh_rwk2e"]
 size = Vector2(0.25, 0.25)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g0f2a"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 1, 1, 1)
+albedo_texture = ExtResource("4_hvvgp")
+texture_filter = 1
+texture_repeat = false
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_7moen"]
+material = SubResource("StandardMaterial3D_g0f2a")
+size = Vector2(2, 2)
+
+[sub_resource type="Animation" id="Animation_hvvgp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HoverIndicator:transparency")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_g0f2a"]
+resource_name = "fade_in"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HoverIndicator:transparency")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19999999),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_7moen"]
+resource_name = "fade_out"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HoverIndicator:transparency")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8uqpk"]
+_data = {
+&"RESET": SubResource("Animation_hvvgp"),
+&"fade_in": SubResource("Animation_g0f2a"),
+&"fade_out": SubResource("Animation_7moen")
+}
+
 [node name="Body" type="Node3D" unique_id=281731595]
-script = ExtResource("1_hvvgp")
-line_color = Color(1, 1, 1, 0.27450982)
-line_width = 0.005
+script = ExtResource("1_bfv4e")
+visual_radius = 0.2
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1409409360]
 collision_layer = 3
 priority = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=116217798]
+shape = SubResource("SphereShape3D_bfv4e")
 
 [node name="Sphere" type="MeshInstance3D" parent="." unique_id=566157545]
 mesh = SubResource("SphereMesh_r8yxy")
@@ -57,3 +128,13 @@ mesh = SubResource("ImmediateMesh_r8yxy")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.025, 0)
 material_override = SubResource("StandardMaterial3D_rwynx")
 mesh = SubResource("QuadMesh_rwk2e")
+
+[node name="HoverIndicator" type="Node3D" parent="." unique_id=1784193929]
+
+[node name="HoverIndicator" type="MeshInstance3D" parent="HoverIndicator" unique_id=1517960868]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+transparency = 1.0
+mesh = SubResource("QuadMesh_7moen")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HoverIndicator" unique_id=1589879269]
+libraries/ = SubResource("AnimationLibrary_8uqpk")

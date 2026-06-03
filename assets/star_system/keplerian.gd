@@ -5,44 +5,47 @@ const OrbitSolver = preload("res://scripts/orbit_solver.gd")
 
 @export var debug: bool = false
 
-@export_category("BodyV1 Information")
+@export_category("Body Information")
 @export var body_name: String
 
-@export_category("Body Parameters")
+@export_category("Visual Parameters")
 @export var has_orbit: bool = true
 @export var visual_radius: float
-@export var body_position: Vector3
-
-@export_category("Orbital Parameters")
-@export var distance_scale_factor: float = 100.0
-@export var size_scale_factor: float = 10.0
-@export var semi_major_axis: KeplerElement
-@export var eccentricity: KeplerElement
-@export var inclination: KeplerElement
-@export var mean_longitude: KeplerElement
-@export var longitude_of_perihelion: KeplerElement
-@export var longitude_of_ascending_node: KeplerElement
+@export var orbit_points: int = 100
 @export var orbit_material: Material
-
-@export var epoch: float = 0.0
-
-@export_category("Dependencies")
 @export var target: Marker3D
+
+@export_category("Orbital Constants")
+@export_custom(PROPERTY_HINT_NONE, "suffix:au") var semi_major_axis: float = 1.00000011
+@export_custom(PROPERTY_HINT_NONE, "suffix:rad") var eccentricity: float = 0.01671022
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var inclination: float = 0.00005
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var mean_longitude: float = -11.26064
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var longitude_of_perihelion: float = 102.94719
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var longitude_of_the_ascending_node: float = 0.0
+
+@export_category("Orbital Corrections")
+@export_custom(PROPERTY_HINT_NONE, "suffix:au/Cy") var _semi_major_axis: float = 0.00000562
+@export_custom(PROPERTY_HINT_NONE, "suffix:rad/Cy") var _eccentricity: float = -0.00004392
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _inclination: float = -0.01294668
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _mean_longitude: float = 35999.37244981
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _longitude_of_perihelion: float = 0.32327364
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _longitude_of_the_ascending_node: float = 0.0
+
 
 var _points: PackedVector3Array = PackedVector3Array()
 
 var apoapsis: float:
     get:
-        return semi_major_axis.value * (1 + eccentricity.value)
+        return semi_major_axis * (1 + eccentricity)
 
 var semi_minor_axis: float:
     get:
-        return semi_major_axis.value * sqrt(abs(1 - pow(eccentricity.value, 2)))
+        return semi_major_axis * sqrt(abs(1 - pow(eccentricity, 2)))
 
 var focus_point: Vector3:
     get:
-        var a = semi_major_axis.value * size_scale_factor
-        var b = semi_minor_axis * size_scale_factor
+        var a = semi_major_axis * Constants.SIZE_SCALE_FACTOR
+        var b = semi_minor_axis * Constants.SIZE_SCALE_FACTOR
         var c = sqrt(pow(a, 2) - pow(b, 2))
         return Vector3(-c, 0, 0)
 
@@ -68,9 +71,9 @@ func draw_orbit() -> void:
     _orbit_mesh.surface_set_uv(Vector2(0, 0))
 
     _points = OrbitSolver.compute_points(
-        100,
-        semi_major_axis.value * size_scale_factor,
-        semi_minor_axis * size_scale_factor,
+        orbit_points,
+        semi_major_axis * Constants.SIZE_SCALE_FACTOR,
+        semi_minor_axis * Constants.SIZE_SCALE_FACTOR,
     )
 
     _points.push_back(_points[0])
@@ -82,9 +85,9 @@ func draw_orbit() -> void:
     add_child(_orbit)
 
     _orbit.global_position = focus_point
-    rotation.y = deg_to_rad(longitude_of_perihelion.value)
-    rotation.z = deg_to_rad(inclination.value)
+    rotation.y = deg_to_rad(longitude_of_perihelion)
+    rotation.z = deg_to_rad(inclination)
 
 func _draw_debug() -> void:
-    # DebugDraw3D.draw_points(_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.1)
+    DebugDraw3D.draw_points(_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.1)
     DebugDraw3D.draw_position(Transform3D(Basis(), global_position))

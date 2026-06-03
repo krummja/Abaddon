@@ -12,7 +12,6 @@ const CameraEvents = preload("res://events/camera.gd")
 @export var top_view: bool = false
 
 @export_group("Dependencies")
-
 @export var TranslationRig: Node3D
 @export var RotationRig: Node3D
 @export var Camera: Camera3D
@@ -23,77 +22,58 @@ const CameraEvents = preload("res://events/camera.gd")
 @export_group("Controller Dynamics")
 
 @export_subgroup("Movement")
-
-@export var max_impulse: float = 5.0
-@export var acceleration: float = 10.0
-@export var damping: float = 15.0
-@export var vertical_damping: float = 5.0
+@export_range(1.0, 20.0, 0.1) var max_impulse: float = 5.0
+@export_range(1.0, 20.0, 0.1) var acceleration: float = 10.0
+@export_range(0.0, 30.0, 0.1) var damping: float = 15.0
 
 @export_subgroup("Zoom")
-
-## How far the camera moves on each scroll step
-@export var zoom_step: float = 7.5
-
-## How snappy the zoom is - lower value is more sluggish, higher is faster
-@export var zoom_damping: float = 7.5
-
-## How quickly the camera moves during the zoom
-@export var zoom_speed: float = 2.0
-
-@export var min_altitude: float = 5.0
-@export var max_altitude: float = 50.0
+@export_range(1.0, 10.0, 0.1) var zoom_step: float = 7.5
+@export_range(0.0, 10.0, 0.1) var zoom_damping: float = 2.0
+@export_range(1.0, 10.0, 0.1) var zoom_speed: float = 2.0
+@export_range(0.0, 10.0, 1.0) var min_altitude: float = 5.0
+@export_range(0.0, 300.0, 1.0) var max_altitude: float = 50.0
+@export var zoom_scaling: Curve
 
 @export_subgroup("Rotation")
-
-@export var max_rotation_speed: float = 0.01
-@export var max_key_rotation_speed: float = 0.1
-@export var rotation_damping: float = 10.0
+@export_range(0.001, 0.1, 0.001) var max_rotation_speed: float = 0.01
+@export_range(0.01, 0.5, 0.01) var max_key_rotation_speed: float = 0.1
+@export_range(0.0, 20.0, 0.1) var rotation_damping: float = 10.0
 
 @export_subgroup("Heading")
-
-@export var heading_rotation_speed: float = 0.1
+@export_range(1.0, 20.0, 0.1) var heading_rotation_speed: float = 0.1
 
 
 # Variables
 
 ## Mouse Panning
-
 var _pan_start: Vector2
 var _pan_delta: Vector2
 var _pan_stop: Vector2
 
 ## Translation
-
 var _velocity: Vector3
 var _last_position: Vector3
 var _target_position: Vector3
 
 ## Zoom
-
 var _target_altitude: Vector3
 
 ## Rotation
-
 var _target_rotation: Quaternion
 
 ## Motion Dynamics
-
 var _impulse: float
 var _target_zoom: float
 
 ## Flags
-
 var _is_panning: bool = false
 var _is_rotation_locked: bool = false
 var _is_traversing: bool = false
 
 ## Traversal
-
 var _traversal_target: Vector3
 var _traversal_vector: Vector3
-
 var _theta: float
-
 var _heading_debug: Vector3
 
 
@@ -298,7 +278,10 @@ func _update_heading_rotation(delta: float) -> void:
     Heading.rotation.y += clamp(heading_rotation_speed * delta, 0, abs(_theta)) * sign(_theta)
 
 func _set_target_zoom(value: float) -> void:
-    _target_zoom = Camera.transform.origin.y + value * zoom_step
+    var height_ratio = Camera.transform.origin.y / max_altitude
+    var step_mod = zoom_scaling.sample(height_ratio)
+
+    _target_zoom = Camera.transform.origin.y + value * (zoom_step * step_mod)
     _target_zoom = clampf(_target_zoom, min_altitude, max_altitude)
 
     var altitude_changed_event = CameraEvents.CameraAltitudeChangedEvent.new(
@@ -312,7 +295,6 @@ func _set_target_zoom(value: float) -> void:
 func _calculate_heading() -> void:
     var a = position
     var direction = (position + _velocity) - a
-
     if direction:
         _theta = wrapf(atan2(direction.x, direction.z) - Heading.rotation.y, -PI, PI)
 

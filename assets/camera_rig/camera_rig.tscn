@@ -2,10 +2,12 @@
 
 [ext_resource type="Script" uid="uid://fhfsw0fc8vuh" path="res://assets/camera_rig/camera_rig.gd" id="1_q3x65"]
 [ext_resource type="Shader" uid="uid://dqec04vycu3qc" path="res://assets/camera_rig/depth_outline.gdshader" id="2_5va8v"]
+[ext_resource type="Sky" uid="uid://bno7dkpwcx44q" path="res://environments/space.tres" id="2_xhk1t"]
 [ext_resource type="AudioStream" uid="uid://b41f6n156lac2" path="res://audio/scroll_whoosh.wav" id="3_88x28"]
 
 [sub_resource type="Environment" id="Environment_88x28"]
-background_mode = 1
+background_mode = 2
+sky = ExtResource("2_xhk1t")
 glow_levels/1 = 16.0
 glow_levels/2 = 4.0
 glow_levels/3 = 0.0
@@ -84,6 +86,7 @@ transform = Transform3D(1.665, 0, 0, 0, -1.665, 1.4555891e-07, 0, -1.4555891e-07
 mesh = SubResource("QuadMesh_as7y3")
 
 [node name="Target" type="Marker3D" parent="." unique_id=844119422]
+visible = false
 
 [node name="Area3D" type="Area3D" parent="Target" unique_id=40871583]
 

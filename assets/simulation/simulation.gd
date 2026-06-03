@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
             b2.acceleration -= m1 * tmp
 
         var body_path = body_manager.body_map[i]
-        var body: BodyV1 = get_node(body_path)
+        var body: Body = get_node(body_path)
 
         # Update the actual body
         body.position = b1.position
