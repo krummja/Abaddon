@@ -25,6 +25,7 @@ const CameraEvents = preload("res://events/camera.gd")
 @export_range(1.0, 20.0, 0.1) var max_impulse: float = 5.0
 @export_range(1.0, 20.0, 0.1) var acceleration: float = 10.0
 @export_range(0.0, 30.0, 0.1) var damping: float = 15.0
+@export var speed_scaling: Curve
 
 @export_subgroup("Zoom")
 @export_range(1.0, 10.0, 0.1) var zoom_step: float = 7.5
@@ -95,6 +96,9 @@ var _rotation_basis: Basis:
         _transform.basis = value
         RotationRig.transform = _transform
 
+var _height_ratio: float:
+    get:
+        return Camera.transform.origin.y / max_altitude
 
 # Methods
 
@@ -229,9 +233,11 @@ func _update_velocity_step(delta: float) -> void:
 
 func _update_position_step(delta: float) -> void:
     if _target_position.length() > 0.005:
-        _impulse = lerpf(_impulse, max_impulse, delta * acceleration)
+        var impulse_mod = speed_scaling.sample(_height_ratio)
+        _impulse = lerpf(_impulse, max_impulse * impulse_mod, delta * acceleration)
         translate(_target_position * _impulse * delta)
     else:
+        _impulse = lerpf(_impulse, 0, delta * acceleration)
         _velocity = _velocity.lerp(Vector3.ZERO, delta * damping)
         _origin += _velocity * delta
 
@@ -278,9 +284,7 @@ func _update_heading_rotation(delta: float) -> void:
     Heading.rotation.y += clamp(heading_rotation_speed * delta, 0, abs(_theta)) * sign(_theta)
 
 func _set_target_zoom(value: float) -> void:
-    var height_ratio = Camera.transform.origin.y / max_altitude
-    var step_mod = zoom_scaling.sample(height_ratio)
-
+    var step_mod = zoom_scaling.sample(_height_ratio)
     _target_zoom = Camera.transform.origin.y + value * (zoom_step * step_mod)
     _target_zoom = clampf(_target_zoom, min_altitude, max_altitude)
 

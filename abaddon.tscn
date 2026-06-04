@@ -21,27 +21,40 @@
 background_mode = 2
 sky = ExtResource("2_mc0qy")
 
+[sub_resource type="Curve" id="Curve_mc0qy"]
+_limits = [0.1, 10.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 3.2340002, 0, 0, Vector2(1, 10), 9.0, 0.0, 1, 0]
+point_count = 2
+metadata/_snap_enabled = true
+metadata/_snap_count = 50
+
 [sub_resource type="Curve" id="Curve_0viut"]
 _limits = [0.0, 5.0, 0.0, 1.0]
 _data = [Vector2(0, 0.32953405), 0.0, 4.670466, 0, 1, Vector2(1, 5), 4.670466, 0.0, 1, 0]
 point_count = 2
 
-[sub_resource type="Resource" id="Resource_l05gs"]
+[sub_resource type="Resource" id="Resource_ik6f3"]
 script = ExtResource("6_ncjc0")
-watched_node_path = NodePath("../../../../../SystemView/CameraRig/Target")
-watched_node_property = "global_position.x"
+watched_node_path = NodePath("../../../../../SystemView/CameraRig")
+watched_node_property = "_impulse"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
-[sub_resource type="Resource" id="Resource_iee4p"]
+[sub_resource type="Resource" id="Resource_mc0qy"]
 script = ExtResource("6_ncjc0")
-watched_node_path = NodePath("../../../../../SystemView/CameraRig/Target")
-watched_node_property = "global_position.y"
+watched_node_path = NodePath("../../../../../SystemView/CameraRig")
+watched_node_property = "_velocity"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
-[sub_resource type="Resource" id="Resource_pq7gu"]
+[sub_resource type="Resource" id="Resource_nehkf"]
 script = ExtResource("6_ncjc0")
 watched_node_path = NodePath("../../../../../SystemView/CameraRig/Target")
-watched_node_property = "global_position.z"
+watched_node_property = "global_position"
+metadata/_custom_type_script = "uid://bden175cerqx7"
+
+[sub_resource type="Resource" id="Resource_iwja3"]
+script = ExtResource("6_ncjc0")
+watched_node_path = NodePath("../../../../../SystemView/CameraRig")
+watched_node_property = "_pan_delta"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
 [sub_resource type="Theme" id="Theme_kearp"]
@@ -58,7 +71,8 @@ visible = false
 environment = SubResource("Environment_el2q1")
 
 [node name="CameraRig" parent="SystemView" unique_id=321885689 instance=ExtResource("2_xyc5y")]
-max_impulse = 10.0
+pan_step = 75
+speed_scaling = SubResource("Curve_mc0qy")
 zoom_step = 5.0
 zoom_speed = 5.0
 max_altitude = 200.0
@@ -180,9 +194,10 @@ mouse_filter = 2
 
 [node name="PropertyList" parent="Overlay/Debug/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(910382636, 318166508) index="1" unique_id=1441833313]
 properties = Dictionary[String, ExtResource("6_ncjc0")]({
-"position x": SubResource("Resource_l05gs"),
-"position y": SubResource("Resource_iee4p"),
-"position z": SubResource("Resource_pq7gu")
+"impulse": SubResource("Resource_ik6f3"),
+"pan": SubResource("Resource_iwja3"),
+"position": SubResource("Resource_nehkf"),
+"velocity": SubResource("Resource_mc0qy")
 })
 
 [node name="Game" type="Control" parent="Overlay" unique_id=1857539762]

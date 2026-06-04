@@ -51,6 +51,10 @@ func resolve_binding(binding: PropertyBinding) -> String:
             return "%10d" % current
         TYPE_FLOAT:
             return "%10.2f" % current
+        TYPE_VECTOR3:
+            return "%5.2v" % current
+        TYPE_VECTOR2:
+            return "%5.2v" % current
         _:
             print("unusable variant")
             return ""
