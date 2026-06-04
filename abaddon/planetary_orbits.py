@@ -1,37 +1,40 @@
 from dataclasses import dataclass
+import math
 from typing import NamedTuple, cast
-from astropy.time import Time, TimeDelta
-from astropy.time.formats import erfa, TimeFromEpoch
-
+import pendulum as pdl
 import devtools as dev
-
+from astropy.time import Time
 
 DELTA_T = 32.184
+UNIX_SECONDS_PER_DAY = 86_400
+
+## 400 years + 1
+GREGORIAN_CALENDAR_CYCLE_DAYS = 146_097
+
+## 100 years
+DAYS_PER_ERA = 36_524
+
+## 4 years
+DAYS_PER_QUADRENNIAL = 1_460
+
+## 400 years
+DAYS_PER_CYCLE = DAYS_PER_ERA * 4
 
 
-class TimeUnixLeap(TimeFromEpoch):
-    """
-    Seconds from 1970-01-01 00:00:00 TAI. Similar to Unix time
-    but this includes leap seconds.
-    """
-
-    name: str = "unix_leap"
-    unit: float = 1.0 / erfa.DAYSEC
-    epoch_val: str = "1970-01-01 00:00:00"
-    epoch_val2: str | None = None
-    epoch_scale: str = "tai"
-    epoch_format: str = "iso"
+def calculate_tcb(date: pdl.DateTime) -> float:
+    unix_ts = date.timestamp()
+    tcb_offset = 220924832.184
+    lb = 1.550519768e-08
+    t_diff = unix_ts - tcb_offset
+    return unix_ts + 32.184 + (t_diff * lb)
 
 
 class KeplerElement(NamedTuple):
     value: float
     value_per_century: float
 
-    def compute_eph(self, t: Time) -> float:
-        TAI: Time = cast(Time, t.unix_leap)
-        TDB: Time = TAI + DELTA_T
-        TEPH = (cast(TimeDelta, TDB - 2451545.0)) / 36525
-        return self.value + self.value_per_century * TEPH
+    def compute_eph(self, t) -> float:
+        return 0.0
 
 
 @dataclass
@@ -57,10 +60,37 @@ EARTH = KeplerBody(
 
 
 if __name__ == "__main__":
-    t = Time.now()
-    sma = EARTH.semi_major_axis.compute_eph(t)
-    ecc = EARTH.eccentricity.compute_eph(t)
-    incl = EARTH.inclination.compute_eph(t)
-    mean_long = EARTH.mean_longitude.compute_eph(t)
-    lop = EARTH.longitude_of_perihelion.compute_eph(t)
-    loan = EARTH.longitude_of_ascending_node.compute_eph(t)
+    now = pdl.DateTime(year=2026, month=6, day=4)
+    unix_ts = now.timestamp()
+    _start = pdl.DateTime(year=2000, month=3, day=1)
+
+    days_since_1970 = math.floor(unix_ts / float(UNIX_SECONDS_PER_DAY))
+    start = days_since_1970 - 11_017
+
+    era = start // GREGORIAN_CALENDAR_CYCLE_DAYS
+    day_of_era = start % GREGORIAN_CALENDAR_CYCLE_DAYS
+
+    year_of_era = (
+        day_of_era
+        - day_of_era // DAYS_PER_QUADRENNIAL
+        + day_of_era // DAYS_PER_ERA
+        - day_of_era // DAYS_PER_CYCLE
+    ) // 365
+
+    year = year_of_era + era * 400 + 2000
+
+    # Treating Mar 1 as "start of year"
+    day_of_year = day_of_era - (
+        365 * year_of_era + year_of_era // 4 - year_of_era // 100
+    )
+
+    month_shifted = (5 * day_of_year + 2) // 153
+    day = day_of_year - (153 * month_shifted + 2) // 5 + 1
+
+    if month_shifted < 10:
+        month = month_shifted + 3
+    else:
+        month = month_shifted - 9
+        year += 1
+
+    dev.debug([year, month, day])

@@ -5,6 +5,7 @@ import polars as pl
 import devtools as dev
 from pathlib import Path
 from textwrap import dedent
+from astropy.time import Time
 
 
 HERE = Path(__file__)
@@ -95,8 +96,15 @@ def parse_physical_data() -> pl.DataFrame:
         return df
 
 
-def main():
-    pass
+def main() -> None:
+    t = Time.now()
+    tai = Time([t], scale="tai")
+    tt = Time([t], scale="tt")
+    tdb = Time([t], scale="tdb")
+    dev.debug(t)
+    dev.debug(tai)
+    dev.debug(tt)
+    dev.debug(tdb)
 
 
 if __name__ == "__main__":

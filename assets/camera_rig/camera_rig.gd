@@ -1,10 +1,8 @@
 extends Node3D
 class_name CameraRig
 
-var MathUtils = load("res://scripts/math_utils.gd")
 const BodyEvents = preload("res://events/body.gd")
 const CameraEvents = preload("res://events/camera.gd")
-
 
 # Parameters
 

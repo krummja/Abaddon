@@ -149,7 +149,7 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
     if _is_hovered:
         var camera = get_viewport().get_camera_3d()
         var screen_pos = camera.unproject_position(global_position)
-        var body_hovered = BodyEvents.BodyHoveredEvent.new(screen_pos)
+        var body_hovered = BodyEvents.BodyHoveredEvent.new(global_position, screen_pos)
         EventBus.service().broadcast(body_hovered)
 
     if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:

@@ -8,6 +8,7 @@ dependencies = [
     "astropy>=7.2.0",
     "devtools>=0.12.2",
     "numpy>=2.4.4",
+    "pendulum>=3.2.0",
     "polars>=1.40.1",
     "requests>=2.34.2",
 ]

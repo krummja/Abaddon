@@ -39,10 +39,10 @@ watched_node_path = NodePath("../../../../../SystemView/CameraRig")
 watched_node_property = "_impulse"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
-[sub_resource type="Resource" id="Resource_mc0qy"]
+[sub_resource type="Resource" id="Resource_iwja3"]
 script = ExtResource("6_ncjc0")
 watched_node_path = NodePath("../../../../../SystemView/CameraRig")
-watched_node_property = "_velocity"
+watched_node_property = "_pan_delta"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
 [sub_resource type="Resource" id="Resource_nehkf"]
@@ -51,10 +51,10 @@ watched_node_path = NodePath("../../../../../SystemView/CameraRig/Target")
 watched_node_property = "global_position"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
-[sub_resource type="Resource" id="Resource_iwja3"]
+[sub_resource type="Resource" id="Resource_mc0qy"]
 script = ExtResource("6_ncjc0")
 watched_node_path = NodePath("../../../../../SystemView/CameraRig")
-watched_node_property = "_pan_delta"
+watched_node_property = "_velocity"
 metadata/_custom_type_script = "uid://bden175cerqx7"
 
 [sub_resource type="Theme" id="Theme_kearp"]
@@ -71,7 +71,6 @@ visible = false
 environment = SubResource("Environment_el2q1")
 
 [node name="CameraRig" parent="SystemView" unique_id=321885689 instance=ExtResource("2_xyc5y")]
-pan_step = 75
 speed_scaling = SubResource("Curve_mc0qy")
 zoom_step = 5.0
 zoom_speed = 5.0
@@ -120,6 +119,8 @@ longitude_of_the_ascending_node = 76.6798426
 
 [node name="Earth" parent="SystemView/StarSystem" unique_id=1645304614 instance=ExtResource("6_ik6f3")]
 debug = false
+ephemeris_year = 2016
+ephemeris_month = 3
 inclination = -1.5299999999999992e-05
 mean_longitude = 100.4645717
 longitude_of_perihelion = 102.9376819

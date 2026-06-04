@@ -161,12 +161,3 @@ func _draw_debug() -> void:
     DebugDraw3D.draw_line(plane_indicator.global_position, line_end, Color(1, 0, 0, 1))
     DebugDraw3D.draw_line(camera_position, line_end, Color(1, 0, 0, 1))
     DebugDraw3D.draw_position(camera.global_transform)
-
-# func _unproject_vertices():
-#     var camera: Camera3D = get_viewport().get_camera_3d()
-
-#     var mesh: SphereMesh = sphere.mesh
-#     var arrays = mesh.get_mesh_arrays()
-#     var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
-
-
