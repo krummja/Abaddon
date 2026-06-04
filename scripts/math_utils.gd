@@ -40,3 +40,12 @@ static func GetAngularRadius(view_pos: Vector3, object_pos: Vector3, object_radi
 
     var angular_radius_rad = atan(object_radius / distance)
     return rad_to_deg(angular_radius_rad)
+
+static func GetDecimalPart(value: float) -> int:
+    return int(value - int(value))
+
+static func RemapDegreeRange(value: float) -> float:
+    if 0 <= value and value <= 180:
+        return value
+    else:
+        return value - 360

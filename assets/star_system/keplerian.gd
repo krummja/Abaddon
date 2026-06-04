@@ -5,6 +5,11 @@ const OrbitSolver = preload("res://scripts/orbit_solver.gd")
 
 @export var debug: bool = false
 
+@export_category("Ephemeris Date")
+@export_range(2000, 4000) var ephemeris_year: int = 2000
+@export var ephemeris_month: Time.Month = Time.MONTH_JANUARY
+@export_range(1, 31) var ephemeris_day: int = 1
+
 @export_category("Body Information")
 @export var body_name: String
 
@@ -31,6 +36,21 @@ const OrbitSolver = preload("res://scripts/orbit_solver.gd")
 @export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _longitude_of_perihelion: float = 0.32327364
 @export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _longitude_of_the_ascending_node: float = 0.0
 
+@export_category("Additional Corrections")
+@export var drift_coefficient: float = 0.0
+@export var cosine_amplitude_coefficient: float = 0.0
+@export var sine_amplitude_coefficient: float = 0.0
+@export var frequency: float = 0.0
+
+@export_category("Ephemeris Values")
+@export_custom(PROPERTY_HINT_NONE, "suffix:au") var eph_semi_major_axis: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:rad") var eph_eccentricity: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var eph_inclination: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var eph_mean_longitude: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var eph_longitude_of_perihelion: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var eph_longitude_of_the_ascending_node: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var argument_of_perihelion: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var mean_anomaly: float
 
 var _points: PackedVector3Array = PackedVector3Array()
 
@@ -52,12 +72,49 @@ var focus_point: Vector3:
 func _ready():
     add_to_group("orbital_bodies")
 
+    calculate_ephemeris_coordinates({
+        "year": ephemeris_year,
+        "month": ephemeris_month,
+        "day": ephemeris_day,
+    })
+
     if has_orbit:
         draw_orbit()
 
 func _process(_delta: float) -> void:
     if debug:
         _draw_debug()
+
+func calculate_tcb(date: Dictionary) -> float:
+    var unix_time = Time.get_unix_time_from_datetime_dict(date)
+    # Offset from Unix Epoch (1970-01-01) to TCB defining epoch (1977-01-01T00:00:32.184)
+    var tcb_epoch_offset = 220924832.184
+    var lb = 1.550519768e-08
+    var t_diff = unix_time - tcb_epoch_offset
+    var tcb = unix_time + 32.184 + (t_diff * lb)
+    return tcb
+
+func calculate_ephemeris_coordinates(date: Dictionary):
+    var t = _calculate_ephemeris(date)
+
+    eph_semi_major_axis = _ephemeris_value(semi_major_axis, _semi_major_axis, t)
+    eph_eccentricity = _ephemeris_value(eccentricity, _eccentricity, t)
+    eph_inclination = _ephemeris_value(inclination, _inclination, t)
+    eph_mean_longitude = _ephemeris_value(mean_longitude, _mean_longitude, t)
+    eph_longitude_of_perihelion = _ephemeris_value(longitude_of_perihelion, _longitude_of_perihelion, t)
+    eph_longitude_of_the_ascending_node = _ephemeris_value(longitude_of_the_ascending_node, _longitude_of_the_ascending_node, t)
+    argument_of_perihelion = eph_longitude_of_perihelion - eph_longitude_of_the_ascending_node
+
+    var _mean_anomaly = (
+        eph_mean_longitude
+        - eph_longitude_of_perihelion
+        + (drift_coefficient * pow(t, 2))
+        + cosine_amplitude_coefficient * cos(frequency * t)
+        + sine_amplitude_coefficient * sin(frequency * t)
+    )
+
+    var _mean_anomaly_deg = MathUtils.GetDecimalPart(_mean_anomaly) * 360
+    mean_anomaly = MathUtils.RemapDegreeRange(_mean_anomaly_deg)
 
 func draw_orbit() -> void:
     var _orbit = MeshInstance3D.new()
@@ -87,6 +144,14 @@ func draw_orbit() -> void:
     _orbit.global_position = focus_point
     rotation.y = deg_to_rad(longitude_of_perihelion)
     rotation.z = deg_to_rad(inclination)
+
+func _calculate_ephemeris(date: Dictionary) -> float:
+    var t_eph = calculate_tcb(date)
+    var t = (t_eph - 2451545.0) / 36525
+    return t
+
+func _ephemeris_value(constant: float, correction: float, ephemeris: float) -> float:
+    return constant + (correction * ephemeris)
 
 func _draw_debug() -> void:
     DebugDraw3D.draw_points(_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.1)
