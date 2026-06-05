@@ -73,14 +73,8 @@ var focus_point: Vector3:
 func _ready():
     add_to_group("orbital_bodies")
 
-    calculate_ephemeris_coordinates({
-        "year": ephemeris_year,
-        "month": ephemeris_month,
-        "day": ephemeris_day,
-        "hour": 0,
-        "minute": 0,
-        "second": 0,
-    })
+    var date_dict = Time.get_datetime_dict_from_datetime_string("2026-06-04 12:00:00", false)
+    calculate_ephemeris_coordinates(date_dict)
 
     if has_orbit:
         draw_orbit()
@@ -89,12 +83,29 @@ func _process(_delta: float) -> void:
     if debug:
         _draw_debug()
 
+func calculate_julian_day(date: Dictionary) -> float:
+    var year = date.get("year")
+    var month = date.get("month")
+    var day = date.get("day")
+
+    var a = int((month - 14) / 12)
+    var b = 1461 * (year + 4800 + a)
+    var c = 367 * (month - 2 - 12 * a)
+    var e = int((year + 4900 + a) / 100)
+    var jd = int(b / 4) + int(c / 12) - int((3 * e) / 4) + day - 32075
+    return jd
+
 func calculate_ephemeris_coordinates(date: Dictionary):
-    var t = Time.get_unix_time_from_datetime_dict(date) + Constants.UNIX_TDB_APPROX
+    var jdn = calculate_julian_day(date)
+    var t = (jdn - 2451545.0) / 36525
 
     eph_semi_major_axis = _ephemeris_value(semi_major_axis, _semi_major_axis, t)
     eph_eccentricity = _ephemeris_value(eccentricity, _eccentricity, t)
-    eph_inclination = _ephemeris_value(inclination, _inclination, t)
+
+    var _eph_inclination = _ephemeris_value(inclination, _inclination, t)
+    var _eph_inclination_deg = MathUtils.GetDecimalPart(_eph_inclination) * 360
+    eph_inclination = MathUtils.RemapDegreeRange(_eph_inclination_deg)
+
     eph_mean_longitude = _ephemeris_value(mean_longitude, _mean_longitude, t)
     eph_longitude_of_perihelion = _ephemeris_value(longitude_of_perihelion, _longitude_of_perihelion, t)
     eph_longitude_of_the_ascending_node = _ephemeris_value(longitude_of_the_ascending_node, _longitude_of_the_ascending_node, t)

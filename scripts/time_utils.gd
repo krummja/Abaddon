@@ -40,7 +40,7 @@ static func UnixDateToUTC(timestamp: int) -> Array[int]:
 
     var era = floor(start / GREGORIAN_CALENDAR_CYCLE_DAYS)
 
-    var day_of_era = start % GREGORIAN_CALENDAR_CYCLE_DAYS
+    var day_of_era = int(start) % GREGORIAN_CALENDAR_CYCLE_DAYS
     if day_of_era < 0:
         day_of_era = day_of_era + GREGORIAN_CALENDAR_CYCLE_DAYS
         era -= 1
