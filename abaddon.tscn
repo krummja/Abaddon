@@ -107,7 +107,6 @@ longitude_of_perihelion = 77.4577963
 longitude_of_the_ascending_node = 48.3307659
 
 [node name="Venus" parent="SystemView/StarSystem" unique_id=630358398 instance=ExtResource("6_ik6f3")]
-visible = false
 debug = false
 body_name = "Venus"
 semi_major_axis = 0.7233357
@@ -126,7 +125,6 @@ mean_longitude = 100.4645717
 longitude_of_perihelion = 102.9376819
 
 [node name="Mars" parent="SystemView/StarSystem" unique_id=1492032347 instance=ExtResource("6_ik6f3")]
-visible = false
 debug = false
 body_name = "Mars"
 orbit_points = 1000
@@ -138,7 +136,6 @@ longitude_of_perihelion = -23.9174478
 longitude_of_the_ascending_node = 49.7132098
 
 [node name="Jupiter" parent="SystemView/StarSystem" unique_id=1317053368 instance=ExtResource("6_ik6f3")]
-visible = false
 debug = false
 body_name = "Jupiter"
 orbit_points = 1000
@@ -150,7 +147,6 @@ longitude_of_perihelion = 14.2749524
 longitude_of_the_ascending_node = 100.2928265
 
 [node name="Saturn" parent="SystemView/StarSystem" unique_id=992988342 instance=ExtResource("6_ik6f3")]
-visible = false
 debug = false
 body_name = "Saturn"
 orbit_points = 1000
@@ -162,7 +158,6 @@ longitude_of_perihelion = 92.8613606
 longitude_of_the_ascending_node = 113.639987
 
 [node name="Uranus" parent="SystemView/StarSystem" unique_id=1486418860 instance=ExtResource("6_ik6f3")]
-visible = false
 debug = false
 body_name = "Uranus"
 orbit_points = 1000
@@ -174,7 +169,6 @@ longitude_of_perihelion = 172.4340444
 longitude_of_the_ascending_node = 73.9625022
 
 [node name="Neptune" parent="SystemView/StarSystem" unique_id=145126113 instance=ExtResource("6_ik6f3")]
-visible = false
 debug = false
 body_name = "Neptune"
 orbit_points = 1000

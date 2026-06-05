@@ -11,6 +11,7 @@ dependencies = [
     "pendulum>=3.2.0",
     "polars>=1.40.1",
     "requests>=2.34.2",
+    "spiceypy>=8.1.0",
 ]
 
 [tool.basedpyright]

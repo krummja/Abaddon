@@ -1,0 +1,5 @@
+LEAPSECONDS_KERNEL      = D:/Libraries/Downloads/latest_leapseconds.tls
+SPK_KERNEL              = D:/Libraries/Downloads/test.bsp
+    SOURCE_SPK_KERNEL   = D:/Libraries/Downloads/de431t.bsp
+        BEGIN_TIME      = 1 JAN 2000 00:00:00.000
+        END_TIME        = 1 JAN 3000 00:00:00.000

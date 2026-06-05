@@ -80,6 +80,7 @@ transform = Transform3D(1, 0, 0, 0, 0.8210196, 0.5708998, 0, -0.5708998, 0.82101
 [node name="Camera3D" type="Camera3D" parent="RotationRig" unique_id=664047707]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.610357)
 environment = SubResource("Environment_88x28")
+fov = 60.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RotationRig/Camera3D" unique_id=1141266324]
 transform = Transform3D(1.665, 0, 0, 0, -1.665, 1.4555891e-07, 0, -1.4555891e-07, -1.665, 0, 0, -0.89861965)
