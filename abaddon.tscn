@@ -96,88 +96,14 @@ metadata/_custom_type_script = "uid://o21jrsl2vnd3"
 line_width = 0.05
 target = NodePath("../../CameraRig/Target")
 
-[node name="Mercury" parent="SystemView/StarSystem" unique_id=2086410634 instance=ExtResource("6_ik6f3")]
-debug = false
-body_name = "Mercury"
-semi_major_axis = 0.3870993
-eccentricity = 0.2056359
-inclination = 7.004979
-mean_longitude = 252.2503235
-longitude_of_perihelion = 77.4577963
-longitude_of_the_ascending_node = 48.3307659
-
-[node name="Venus" parent="SystemView/StarSystem" unique_id=630358398 instance=ExtResource("6_ik6f3")]
-debug = false
-body_name = "Venus"
-semi_major_axis = 0.7233357
-eccentricity = 0.0067767
-inclination = -0.0059475
-mean_longitude = 181.9790995
-longitude_of_perihelion = 131.6024672
-longitude_of_the_ascending_node = 76.6798426
-
 [node name="Earth" parent="SystemView/StarSystem" unique_id=1645304614 instance=ExtResource("6_ik6f3")]
 debug = false
 ephemeris_year = 2016
 ephemeris_month = 3
+data_file = "res://data/earth_20000101_20260101.json"
 inclination = -1.5299999999999992e-05
 mean_longitude = 100.4645717
 longitude_of_perihelion = 102.9376819
-
-[node name="Mars" parent="SystemView/StarSystem" unique_id=1492032347 instance=ExtResource("6_ik6f3")]
-debug = false
-body_name = "Mars"
-orbit_points = 1000
-semi_major_axis = 1.5237124
-eccentricity = 0.0933651
-inclination = 1.8518187
-mean_longitude = -4.5681316
-longitude_of_perihelion = -23.9174478
-longitude_of_the_ascending_node = 49.7132098
-
-[node name="Jupiter" parent="SystemView/StarSystem" unique_id=1317053368 instance=ExtResource("6_ik6f3")]
-debug = false
-body_name = "Jupiter"
-orbit_points = 1000
-semi_major_axis = 5.2024802
-eccentricity = 0.0485359
-inclination = 1.2986142
-mean_longitude = 34.3347915
-longitude_of_perihelion = 14.2749524
-longitude_of_the_ascending_node = 100.2928265
-
-[node name="Saturn" parent="SystemView/StarSystem" unique_id=992988342 instance=ExtResource("6_ik6f3")]
-debug = false
-body_name = "Saturn"
-orbit_points = 1000
-semi_major_axis = 9.5414988
-eccentricity = 0.05550829999999999
-inclination = 2.494241
-mean_longitude = 50.0757133
-longitude_of_perihelion = 92.8613606
-longitude_of_the_ascending_node = 113.639987
-
-[node name="Uranus" parent="SystemView/StarSystem" unique_id=1486418860 instance=ExtResource("6_ik6f3")]
-debug = false
-body_name = "Uranus"
-orbit_points = 1000
-semi_major_axis = 19.1879795
-eccentricity = 0.0468574
-inclination = 0.7729813
-mean_longitude = 314.2027663
-longitude_of_perihelion = 172.4340444
-longitude_of_the_ascending_node = 73.9625022
-
-[node name="Neptune" parent="SystemView/StarSystem" unique_id=145126113 instance=ExtResource("6_ik6f3")]
-debug = false
-body_name = "Neptune"
-orbit_points = 1000
-semi_major_axis = 30.0699228
-eccentricity = 0.0085905
-inclination = 1.7700435
-mean_longitude = -55.1200297
-longitude_of_perihelion = 44.9647623
-longitude_of_the_ascending_node = 131.7842257
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false

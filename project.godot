@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.6", "Forward Plus")
 [autoload]
 
 EventBus="*uid://clyd7kd80etby"
+Dataloader="*uid://cmnfpd6hse1kf"
 
 [debug_draw_3d]
 

@@ -13,6 +13,7 @@ const TimeEvents = preload("res://events/time.gd")
 
 @export_category("Body Information")
 @export var body_name: String
+@export_file("*.json") var data_file: String
 
 @export_category("Visual Parameters")
 @export var has_orbit: bool = true
@@ -21,47 +22,23 @@ const TimeEvents = preload("res://events/time.gd")
 @export var orbit_material: Material
 @export var target: Marker3D
 
-@export_category("Orbital Constants")
-@export_custom(PROPERTY_HINT_NONE, "suffix:au") var semi_major_axis: float = 1.00000011
-@export_custom(PROPERTY_HINT_NONE, "suffix:rad") var eccentricity: float = 0.01671022
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var inclination: float = 0.00005
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var mean_longitude: float = -11.26064
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var longitude_of_perihelion: float = 102.94719
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg") var longitude_of_the_ascending_node: float = 0.0
-
-@export_category("Orbital Corrections")
-@export_custom(PROPERTY_HINT_NONE, "suffix:au/Cy") var _semi_major_axis: float = 0.00000562
-@export_custom(PROPERTY_HINT_NONE, "suffix:rad/Cy") var _eccentricity: float = -0.00004392
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _inclination: float = -0.01294668
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _mean_longitude: float = 35999.37244981
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _longitude_of_perihelion: float = 0.32327364
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg/Cy") var _longitude_of_the_ascending_node: float = 0.0
-
-@export_category("Additional Corrections")
-@export var drift_coefficient: float = 0.0
-@export var cosine_amplitude_coefficient: float = 0.0
-@export var sine_amplitude_coefficient: float = 0.0
-@export var frequency: float = 0.0
-
-@export_category("Ephemeris Values")
-@export_custom(PROPERTY_HINT_NONE, "suffix:au", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var eph_semi_major_axis: float
-@export_custom(PROPERTY_HINT_NONE, "suffix:rad", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var eph_eccentricity: float
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var eph_inclination: float
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var eph_mean_longitude: float
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var eph_longitude_of_perihelion: float
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var eph_longitude_of_the_ascending_node: float
-@export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var argument_of_perihelion: float
+@export_category("Kepler Elements")
+@export_custom(PROPERTY_HINT_NONE, "suffix:au", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var epoch: String
+@export_custom(PROPERTY_HINT_NONE, "suffix:au", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var semi_major_axis: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:au", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var semi_minor_axis: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:e", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var eccentricity: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var inclination: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var longitude_of_the_ascending_node: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:au", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var longitude_of_the_perifocus: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var argument_of_the_perifocus: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg/d", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var mean_motion: float
 @export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var mean_anomaly: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:deg", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var true_anomaly: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:au", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var apoapsis_distance: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:au", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var periapsis_distance: float
+@export_custom(PROPERTY_HINT_NONE, "suffix:d", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT) var orbital_period: float
 
 var _points: PackedVector3Array = PackedVector3Array()
-
-var apoapsis: float:
-    get:
-        return semi_major_axis * (1 + eccentricity)
-
-var semi_minor_axis: float:
-    get:
-        return semi_major_axis * sqrt(abs(1 - pow(eccentricity, 2)))
 
 var focus_point: Vector3:
     get:
@@ -73,8 +50,10 @@ var focus_point: Vector3:
 func _ready():
     add_to_group("orbital_bodies")
 
-    var date_dict = Time.get_datetime_dict_from_datetime_string("2026-06-04 12:00:00", false)
-    calculate_ephemeris_coordinates(date_dict)
+    if data_file:
+        var data = DataLoader.load_data_file(data_file)
+        var elements = data[0]
+        initialize_elements(elements)
 
     if has_orbit:
         draw_orbit()
@@ -82,48 +61,6 @@ func _ready():
 func _process(_delta: float) -> void:
     if debug:
         _draw_debug()
-
-func calculate_julian_day(date: Dictionary) -> float:
-    var year = date.get("year")
-    var month = date.get("month")
-    var day = date.get("day")
-
-    var a = int((month - 14) / 12)
-    var b = 1461 * (year + 4800 + a)
-    var c = 367 * (month - 2 - 12 * a)
-    var e = int((year + 4900 + a) / 100)
-    var jd = int(b / 4) + int(c / 12) - int((3 * e) / 4) + day - 32075
-    return jd
-
-func calculate_ephemeris_coordinates(date: Dictionary):
-    var jdn = calculate_julian_day(date)
-    var t = (jdn - 2451545.0) / 36525
-
-    eph_semi_major_axis = _ephemeris_value(semi_major_axis, _semi_major_axis, t)
-    eph_eccentricity = _ephemeris_value(eccentricity, _eccentricity, t)
-
-    var _eph_inclination = _ephemeris_value(inclination, _inclination, t)
-    var _eph_inclination_deg = MathUtils.GetDecimalPart(_eph_inclination) * 360
-    eph_inclination = MathUtils.RemapDegreeRange(_eph_inclination_deg)
-
-    eph_mean_longitude = _ephemeris_value(mean_longitude, _mean_longitude, t)
-    eph_longitude_of_perihelion = _ephemeris_value(longitude_of_perihelion, _longitude_of_perihelion, t)
-    eph_longitude_of_the_ascending_node = _ephemeris_value(longitude_of_the_ascending_node, _longitude_of_the_ascending_node, t)
-
-    var _argument_of_perihelion = eph_longitude_of_perihelion - eph_longitude_of_the_ascending_node
-    var _argument_of_perihelion_deg = MathUtils.GetDecimalPart(_argument_of_perihelion) * 360
-    argument_of_perihelion = MathUtils.RemapDegreeRange(_argument_of_perihelion_deg)
-
-    var _mean_anomaly = (
-        eph_mean_longitude
-        - eph_longitude_of_perihelion
-        + (drift_coefficient * pow(t, 2))
-        + cosine_amplitude_coefficient * cos(frequency * t)
-        + sine_amplitude_coefficient * sin(frequency * t)
-    )
-
-    var _mean_anomaly_deg = MathUtils.GetDecimalPart(_mean_anomaly) * 360
-    mean_anomaly = MathUtils.RemapDegreeRange(_mean_anomaly_deg)
 
 func draw_orbit() -> void:
     var _orbit = MeshInstance3D.new()
@@ -142,6 +79,8 @@ func draw_orbit() -> void:
         semi_minor_axis * Constants.SIZE_SCALE_FACTOR,
     )
 
+    print(len(_points))
+
     _points.push_back(_points[0])
 
     for point in _points:
@@ -151,11 +90,26 @@ func draw_orbit() -> void:
     add_child(_orbit)
 
     _orbit.global_position = focus_point
-    rotation.y = deg_to_rad(longitude_of_perihelion)
+    rotation.y = deg_to_rad(longitude_of_the_perifocus)
     rotation.z = deg_to_rad(inclination)
 
-func _ephemeris_value(constant: float, correction: float, ephemeris: float) -> float:
-    return constant + (correction * ephemeris)
+func initialize_elements(data: Dictionary):
+    # var targetname = data["targetname"]
+    epoch = "JDN %.1f" % data["datetime_jd"]
+    eccentricity = data["e"]
+    inclination = data["incl"]
+    longitude_of_the_ascending_node = data["Omega"]
+    argument_of_the_perifocus = data["w"]
+    mean_motion = data["n"]
+    mean_anomaly = data["M"]
+    true_anomaly = data["nu"]
+    semi_major_axis = data["a"]
+    apoapsis_distance = data["Q"]
+    periapsis_distance = data["q"]
+    orbital_period = data["P"]
+
+    semi_minor_axis = semi_major_axis * sqrt(abs(1 - pow(eccentricity, 2)))
+    longitude_of_the_perifocus = longitude_of_the_ascending_node + argument_of_the_perifocus
 
 func _draw_debug() -> void:
     DebugDraw3D.draw_points(_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.1)
