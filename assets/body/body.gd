@@ -47,6 +47,8 @@ func _ready():
     plane_indicator.mesh = plane_indicator.mesh.duplicate()
     plane_indicator.material_override = plane_indicator.material_override.duplicate()
 
+    hover_indicator.mesh = hover_indicator.mesh.duplicate()
+
     # Grab mesh references
     var _sphere_mesh: SphereMesh = sphere.mesh;
     var _line_mesh: ImmediateMesh = line.mesh
@@ -82,8 +84,8 @@ func _ready():
     plane_indicator.transparency = line_transparency
 
 func _process(_delta: float) -> void:
-    _draw_line()
     _update_indicator()
+    _draw_line()
 
     if debug:
         _draw_debug()
@@ -93,19 +95,14 @@ func _draw_line() -> void:
     line.global_rotation = Vector3.ZERO
 
     var _mesh: ImmediateMesh = line.mesh
-    var end = Vector3(0, target.global_position.y, 0)
-
-    var distance = Vector3.ZERO.distance_to(end)
-    var end_norm = end.normalized()
-
-    var target_pos = end_norm * distance
+    var end = Vector3(0, target.global_position.y - global_position.y, 0)
 
     _mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
     _mesh.surface_set_normal(Vector3(0, 0, 1))
     _mesh.surface_set_uv(Vector2(0, 0))
 
     _mesh.surface_add_vertex(Vector3.ZERO)
-    _mesh.surface_add_vertex(target_pos)
+    _mesh.surface_add_vertex(end)
 
     _mesh.surface_end()
 

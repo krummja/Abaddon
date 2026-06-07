@@ -50,6 +50,7 @@ const TimeEvents = preload("res://events/time.gd")
 
 var _points: PackedVector3Array = PackedVector3Array()
 var _body: Body
+var _orbit: MeshInstance3D
 
 var focus_offset: Vector3:
     get:
@@ -102,6 +103,10 @@ func _ready():
 func _physics_process(_delta: float) -> void:
     _position_body()
 
+    _orbit.position = focus_offset
+    rotation.y = deg_to_rad(longitude_of_the_ascending_node)
+    rotation.z = deg_to_rad(inclination)
+
     if debug:
         _draw_debug()
 
@@ -109,7 +114,7 @@ func get_body() -> Body:
     return _body
 
 func draw_orbit() -> void:
-    var _orbit = MeshInstance3D.new()
+    _orbit = MeshInstance3D.new()
     _orbit.material_override = orbit_material
 
     _orbit.mesh = ImmediateMesh.new()
@@ -132,10 +137,6 @@ func draw_orbit() -> void:
 
     _orbit_mesh.surface_end()
     add_child(_orbit)
-
-    _orbit.global_position = focus_offset
-    global_rotation.y = deg_to_rad(longitude_of_the_ascending_node)
-    global_rotation.z = deg_to_rad(inclination)
 
 func initialize_elements(data: Dictionary):
     # var targetname = data["targetname"]
@@ -205,26 +206,27 @@ func _position_body() -> void:
 
 func _draw_debug() -> void:
     DebugDraw3D.draw_position(transform)
+    DebugDraw3D.draw_position(_body.global_transform)
 
-    var _perifocal_frame = _perifocal_reference_frame()
+    # var _perifocal_frame = _perifocal_reference_frame()
 
-    var apoapsis_vector = (
-        Vector3(apoapsis_distance, 0, 0)
-        .rotated(Vector3.UP, deg_to_rad(longitude_of_the_ascending_node))
-    ).normalized()
+    # var apoapsis_vector = (
+    #     Vector3(apoapsis_distance, 0, 0)
+    #     .rotated(Vector3.UP, deg_to_rad(longitude_of_the_ascending_node))
+    # ).normalized()
 
-    DebugDraw3D.draw_points([
-        _perifocal_frame.x * periapsis_distance * Constants.SIZE_SCALE_FACTOR,
-        _perifocal_frame.z * Constants.SIZE_SCALE_FACTOR,
-        apoapsis_vector * apoapsis_distance * Constants.SIZE_SCALE_FACTOR,
-    ], DebugDraw3D.POINT_TYPE_SQUARE, 0.5)
+    # DebugDraw3D.draw_points([
+    #     _perifocal_frame.x * periapsis_distance * Constants.SIZE_SCALE_FACTOR,
+    #     _perifocal_frame.z * Constants.SIZE_SCALE_FACTOR,
+    #     apoapsis_vector * apoapsis_distance * Constants.SIZE_SCALE_FACTOR,
+    # ], DebugDraw3D.POINT_TYPE_SQUARE, 0.5)
 
-    DebugDraw3D.draw_arrow(global_position, _perifocal_frame.x * 10, Color(1, 0, 0, 1), 0.5, true)
-    DebugDraw3D.draw_arrow(global_position, _perifocal_frame.y * 10, Color(1, 0, 0, 1), 0.5, true)
-    DebugDraw3D.draw_arrow(global_position, _perifocal_frame.z * 10, Color(1, 0, 0, 1), 0.5, true)
+    # DebugDraw3D.draw_arrow(global_position, _perifocal_frame.x * 10, Color(1, 0, 0, 1), 0.5, true)
+    # DebugDraw3D.draw_arrow(global_position, _perifocal_frame.y * 10, Color(1, 0, 0, 1), 0.5, true)
+    # DebugDraw3D.draw_arrow(global_position, _perifocal_frame.z * 10, Color(1, 0, 0, 1), 0.5, true)
 
-    DebugDraw3D.draw_line(global_position, _perifocal_frame.x.normalized() * eccentricity, Color(0, 1, 0, 1))
+    # DebugDraw3D.draw_line(global_position, _perifocal_frame.x.normalized() * eccentricity, Color(0, 1, 0, 1))
 
-    DebugDraw3D.draw_text(_perifocal_frame.x * 10.5, "p̂", 128, Color(1, 0, 0, 1))
-    DebugDraw3D.draw_text(_perifocal_frame.z * 10.5, "q̂", 128, Color(1, 0, 0, 1))
-    DebugDraw3D.draw_text(_perifocal_frame.y * 10.5, "ŵ", 128, Color(1, 0, 0, 1))
+    # DebugDraw3D.draw_text(_perifocal_frame.x * 10.5, "p̂", 128, Color(1, 0, 0, 1))
+    # DebugDraw3D.draw_text(_perifocal_frame.z * 10.5, "q̂", 128, Color(1, 0, 0, 1))
+    # DebugDraw3D.draw_text(_perifocal_frame.y * 10.5, "ŵ", 128, Color(1, 0, 0, 1))

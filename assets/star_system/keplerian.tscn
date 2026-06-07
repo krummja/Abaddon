@@ -9,7 +9,6 @@ albedo_color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="Keplerian" type="Node3D" unique_id=630358398]
 script = ExtResource("1_xavve")
-debug = true
 body_name = "Earth"
 visual_radius = 0.1
 body_scene = ExtResource("2_fpjg7")

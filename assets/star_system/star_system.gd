@@ -6,8 +6,6 @@ extends Node3D
 @export var camera_rig: CameraRig
 @export var galactic_environment: WorldEnvironment
 
-@onready var line_renderer := $LineRenderer
-
 func _ready() -> void:
     for child in get_children():
         if child is Keplerian:
@@ -17,15 +15,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     if debug:
         _draw_debug()
-
-func draw_lines() -> void:
-    line_renderer.mesh = ImmediateMesh.new()
-
-    line_renderer.mesh.surface_begin(Mesh.PRIMITIVE_POINTS)
-
-    for child in get_children():
-        if child is Keplerian:
-            var body = child.get_body()
 
 func _draw_debug() -> void:
     # DebugDraw3D.draw_line(Vector3(0,-400,0), Vector3(0,400,0))

@@ -14,11 +14,6 @@ PROJECT_DIR = SCRIPT_DIR.parent
 GAME_DATA_DIR = Path(PROJECT_DIR, "data")
 
 
-class Query(StrEnum):
-    ELEMENTS = "elements"
-    EPHEMERIDES = "ephemerides"
-
-
 class Selection(StrEnum):
     SSB = "ssb"
     SUN = "sun"
@@ -54,7 +49,6 @@ def select_object_elements(
     step: int = 1,
     step_unit: StepUnit = StepUnit.YEAR,
     reference: Selection = Selection.SSB,
-    query: Query = Query.ELEMENTS,
 ) -> pl.DataFrame:
     """
     targetname      official number, name, designation (string)
@@ -93,23 +87,27 @@ def select_object_elements(
         },
     )
 
-    table: Table
-
-    if query == Query.ELEMENTS:
-        table = obj.elements()  # pyright: ignore[reportAttributeAccessIssue]
-    else:
-        table = obj.ephemerides()  # pyright: ignore[reportAttributeAccessIssue]
-
+    table = obj.elements()  # pyright: ignore[reportAttributeAccessIssue]
     elements = {key: value for key, value in table.items()}
     return pl.DataFrame(elements)
 
 
 def main() -> None:
-    selection = Selection.EARTH
+    selection = Selection.MARS
     start = pdl.DateTime(2000, 1, 1)
     stop = pdl.DateTime(2026, 1, 1)
     step = 1
-    unit = StepUnit.DAY
+    unit = StepUnit.YEAR
+
+    dev.debug(
+        {
+            "selection": selection,
+            "start": start.format("YYYYMMDD"),
+            "stop": stop.format("YYYYMMDD"),
+            "step": step,
+            "unit": unit,
+        }
+    )
 
     df = select_object_elements(
         selection=selection,
@@ -121,8 +119,8 @@ def main() -> None:
 
     print(df)
 
-    # file_name = f"{selection}_{start.format('YYYYMMDD')}_{stop.format('YYYYMMDD')}_{step}{unit}.json"
-    # df.write_json(Path(GAME_DATA_DIR, file_name))
+    file_name = f"{selection}_{start.format('YYYYMMDD')}_{stop.format('YYYYMMDD')}_{step}{unit}.json"
+    df.write_json(Path(GAME_DATA_DIR, file_name))
 
 
 if __name__ == "__main__":

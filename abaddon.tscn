@@ -74,9 +74,6 @@ visible = false
 
 [node name="SystemView" type="Node3D" parent="." unique_id=1752446934]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="SystemView" unique_id=1790852728]
-environment = ExtResource("2_mc0qy")
-
 [node name="CameraRig" parent="SystemView" unique_id=321885689 instance=ExtResource("2_xyc5y")]
 speed_scaling = SubResource("Curve_mc0qy")
 zoom_step = 5.0
@@ -95,23 +92,55 @@ grid_section = ExtResource("3_el2q1")
 target = NodePath("../CameraRig/Target")
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
-[node name="StarSystem" type="Node3D" parent="SystemView" unique_id=2084464824 node_paths=PackedStringArray("camera_rig", "galactic_environment")]
+[node name="StarSystem" type="Node3D" parent="SystemView" unique_id=2084464824 node_paths=PackedStringArray("camera_rig")]
 script = ExtResource("5_ik6f3")
-debug = true
 camera_rig = NodePath("../CameraRig")
-galactic_environment = NodePath("../WorldEnvironment")
 metadata/_custom_type_script = "uid://o21jrsl2vnd3"
-
-[node name="LineRenderer" type="Node3D" parent="SystemView/StarSystem" unique_id=1220176685]
 
 [node name="Sol" parent="SystemView/StarSystem" unique_id=281731595 node_paths=PackedStringArray("target") instance=ExtResource("7_0viut")]
 line_width = 0.05
 target = NodePath("../../CameraRig/Target")
 
-[node name="Earth" parent="SystemView/StarSystem" unique_id=1645304614 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
-debug = false
+[node name="Mercury" parent="SystemView/StarSystem" unique_id=630358398 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
 ephemeris_year = 2016
 ephemeris_month = 3
+data_file = "res://data/199_20000101_20260101_1y.json"
+orbit_points = 200
+target = NodePath("../../CameraRig/Target")
+_apoapsis = 1.0
+_eccentricity = 0.5
+_inclination = -30.0
+_longitude_of_the_ascending_node = 30.0
+inclination = -1.5299999999999992e-05
+
+[node name="Venus" parent="SystemView/StarSystem" unique_id=863034 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
+ephemeris_year = 2016
+ephemeris_month = 3
+data_file = "res://data/299_20000101_20260101_1y.json"
+orbit_points = 200
+target = NodePath("../../CameraRig/Target")
+_apoapsis = 1.0
+_eccentricity = 0.5
+_inclination = -30.0
+_longitude_of_the_ascending_node = 30.0
+inclination = -1.5299999999999992e-05
+
+[node name="Earth" parent="SystemView/StarSystem" unique_id=1645304614 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
+ephemeris_year = 2016
+ephemeris_month = 3
+data_file = "res://data/3_20000101_20260101_1d.json"
+orbit_points = 200
+target = NodePath("../../CameraRig/Target")
+_apoapsis = 1.0
+_eccentricity = 0.5
+_inclination = -30.0
+_longitude_of_the_ascending_node = 30.0
+inclination = -1.5299999999999992e-05
+
+[node name="Mars" parent="SystemView/StarSystem" unique_id=155378064 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
+ephemeris_year = 2016
+ephemeris_month = 3
+data_file = "res://data/499_20000101_20260101_1y.json"
 orbit_points = 200
 target = NodePath("../../CameraRig/Target")
 _apoapsis = 1.0
