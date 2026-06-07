@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cusff8xq1gtyx" path="res://abaddon.gd" id="1_3s3d0"]
 [ext_resource type="Script" uid="uid://cvbyrpgvj0rko" path="res://assets/grid_controller/grid_controller.gd" id="2_el2q1"]
-[ext_resource type="Sky" uid="uid://bno7dkpwcx44q" path="res://environments/space.tres" id="2_mc0qy"]
+[ext_resource type="Environment" uid="uid://ckkmcli84ltvb" path="res://environments/grid_panorama.tres" id="2_mc0qy"]
 [ext_resource type="PackedScene" uid="uid://b7xerdvkegbff" path="res://assets/camera_rig/camera_rig.tscn" id="2_xyc5y"]
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
 [ext_resource type="PackedScene" uid="uid://7b6lfjrg6vgb" path="res://ui/debug.tscn" id="5_el2q1"]
@@ -13,13 +13,10 @@
 [ext_resource type="Script" uid="uid://rcmv6abjwrwq" path="res://ui/game.gd" id="7_nv1jb"]
 [ext_resource type="Script" uid="uid://cru245ouwixd5" path="res://ui/fps_counter.gd" id="8_kearp"]
 [ext_resource type="PackedScene" uid="uid://ckc35dafg0g4s" path="res://ui/widgets/key_value.tscn" id="9_e5w7c"]
+[ext_resource type="Texture2D" uid="uid://cmppen8fryiio" path="res://textures/plane_indicator.png" id="9_ik6f3"]
 [ext_resource type="Script" uid="uid://dbxnsqcbfxs84" path="res://hover_indicator.gd" id="11_7yhey"]
 [ext_resource type="Texture2D" uid="uid://bqafrvx2g0fsr" path="res://textures/target_ring.png" id="11_pq7gu"]
 [ext_resource type="PackedScene" uid="uid://7lp27svodp6b" path="res://ui/time_control.tscn" id="12_pq7gu"]
-
-[sub_resource type="Environment" id="Environment_el2q1"]
-background_mode = 2
-sky = ExtResource("2_mc0qy")
 
 [sub_resource type="Curve" id="Curve_mc0qy"]
 _limits = [0.1, 10.0, 0.0, 1.0]
@@ -32,6 +29,16 @@ metadata/_snap_count = 50
 _limits = [0.0, 5.0, 0.0, 1.0]
 _data = [Vector2(0, 0.32953405), 0.0, 4.670466, 0, 1, Vector2(1, 5), 4.670466, 0.0, 1, 0]
 point_count = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nehkf"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 0.015686275)
+albedo_texture = ExtResource("9_ik6f3")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_iwja3"]
+material = SubResource("StandardMaterial3D_nehkf")
+size = Vector2(300, 300)
 
 [sub_resource type="Resource" id="Resource_ik6f3"]
 script = ExtResource("6_ncjc0")
@@ -68,7 +75,7 @@ visible = false
 [node name="SystemView" type="Node3D" parent="." unique_id=1752446934]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SystemView" unique_id=1790852728]
-environment = SubResource("Environment_el2q1")
+environment = ExtResource("2_mc0qy")
 
 [node name="CameraRig" parent="SystemView" unique_id=321885689 instance=ExtResource("2_xyc5y")]
 speed_scaling = SubResource("Curve_mc0qy")
@@ -79,31 +86,40 @@ zoom_scaling = SubResource("Curve_0viut")
 max_key_rotation_speed = 0.2
 heading_rotation_speed = 12.0
 
+[node name="Camera3D" parent="SystemView/CameraRig/RotationRig" parent_id_path=PackedInt32Array(321885689, 2091813331) index="0" unique_id=664047707]
+environment = ExtResource("2_mc0qy")
+
 [node name="GridController" type="Node3D" parent="SystemView" unique_id=216860937 node_paths=PackedStringArray("target")]
 script = ExtResource("2_el2q1")
-enabled = false
 grid_section = ExtResource("3_el2q1")
 target = NodePath("../CameraRig/Target")
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
-[node name="StarSystem" type="Node3D" parent="SystemView" unique_id=2084464824 node_paths=PackedStringArray("camera_rig")]
+[node name="StarSystem" type="Node3D" parent="SystemView" unique_id=2084464824 node_paths=PackedStringArray("camera_rig", "galactic_environment")]
 script = ExtResource("5_ik6f3")
 camera_rig = NodePath("../CameraRig")
-body_scene = ExtResource("6_ik6f3")
+galactic_environment = NodePath("../WorldEnvironment")
 metadata/_custom_type_script = "uid://o21jrsl2vnd3"
 
 [node name="Sol" parent="SystemView/StarSystem" unique_id=281731595 node_paths=PackedStringArray("target") instance=ExtResource("7_0viut")]
 line_width = 0.05
 target = NodePath("../../CameraRig/Target")
 
-[node name="Earth" parent="SystemView/StarSystem" unique_id=1645304614 instance=ExtResource("6_ik6f3")]
+[node name="Earth" parent="SystemView/StarSystem" unique_id=1645304614 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
 debug = false
 ephemeris_year = 2016
 ephemeris_month = 3
-data_file = "res://data/earth_20000101_20260101.json"
+orbit_points = 200
+target = NodePath("../../CameraRig/Target")
+_apoapsis = 1.0
+_eccentricity = 0.3
+_inclination = -10.0
+_longitude_of_the_ascending_node = 20.0
 inclination = -1.5299999999999992e-05
-mean_longitude = 100.4645717
-longitude_of_perihelion = 102.9376819
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SystemView/StarSystem" unique_id=185609302]
+visible = false
+mesh = SubResource("PlaneMesh_iwja3")
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false

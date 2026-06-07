@@ -2,8 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://c3ii3uswgfwva" path="res://textures/starmap_16k.jpg" id="1_f4lyv"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ik6f3"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_f4lyv"]
 panorama = ExtResource("1_f4lyv")
 
 [resource]
-sky_material = SubResource("PanoramaSkyMaterial_ik6f3")
+sky_material = SubResource("PanoramaSkyMaterial_f4lyv")
+process_mode = 1

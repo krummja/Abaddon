@@ -4,7 +4,7 @@ extends Node3D
 const BodyEvents = preload("res://events/body.gd")
 
 @export_category("Debug")
-@export var debug: bool = false
+@export var debug: bool = true
 
 @export_category("Visual Settings")
 @export_range(0.1, 100, 0.1) var visual_radius: float = 1.0
@@ -82,9 +82,8 @@ func _ready():
     plane_indicator.transparency = line_transparency
 
 func _process(_delta: float) -> void:
-    _draw_line()
+    # draw_line()
     _update_indicator()
-    _update_line_facing()
 
     if debug:
         _draw_debug()
@@ -93,33 +92,18 @@ func _physics_process(_delta: float) -> void:
     if debug:
         pass
 
-func _draw_line() -> void:
+func draw_line() -> void:
+    line.mesh = ImmediateMesh.new()
+    var _mesh: ImmediateMesh = line.mesh
     var start = global_position
     var end = Vector3(start.x, target.global_position.y, start.z)
 
-    var trail: Vector3 = end - start
-    var direction: Vector3 = trail.normalized()
-    var distance: float = trail.length()
+    _mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
+    _mesh.surface_set_normal(Vector3(0, 0, 1))
+    _mesh.surface_set_uv(Vector2(0, 0))
 
-    var dir90: Vector3 = direction.slide(Vector3.BACK).rotated(Vector3.BACK, TAU / 4)
-    var width = line_width * dir90
-
-    var _mesh: ImmediateMesh = line.mesh
-
-    _mesh.clear_surfaces()
-    _mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
-
-    for i in range(0, 4):
-        var x: float = float(i) / float(3)
-        var d: Vector3 = (x * distance) * direction
-
-        _mesh.surface_set_normal(Vector3.BACK)
-        _mesh.surface_set_uv(Vector2(1.0, x))
-        _mesh.surface_add_vertex(d - width)
-
-        _mesh.surface_set_normal(Vector3.BACK)
-        _mesh.surface_set_uv(Vector2(0.0, x))
-        _mesh.surface_add_vertex(d + width)
+    _mesh.surface_add_vertex(start)
+    _mesh.surface_add_vertex(end)
 
     _mesh.surface_end()
 
@@ -127,12 +111,6 @@ func _update_indicator() -> void:
     plane_indicator.global_position.y = target.global_position.y
     var distance = plane_indicator.global_position - sphere.global_position
     plane_indicator.visible = distance.length() > (visual_radius)
-
-func _update_line_facing() -> void:
-    var camera_rig_root: Node3D = target.get_parent()
-    var camera: Camera3D = camera_rig_root.get_child(0).get_child(0)
-    var camera_position = camera.global_position
-    line.look_at(Vector3(camera_position.x, 0, camera_position.z), Vector3.UP, true)
 
 func _on_mouse_entered() -> void:
     _is_hovered = true
@@ -154,10 +132,5 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
         EventBus.service().broadcast(body_selected)
 
 func _draw_debug() -> void:
-    var camera_rig_root: Node3D = target.get_parent()
-    var camera: Camera3D = camera_rig_root.get_child(0).get_child(0)
-    var camera_position = camera.global_position
-    var line_end = Vector3(camera_position.x, 0, camera_position.z)
-    DebugDraw3D.draw_line(plane_indicator.global_position, line_end, Color(1, 0, 0, 1))
-    DebugDraw3D.draw_line(camera_position, line_end, Color(1, 0, 0, 1))
-    DebugDraw3D.draw_position(camera.global_transform)
+    DebugDraw3D.draw_position(global_transform)
+    DebugDraw3D.draw_position(Transform3D(Basis(), Vector3(global_position.x, target.global_position.y, global_position.z)))

@@ -2,25 +2,8 @@
 
 [ext_resource type="Script" uid="uid://fhfsw0fc8vuh" path="res://assets/camera_rig/camera_rig.gd" id="1_q3x65"]
 [ext_resource type="Shader" uid="uid://dqec04vycu3qc" path="res://assets/camera_rig/depth_outline.gdshader" id="2_5va8v"]
-[ext_resource type="Sky" uid="uid://bno7dkpwcx44q" path="res://environments/space.tres" id="2_xhk1t"]
+[ext_resource type="Environment" uid="uid://5kc0icemcryo" path="res://environments/galaxy_panorama.tres" id="2_xhk1t"]
 [ext_resource type="AudioStream" uid="uid://b41f6n156lac2" path="res://audio/scroll_whoosh.wav" id="3_88x28"]
-
-[sub_resource type="Environment" id="Environment_88x28"]
-background_mode = 2
-sky = ExtResource("2_xhk1t")
-glow_levels/1 = 16.0
-glow_levels/2 = 4.0
-glow_levels/3 = 0.0
-glow_levels/4 = 0.0
-glow_normalized = true
-glow_intensity = 1.59
-glow_strength = 1.46
-glow_bloom = 0.14
-volumetric_fog_density = 0.0213
-volumetric_fog_emission = Color(0.20152658, 0.20152658, 0.20152658, 1)
-volumetric_fog_emission_energy = 0.0
-adjustment_brightness = 1.11
-adjustment_saturation = 1.24
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pneq3"]
 render_priority = 0
@@ -79,7 +62,7 @@ transform = Transform3D(1, 0, 0, 0, 0.8210196, 0.5708998, 0, -0.5708998, 0.82101
 
 [node name="Camera3D" type="Camera3D" parent="RotationRig" unique_id=664047707]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.610357)
-environment = SubResource("Environment_88x28")
+environment = ExtResource("2_xhk1t")
 fov = 60.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RotationRig/Camera3D" unique_id=1141266324]
