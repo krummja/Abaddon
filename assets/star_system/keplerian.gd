@@ -92,17 +92,21 @@ func _ready():
         longitude_of_the_perifocus = longitude_of_the_ascending_node + argument_of_the_perifocus
         true_anomaly = _true_anomaly
 
+    _position_body()
+
     if has_orbit:
         draw_orbit()
 
     _perifocal_reference_frame()
 
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
+    _position_body()
+
     if debug:
         _draw_debug()
 
-    _position_body()
-    _body.draw_line()
+func get_body() -> Body:
+    return _body
 
 func draw_orbit() -> void:
     var _orbit = MeshInstance3D.new()
@@ -200,15 +204,12 @@ func _position_body() -> void:
     _body.position.z = y * Constants.SIZE_SCALE_FACTOR
 
 func _draw_debug() -> void:
-    # DebugDraw3D.draw_points(_points, DebugDraw3D.POINT_TYPE_SQUARE, 0.1)
-    # DebugDraw3D.draw_position(Transform3D(basis, focus_offset))
     DebugDraw3D.draw_position(transform)
 
     var _perifocal_frame = _perifocal_reference_frame()
 
     var apoapsis_vector = (
         Vector3(apoapsis_distance, 0, 0)
-        # .rotated(Vector3.LEFT, deg_to_rad(-inclination))
         .rotated(Vector3.UP, deg_to_rad(longitude_of_the_ascending_node))
     ).normalized()
 

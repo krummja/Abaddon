@@ -82,33 +82,36 @@ func _ready():
     plane_indicator.transparency = line_transparency
 
 func _process(_delta: float) -> void:
-    # draw_line()
+    _draw_line()
     _update_indicator()
 
     if debug:
         _draw_debug()
 
-func _physics_process(_delta: float) -> void:
-    if debug:
-        pass
-
-func draw_line() -> void:
+func _draw_line() -> void:
     line.mesh = ImmediateMesh.new()
+    line.global_rotation = Vector3.ZERO
+
     var _mesh: ImmediateMesh = line.mesh
-    var start = global_position
-    var end = Vector3(start.x, target.global_position.y, start.z)
+    var end = Vector3(0, target.global_position.y, 0)
+
+    var distance = Vector3.ZERO.distance_to(end)
+    var end_norm = end.normalized()
+
+    var target_pos = end_norm * distance
 
     _mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
     _mesh.surface_set_normal(Vector3(0, 0, 1))
     _mesh.surface_set_uv(Vector2(0, 0))
 
-    _mesh.surface_add_vertex(start)
-    _mesh.surface_add_vertex(end)
+    _mesh.surface_add_vertex(Vector3.ZERO)
+    _mesh.surface_add_vertex(target_pos)
 
     _mesh.surface_end()
 
 func _update_indicator() -> void:
     plane_indicator.global_position.y = target.global_position.y
+    plane_indicator.global_rotation = Vector3(deg_to_rad(-90), 0, 0)
     var distance = plane_indicator.global_position - sphere.global_position
     plane_indicator.visible = distance.length() > (visual_radius)
 
@@ -132,5 +135,7 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
         EventBus.service().broadcast(body_selected)
 
 func _draw_debug() -> void:
-    DebugDraw3D.draw_position(global_transform)
-    DebugDraw3D.draw_position(Transform3D(Basis(), Vector3(global_position.x, target.global_position.y, global_position.z)))
+    # print("Debug: %1.2v" % global_position)
+    DebugDraw3D.draw_line(global_position, Vector3(global_position.x, target.global_position.y, global_position.z))
+    # DebugDraw3D.draw_position(global_transform)
+    # DebugDraw3D.draw_position(Transform3D(Basis(), Vector3(global_position.x, target.global_position.y, global_position.z)))

@@ -108,6 +108,7 @@ _data = {
 
 [node name="Body" type="Node3D" unique_id=281731595]
 script = ExtResource("1_bfv4e")
+debug = false
 visual_radius = 0.2
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1409409360]
@@ -125,7 +126,7 @@ material_override = SubResource("StandardMaterial3D_bfv4e")
 mesh = SubResource("ImmediateMesh_r8yxy")
 
 [node name="PlaneIndicator" type="MeshInstance3D" parent="." unique_id=993908766]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.025, 0)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_rwynx")
 mesh = SubResource("QuadMesh_rwk2e")
 

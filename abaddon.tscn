@@ -97,9 +97,12 @@ metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
 [node name="StarSystem" type="Node3D" parent="SystemView" unique_id=2084464824 node_paths=PackedStringArray("camera_rig", "galactic_environment")]
 script = ExtResource("5_ik6f3")
+debug = true
 camera_rig = NodePath("../CameraRig")
 galactic_environment = NodePath("../WorldEnvironment")
 metadata/_custom_type_script = "uid://o21jrsl2vnd3"
+
+[node name="LineRenderer" type="Node3D" parent="SystemView/StarSystem" unique_id=1220176685]
 
 [node name="Sol" parent="SystemView/StarSystem" unique_id=281731595 node_paths=PackedStringArray("target") instance=ExtResource("7_0viut")]
 line_width = 0.05
@@ -112,9 +115,9 @@ ephemeris_month = 3
 orbit_points = 200
 target = NodePath("../../CameraRig/Target")
 _apoapsis = 1.0
-_eccentricity = 0.3
-_inclination = -10.0
-_longitude_of_the_ascending_node = 20.0
+_eccentricity = 0.5
+_inclination = -30.0
+_longitude_of_the_ascending_node = 30.0
 inclination = -1.5299999999999992e-05
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SystemView/StarSystem" unique_id=185609302]
