@@ -93,7 +93,7 @@ def select_object_elements(
 
 
 def main() -> None:
-    selection = Selection.MARS
+    selection = Selection.NEPTUNE
     start = pdl.DateTime(2000, 1, 1)
     stop = pdl.DateTime(2026, 1, 1)
     step = 1

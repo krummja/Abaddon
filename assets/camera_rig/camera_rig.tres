@@ -28,7 +28,7 @@ expression = "output0 = mat3(invViewMatrix) * view;"
 linked_parent_graph_frame = 16
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_ipl4p"]
-size = Vector2(1044, 320.99927)
+size = Vector2(1076, 321)
 title = "rayWorld"
 attached_nodes = PackedInt32Array(14, 15, 13, 12)
 
@@ -60,7 +60,7 @@ function = 19
 [sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_47r3o"]
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_61dyk"]
-size = Vector2(444.00006, 316.0001)
+size = Vector2(476.00003, 316)
 title = "ty"
 attached_nodes = PackedInt32Array(23, 24, 21)
 

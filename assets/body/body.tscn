@@ -21,6 +21,9 @@ rings = 16
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bfv4e"]
 shading_mode = 0
+distance_fade_mode = 1
+distance_fade_min_distance = 50.0
+distance_fade_max_distance = 0.0
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_r8yxy"]
 
@@ -106,10 +109,11 @@ _data = {
 &"fade_out": SubResource("Animation_7moen")
 }
 
-[node name="Body" type="Node3D" unique_id=281731595]
+[node name="Body" type="Node3D" unique_id=281731595 node_paths=PackedStringArray("sphere")]
 script = ExtResource("1_bfv4e")
 debug = false
 visual_radius = 0.2
+sphere = NodePath("Sphere")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1409409360]
 collision_layer = 3

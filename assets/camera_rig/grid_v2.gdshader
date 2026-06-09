@@ -30,7 +30,6 @@ float grid(vec2 pos, float unit, float thickness) {
 	return max(line.x, line.y);
 }
 
-
 void fragment() {
 
 	// ray from camera to fragment in world space

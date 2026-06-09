@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cvbyrpgvj0rko" path="res://assets/grid_controller/grid_controller.gd" id="1_ufiv2"]
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="2_qexyj"]
+[ext_resource type="PackedScene" uid="uid://c2r20sjl1y6yv" path="res://assets/grid_controller/radial_section.tscn" id="3_qexyj"]
 
-[node name="GridController" type="Node3D" unique_id=2056574370 node_paths=PackedStringArray("target")]
+[node name="GridController" type="Node3D" unique_id=2056574370]
 script = ExtResource("1_ufiv2")
+section_type = 1
 grid_section = ExtResource("2_qexyj")
-target = NodePath("")
-section_scale = 100
+radial_section = ExtResource("3_qexyj")
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"

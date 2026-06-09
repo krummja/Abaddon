@@ -18,6 +18,7 @@ const TimeEvents = preload("res://events/time.gd")
 @export_category("Visual Parameters")
 @export var has_orbit: bool = true
 @export var visual_radius: float
+@export var body_color: Color = Color(1, 1, 1, 1)
 @export var body_scene: PackedScene
 @export var orbit_points: int = 100
 @export var orbit_material: Material
@@ -68,11 +69,11 @@ var perifocal_frame: Vector3:
 
 func _ready():
     add_to_group("orbital_bodies")
-
     _body = body_scene.instantiate()
     _body.target = target
     _body.visual_radius = visual_radius
     _body.line_width = visual_radius / 2
+    _body.color = body_color
     add_child(_body)
 
     if data_file:
@@ -93,19 +94,18 @@ func _ready():
         longitude_of_the_perifocus = longitude_of_the_ascending_node + argument_of_the_perifocus
         true_anomaly = _true_anomaly
 
-    _position_body()
-
     if has_orbit:
+        _position_body()
         draw_orbit()
 
     _perifocal_reference_frame()
 
 func _physics_process(_delta: float) -> void:
-    _position_body()
-
-    _orbit.position = focus_offset
-    rotation.y = deg_to_rad(longitude_of_the_ascending_node)
-    rotation.z = deg_to_rad(inclination)
+    if has_orbit:
+        _position_body()
+        _orbit.position = focus_offset
+        rotation.y = deg_to_rad(longitude_of_the_ascending_node)
+        rotation.z = deg_to_rad(inclination)
 
     if debug:
         _draw_debug()
@@ -139,7 +139,7 @@ func draw_orbit() -> void:
     add_child(_orbit)
 
 func initialize_elements(data: Dictionary):
-    # var targetname = data["targetname"]
+    name = data["targetname"]
     epoch = "JDN %.1f" % data["datetime_jd"]
     eccentricity = data["e"]
     inclination = data["incl"]
@@ -205,8 +205,9 @@ func _position_body() -> void:
     _body.position.z = y * Constants.SIZE_SCALE_FACTOR
 
 func _draw_debug() -> void:
-    DebugDraw3D.draw_position(transform)
-    DebugDraw3D.draw_position(_body.global_transform)
+    DebugDraw3D.draw_text(_body.global_position + Vector3.UP, body_name, 64)
+    # DebugDraw3D.draw_position(transform)
+    # DebugDraw3D.draw_position(_body.global_transform)
 
     # var _perifocal_frame = _perifocal_reference_frame()
 

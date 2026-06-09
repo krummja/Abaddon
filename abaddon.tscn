@@ -7,14 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
 [ext_resource type="PackedScene" uid="uid://7b6lfjrg6vgb" path="res://ui/debug.tscn" id="5_el2q1"]
 [ext_resource type="Script" uid="uid://o21jrsl2vnd3" path="res://assets/star_system/star_system.gd" id="5_ik6f3"]
-[ext_resource type="PackedScene" uid="uid://dvsa6h3mljtvw" path="res://assets/star_system/keplerian.tscn" id="6_ik6f3"]
 [ext_resource type="Script" uid="uid://bden175cerqx7" path="res://ui/property_list/property_binding.gd" id="6_ncjc0"]
-[ext_resource type="PackedScene" uid="uid://8gmolpibigeu" path="res://assets/body/body.tscn" id="7_0viut"]
+[ext_resource type="Script" uid="uid://bn63yy1cx1agy" path="res://assets/star_system/star_body.gd" id="7_mc0qy"]
 [ext_resource type="Script" uid="uid://rcmv6abjwrwq" path="res://ui/game.gd" id="7_nv1jb"]
+[ext_resource type="Script" uid="uid://cin3wiqqwpwvw" path="res://assets/star_system/planet_body.gd" id="8_ik6f3"]
 [ext_resource type="Script" uid="uid://cru245ouwixd5" path="res://ui/fps_counter.gd" id="8_kearp"]
 [ext_resource type="PackedScene" uid="uid://ckc35dafg0g4s" path="res://ui/widgets/key_value.tscn" id="9_e5w7c"]
-[ext_resource type="Texture2D" uid="uid://cmppen8fryiio" path="res://textures/plane_indicator.png" id="9_ik6f3"]
-[ext_resource type="Script" uid="uid://dbxnsqcbfxs84" path="res://hover_indicator.gd" id="11_7yhey"]
+[ext_resource type="Script" uid="uid://dngpo40yjcegd" path="res://assets/star_system/moon_body.gd" id="9_nehkf"]
 [ext_resource type="Texture2D" uid="uid://bqafrvx2g0fsr" path="res://textures/target_ring.png" id="11_pq7gu"]
 [ext_resource type="PackedScene" uid="uid://7lp27svodp6b" path="res://ui/time_control.tscn" id="12_pq7gu"]
 
@@ -30,15 +29,15 @@ _limits = [0.0, 5.0, 0.0, 1.0]
 _data = [Vector2(0, 0.32953405), 0.0, 4.670466, 0, 1, Vector2(1, 5), 4.670466, 0.0, 1, 0]
 point_count = 2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nehkf"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(1, 0, 0, 0.015686275)
-albedo_texture = ExtResource("9_ik6f3")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mc0qy"]
+diffuse_mode = 3
+specular_mode = 1
+emission_enabled = true
+emission = Color(1, 1, 0.32941177, 1)
+emission_energy_multiplier = 3.65
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_iwja3"]
-material = SubResource("StandardMaterial3D_nehkf")
-size = Vector2(300, 300)
+[sub_resource type="SphereMesh" id="SphereMesh_iwja3"]
+material = SubResource("StandardMaterial3D_mc0qy")
 
 [sub_resource type="Resource" id="Resource_ik6f3"]
 script = ExtResource("6_ncjc0")
@@ -66,6 +65,23 @@ metadata/_custom_type_script = "uid://bden175cerqx7"
 
 [sub_resource type="Theme" id="Theme_kearp"]
 
+[sub_resource type="GDScript" id="GDScript_46cdc"]
+script/source = "extends CenterContainer
+
+const BodyEvents = preload(\"res://events/body.gd\")
+
+@onready var indicator: TextureRect = $TextureRect
+
+func _ready():
+    pass
+    # EventBus.service().subscribe(Events.BODY_HOVERED, self, \"_on_body_hovered\")
+
+# func _on_body_hovered(event: BodyEvents.BodyHoveredEvent) -> void:
+#     indicator.visible = true
+#     var pos = Vector2(event.position.x - 50, event.position.y - 50)
+#     position = pos
+"
+
 [node name="Abaddon" type="Node" unique_id=288616275]
 script = ExtResource("1_3s3d0")
 
@@ -78,6 +94,7 @@ visible = false
 speed_scaling = SubResource("Curve_mc0qy")
 zoom_step = 5.0
 zoom_speed = 5.0
+min_altitude = 10.0
 max_altitude = 200.0
 zoom_scaling = SubResource("Curve_0viut")
 max_key_rotation_speed = 0.2
@@ -90,68 +107,47 @@ environment = ExtResource("2_mc0qy")
 script = ExtResource("2_el2q1")
 grid_section = ExtResource("3_el2q1")
 target = NodePath("../CameraRig/Target")
+unit_size = 15.0
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
 [node name="StarSystem" type="Node3D" parent="SystemView" unique_id=2084464824 node_paths=PackedStringArray("camera_rig")]
 script = ExtResource("5_ik6f3")
+debug = true
 camera_rig = NodePath("../CameraRig")
 metadata/_custom_type_script = "uid://o21jrsl2vnd3"
 
-[node name="Sol" parent="SystemView/StarSystem" unique_id=281731595 node_paths=PackedStringArray("target") instance=ExtResource("7_0viut")]
-line_width = 0.05
-target = NodePath("../../CameraRig/Target")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SystemView/StarSystem" unique_id=886942810]
+mesh = SubResource("SphereMesh_iwja3")
 
-[node name="Mercury" parent="SystemView/StarSystem" unique_id=630358398 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
-ephemeris_year = 2016
-ephemeris_month = 3
-data_file = "res://data/199_20000101_20260101_1y.json"
-orbit_points = 200
-target = NodePath("../../CameraRig/Target")
-_apoapsis = 1.0
-_eccentricity = 0.5
-_inclination = -30.0
-_longitude_of_the_ascending_node = 30.0
-inclination = -1.5299999999999992e-05
+[node name="Star" type="Node3D" parent="SystemView/StarSystem" unique_id=61899581]
+script = ExtResource("7_mc0qy")
+body_name = "Star"
 
-[node name="Venus" parent="SystemView/StarSystem" unique_id=863034 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
-ephemeris_year = 2016
-ephemeris_month = 3
-data_file = "res://data/299_20000101_20260101_1y.json"
-orbit_points = 200
-target = NodePath("../../CameraRig/Target")
-_apoapsis = 1.0
-_eccentricity = 0.5
-_inclination = -30.0
-_longitude_of_the_ascending_node = 30.0
-inclination = -1.5299999999999992e-05
+[node name="Planet A" type="Node3D" parent="SystemView/StarSystem/Star" unique_id=594281268]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.9687047, 0, 0)
+script = ExtResource("8_ik6f3")
+color = Color(1, 0.3254902, 1, 0.53333336)
+radius = 1.0
+body_name = "Planet A"
 
-[node name="Earth" parent="SystemView/StarSystem" unique_id=1645304614 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
-ephemeris_year = 2016
-ephemeris_month = 3
-data_file = "res://data/3_20000101_20260101_1d.json"
-orbit_points = 200
-target = NodePath("../../CameraRig/Target")
-_apoapsis = 1.0
-_eccentricity = 0.5
-_inclination = -30.0
-_longitude_of_the_ascending_node = 30.0
-inclination = -1.5299999999999992e-05
+[node name="Planet A Moon A" type="Node3D" parent="SystemView/StarSystem/Star/Planet A" unique_id=1760988143]
+script = ExtResource("9_nehkf")
+body_name = "Planet A Moon A"
 
-[node name="Mars" parent="SystemView/StarSystem" unique_id=155378064 node_paths=PackedStringArray("target") instance=ExtResource("6_ik6f3")]
-ephemeris_year = 2016
-ephemeris_month = 3
-data_file = "res://data/499_20000101_20260101_1y.json"
-orbit_points = 200
-target = NodePath("../../CameraRig/Target")
-_apoapsis = 1.0
-_eccentricity = 0.5
-_inclination = -30.0
-_longitude_of_the_ascending_node = 30.0
-inclination = -1.5299999999999992e-05
+[node name="Planet A Moon B" type="Node3D" parent="SystemView/StarSystem/Star/Planet A" unique_id=467288115]
+script = ExtResource("9_nehkf")
+body_name = "Planet A Moon B"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SystemView/StarSystem" unique_id=185609302]
-visible = false
-mesh = SubResource("PlaneMesh_iwja3")
+[node name="Planet B" type="Node3D" parent="SystemView/StarSystem/Star" unique_id=1086129236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.681002, 0, 0)
+script = ExtResource("8_ik6f3")
+color = Color(0.22352941, 1, 0.1882353, 1)
+radius = 1.0
+body_name = "Planet B"
+
+[node name="Planet B Moon A" type="Node3D" parent="SystemView/StarSystem/Star/Planet B" unique_id=2141742669]
+script = ExtResource("9_nehkf")
+body_name = "Planet B Moon A"
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false
@@ -308,7 +304,7 @@ offset_top = -50.0
 offset_right = 50.0
 offset_bottom = 50.0
 pivot_offset = Vector2(50, 50)
-script = ExtResource("11_7yhey")
+script = SubResource("GDScript_46cdc")
 
 [node name="TextureRect" type="TextureRect" parent="Overlay/Control/CenterContainer" unique_id=1184807798]
 modulate = Color(1, 0, 1, 1)

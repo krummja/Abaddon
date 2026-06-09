@@ -6,6 +6,7 @@ signal section_exited(section: GridSection)
 signal section_destroyed(section: GridSection)
 
 @export var debug: bool = false
+@export var unit_size: float = 5.0
 
 @onready var boundary := $Area3D
 
@@ -35,8 +36,9 @@ func _physics_process(_delta: float) -> void:
     if debug:
         _draw_debug()
 
-func update_shader(x: float, y: float, z: float) -> void:
-    set_instance_shader_parameter("centerOffset", Vector3(x, y, z))
+func update_shader(p_center_offset: Vector3, p_unit_size: float) -> void:
+    set_instance_shader_parameter("centerOffset", p_center_offset)
+    set_instance_shader_parameter("unitSize", p_unit_size)
 
 func set_size(size: int) -> void:
     _size = size

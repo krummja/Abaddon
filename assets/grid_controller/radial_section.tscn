@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://c2r20sjl1y6yv"]
+
+[ext_resource type="Shader" uid="uid://cnhbxer2x7ocx" path="res://assets/grid_controller/radial.gdshader" id="1_5n1td"]
+[ext_resource type="Script" uid="uid://di4mb45efixm4" path="res://assets/grid_controller/grid_section.gd" id="2_e6eyn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rm5mi"]
+render_priority = 0
+shader = ExtResource("1_5n1td")
+shader_parameter/gridColor = Color(1, 1, 1, 1)
+shader_parameter/unitSize = 5.000000074506
+shader_parameter/lineThickness = 1.0
+shader_parameter/fadeStart = 0.00999999977648
+shader_parameter/fadeEnd = 24.48999945259952
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_l6nis"]
+material = SubResource("ShaderMaterial_rm5mi")
+size = Vector2(50, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jwgjp"]
+size = Vector3(100, 10, 100)
+
+[node name="RadialSection" type="MeshInstance3D" unique_id=424615515]
+mesh = SubResource("PlaneMesh_l6nis")
+script = ExtResource("2_e6eyn")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=930302804]
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=784987720]
+shape = SubResource("BoxShape3D_jwgjp")

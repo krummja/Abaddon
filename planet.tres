@@ -1,0 +1,5 @@
+[gd_resource type="VisualShader" format=3 uid="uid://bubk3omsg6you"]
+
+[resource]
+nodes/vertex/0/position = Vector2(1640, 220)
+nodes/fragment/0/position = Vector2(980, 120)

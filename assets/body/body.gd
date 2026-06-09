@@ -15,8 +15,8 @@ const BodyEvents = preload("res://events/body.gd")
 
 @export_category("References")
 @export var target: Marker3D
+@export var sphere: MeshInstance3D
 
-@onready var sphere: MeshInstance3D = $Sphere
 @onready var line: MeshInstance3D = $Line
 @onready var plane_indicator: MeshInstance3D = $PlaneIndicator
 @onready var hover_indicator: MeshInstance3D = $HoverIndicator/HoverIndicator

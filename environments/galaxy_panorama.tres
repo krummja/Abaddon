@@ -6,3 +6,6 @@
 background_mode = 2
 sky = ExtResource("1_63uhw")
 sky_rotation = Vector3(0, 3.1415927, 0)
+glow_enabled = true
+glow_blend_mode = 0
+adjustment_enabled = true

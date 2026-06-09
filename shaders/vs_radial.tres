@@ -1,0 +1,92 @@
+[gd_resource type="VisualShader" format=3 uid="uid://xbxoktcyyfye"]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_olqqy"]
+parameter_name = "thickness"
+hint = 2
+min = 0.001
+max = 0.01
+step = 0.001
+default_value_enabled = true
+default_value = 0.1
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_h5fxd"]
+operator = 1
+
+[sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_yhn3q"]
+
+[sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_4a0wh"]
+
+[sub_resource type="VisualShaderNodeRemap" id="VisualShaderNodeRemap_kynll"]
+output_port_for_preview = 0
+default_input_values = [1, 0.0, 2, 1.0, 3, 1.0, 4, 0.0]
+
+[sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_2j2ni"]
+
+[sub_resource type="VisualShaderNodeSmoothStep" id="VisualShaderNodeSmoothStep_xgbtf"]
+output_port_for_preview = 0
+default_input_values = [0, 0.0, 1, 0.2, 2, 0.5]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_cpiga"]
+operator = 1
+
+[sub_resource type="VisualShaderNodeRemap" id="VisualShaderNodeRemap_23tac"]
+output_port_for_preview = 0
+default_input_values = [1, 0.0, 2, 1.0, 3, 1.0, 4, 0.0]
+
+[sub_resource type="VisualShaderNodeSmoothStep" id="VisualShaderNodeSmoothStep_324qj"]
+output_port_for_preview = 0
+default_input_values = [0, 0.0, 1, 0.2, 2, 0.5]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_tma47"]
+parameter_name = "radius"
+hint = 2
+step = 0.01
+default_value_enabled = true
+default_value = 0.2
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_ihchg"]
+output_port_for_preview = 0
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorLen" id="VisualShaderNodeVectorLen_0l0gf"]
+output_port_for_preview = 0
+default_input_values = [0, Vector2(0, 0)]
+op_type = 0
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_lkw12"]
+output_port_for_preview = 0
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0.5, 0.5)]
+op_type = 0
+operator = 1
+
+[resource]
+nodes/fragment/0/position = Vector2(1480, 140)
+nodes/fragment/3/node = SubResource("VisualShaderNodeSmoothStep_324qj")
+nodes/fragment/3/position = Vector2(100, 400)
+nodes/fragment/4/node = SubResource("VisualShaderNodeFloatParameter_tma47")
+nodes/fragment/4/position = Vector2(-1560, 340)
+nodes/fragment/6/node = SubResource("VisualShaderNodeInput_ihchg")
+nodes/fragment/6/position = Vector2(-560, 580)
+nodes/fragment/7/node = SubResource("VisualShaderNodeVectorLen_0l0gf")
+nodes/fragment/7/position = Vector2(-100, 580)
+nodes/fragment/8/node = SubResource("VisualShaderNodeVectorOp_lkw12")
+nodes/fragment/8/position = Vector2(-280, 580)
+nodes/fragment/17/node = SubResource("VisualShaderNodeFloatParameter_olqqy")
+nodes/fragment/17/position = Vector2(-1560, 640)
+nodes/fragment/18/node = SubResource("VisualShaderNodeFloatOp_h5fxd")
+nodes/fragment/18/position = Vector2(-1240, 540)
+nodes/fragment/19/node = SubResource("VisualShaderNodeReroute_yhn3q")
+nodes/fragment/19/position = Vector2(-240, 920)
+nodes/fragment/20/node = SubResource("VisualShaderNodeReroute_4a0wh")
+nodes/fragment/20/position = Vector2(-620, 440)
+nodes/fragment/21/node = SubResource("VisualShaderNodeRemap_kynll")
+nodes/fragment/21/position = Vector2(280, 400)
+nodes/fragment/24/node = SubResource("VisualShaderNodeReroute_2j2ni")
+nodes/fragment/24/position = Vector2(-980, 920)
+nodes/fragment/25/node = SubResource("VisualShaderNodeSmoothStep_xgbtf")
+nodes/fragment/25/position = Vector2(100, 840)
+nodes/fragment/27/node = SubResource("VisualShaderNodeVectorOp_cpiga")
+nodes/fragment/27/position = Vector2(600, 580)
+nodes/fragment/28/node = SubResource("VisualShaderNodeRemap_23tac")
+nodes/fragment/28/position = Vector2(280, 840)
+nodes/fragment/connections = PackedInt32Array(6, 0, 8, 0, 8, 0, 7, 0, 7, 0, 3, 2, 4, 0, 18, 0, 17, 0, 18, 1, 4, 0, 20, 0, 20, 0, 3, 1, 20, 0, 3, 0, 3, 0, 21, 0, 18, 0, 24, 0, 24, 0, 19, 0, 7, 0, 25, 2, 19, 0, 25, 0, 19, 0, 25, 1, 25, 0, 28, 0, 21, 0, 27, 0, 28, 0, 27, 1, 27, 0, 0, 5)

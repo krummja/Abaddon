@@ -6,9 +6,9 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_el2q1"]
 render_priority = -1
 shader = ExtResource("1_n4eqr")
+shader_parameter/gridType = 2
 shader_parameter/gridColor = Color(0.22352941, 0.22352941, 0.22352941, 0.48235294)
 shader_parameter/checkerColor = Color(0, 0, 0, 1)
-shader_parameter/unitSize = 4.0
 shader_parameter/subdivisions = 5
 shader_parameter/majorLineThickness = 2.0
 shader_parameter/minorLineThickness = 1.0
@@ -29,6 +29,7 @@ mesh = SubResource("PlaneMesh_xyc5y")
 script = ExtResource("2_a0wmw")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=386651198]
+visible = false
 input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=314929830]

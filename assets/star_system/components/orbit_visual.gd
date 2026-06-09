@@ -1,0 +1,2 @@
+class_name OrbitVisual
+extends MeshInstance3D

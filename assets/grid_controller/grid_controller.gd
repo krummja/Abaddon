@@ -7,6 +7,7 @@ extends Node3D
 @export var grid_section: PackedScene
 @export var target: Node3D
 @export var section_scale: int = 100
+@export_range(0.1, 15.0, 0.1) var unit_size: float = 5.0
 
 var _directions: Array[Vector2] = [
     Vector2(-1, -1), Vector2(0, -1), Vector2(1, -1),
@@ -28,9 +29,8 @@ func _process(_delta: float) -> void:
 
     for section in get_tree().get_nodes_in_group("sections"):
         section.update_shader(
-            target.global_position.x,
-            target.global_position.y,
-            target.global_position.z,
+            target.global_position,
+            unit_size,
         )
 
 func _physics_process(_delta: float) -> void:
@@ -51,11 +51,11 @@ func destroy_sections() -> void:
 
 func create_section(direction: Vector2) -> GridSection:
     var section: GridSection = grid_section.instantiate()
-
     section.name = "GridSection-%04d" % _last_id
     _last_id += 1
 
     section.set_size(section_scale)
+
     section.position = (
         Vector3(
             target.global_position.x + direction.x * section_scale,
@@ -65,7 +65,6 @@ func create_section(direction: Vector2) -> GridSection:
         .snapped(Vector3(section_scale, 0, section_scale))
     )
 
-    # add_child(section)
     call_deferred("add_child", section)
 
     section.section_entered.connect(_section_entered)
