@@ -141,9 +141,11 @@ func _process(delta: float) -> void:
     _get_scroll_wheel_input(delta)
     _calculate_heading()
 
-    if not Heading.visible and _velocity.length() > 0.1:
+    var _horizontal_velocity = Vector3(_velocity.x, 0, _velocity.z);
+
+    if not Heading.visible and _horizontal_velocity.length() > 0.1:
         Heading.visible = true
-    if Heading.visible and _velocity.length() <= 0.1:
+    if Heading.visible and _horizontal_velocity.length() <= 0.1:
         Heading.visible = false
 
     if not Audio.playing and (_velocity.length() > 0.1):
@@ -306,7 +308,6 @@ func _on_body_selected(event: BodyEvents.BodySelectedEvent) -> void:
 
 func _draw_debug() -> void:
     DebugDraw3D.draw_line(global_position, global_position + _velocity, Color(0, 0, 1, 1))
-
     DebugDraw3D.draw_position(Transform3D(Basis(), _origin), Color(1, 0, 1, 1))
     DebugDraw3D.draw_position(Transform3D(Basis(), _last_position), Color(1, 1, 0, 1))
 

@@ -6,13 +6,22 @@ extends SystemBody
 @export var color: Color
 @export var radius: float
 
-var visual: BodyVisual
+var body_visual: BodyVisual
+var orbit_visual: OrbitVisual
+var plane_visual: PlaneVisual
+var selectable: Selectable
 
-func _ready() -> void:
-    visual = BodyVisual.new()
-    visual.color = color
-    visual.radius = radius
-    add_child(visual)
+func setup() -> void:
+    body_visual = BodyVisual.new(self, color, radius)
+    add_child(body_visual)
 
-func _process(_delta: float) -> void:
-    pass
+    orbit_visual = OrbitVisual.new(self)
+    add_child(orbit_visual)
+
+    plane_visual = PlaneVisual.new()
+    add_child(plane_visual)
+
+    selectable = Selectable.new()
+    add_child(selectable)
+
+    Debug.debug("PlanetBody %s" % name)

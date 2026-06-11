@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cusff8xq1gtyx" path="res://abaddon.gd" id="1_3s3d0"]
 [ext_resource type="Script" uid="uid://cvbyrpgvj0rko" path="res://assets/grid_controller/grid_controller.gd" id="2_el2q1"]
+[ext_resource type="Script" uid="uid://b1vm77j54mmca" path="res://scripts/mouse_tool.gd" id="2_ik6f3"]
 [ext_resource type="Environment" uid="uid://ckkmcli84ltvb" path="res://environments/grid_panorama.tres" id="2_mc0qy"]
 [ext_resource type="PackedScene" uid="uid://b7xerdvkegbff" path="res://assets/camera_rig/camera_rig.tscn" id="2_xyc5y"]
 [ext_resource type="PackedScene" uid="uid://boyewgtfnhw51" path="res://assets/grid_controller/grid_section.tscn" id="3_el2q1"]
@@ -85,6 +86,11 @@ func _ready():
 [node name="Abaddon" type="Node" unique_id=288616275]
 script = ExtResource("1_3s3d0")
 
+[node name="MouseTool" type="Node3D" parent="." unique_id=663766216 node_paths=PackedStringArray("camera", "target")]
+script = ExtResource("2_ik6f3")
+camera = NodePath("../SystemView/CameraRig/RotationRig/Camera3D")
+target = NodePath("../SystemView/CameraRig/Target")
+
 [node name="SubjectView" type="Node3D" parent="." unique_id=1893150557]
 visible = false
 
@@ -116,12 +122,12 @@ debug = true
 camera_rig = NodePath("../CameraRig")
 metadata/_custom_type_script = "uid://o21jrsl2vnd3"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SystemView/StarSystem" unique_id=886942810]
-mesh = SubResource("SphereMesh_iwja3")
-
 [node name="Star" type="Node3D" parent="SystemView/StarSystem" unique_id=61899581]
 script = ExtResource("7_mc0qy")
 body_name = "Star"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SystemView/StarSystem/Star" unique_id=886942810]
+mesh = SubResource("SphereMesh_iwja3")
 
 [node name="Planet A" type="Node3D" parent="SystemView/StarSystem/Star" unique_id=594281268]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.9687047, 0, 0)
@@ -129,25 +135,11 @@ script = ExtResource("8_ik6f3")
 color = Color(1, 0.3254902, 1, 0.53333336)
 radius = 1.0
 body_name = "Planet A"
+data_file = "res://data/199_20000101_20260101_1y.json"
 
 [node name="Planet A Moon A" type="Node3D" parent="SystemView/StarSystem/Star/Planet A" unique_id=1760988143]
 script = ExtResource("9_nehkf")
 body_name = "Planet A Moon A"
-
-[node name="Planet A Moon B" type="Node3D" parent="SystemView/StarSystem/Star/Planet A" unique_id=467288115]
-script = ExtResource("9_nehkf")
-body_name = "Planet A Moon B"
-
-[node name="Planet B" type="Node3D" parent="SystemView/StarSystem/Star" unique_id=1086129236]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.681002, 0, 0)
-script = ExtResource("8_ik6f3")
-color = Color(0.22352941, 1, 0.1882353, 1)
-radius = 1.0
-body_name = "Planet B"
-
-[node name="Planet B Moon A" type="Node3D" parent="SystemView/StarSystem/Star/Planet B" unique_id=2141742669]
-script = ExtResource("9_nehkf")
-body_name = "Planet B Moon A"
 
 [node name="GalaxyView" type="Node3D" parent="." unique_id=1460297584]
 visible = false

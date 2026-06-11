@@ -1,8 +1,9 @@
 class_name BodyVisual
 extends MeshInstance3D
 
-@export var color: Color
-@export var radius: float
+var parent_body: SystemBody
+var color: Color
+var radius: float
 
 var body_mesh: SphereMesh:
     get:
@@ -16,6 +17,13 @@ var body_material: Material:
     set(value):
         body_mesh.material = value
 
+func _init(p_parent: SystemBody, p_color: Color, p_radius: float) -> void:
+    parent_body = p_parent
+    color = p_color
+    radius = p_radius
+
+    Debug.debug("BodyVisual for %s" % parent_body.name)
+
 func _ready() -> void:
     if body_mesh == null:
         body_mesh = SphereMesh.new()
@@ -26,3 +34,5 @@ func _ready() -> void:
         body_material = StandardMaterial3D.new()
         body_material.emission_enabled = true
         body_material.emission = color
+
+    Debug.debug("BodyVisual for %s" % parent_body.name)

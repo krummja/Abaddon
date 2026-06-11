@@ -22,6 +22,7 @@ float grid(vec2 pos, float unit, float thickness) {
 
 	vec2 threshold = (abs(xDiv) + abs(yDiv)) * thickness * 0.5 / unit;
 	vec2 posWrapped = pos / unit;
+
 	vec2 line =
         step(fract(-posWrapped), threshold) +
         step(fract( posWrapped), threshold);

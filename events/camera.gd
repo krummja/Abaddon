@@ -5,8 +5,8 @@ class CameraAltitudeChangedEvent extends Event:
 
     const ID = Events.CAMERA_ALTITUDE_CHANGED
 
-    func _init(amount_: float, min_: float, max_: float) -> void:
+    func _init(p_amount: float, p_min: float, p_max: float) -> void:
         super(ID)
-        amount = amount_
-        min_zoom = min_
-        max_zoom = max_
+        amount = p_amount
+        min_zoom = p_min
+        max_zoom = p_max

@@ -41,3 +41,28 @@ static func compute_points(n: int, r1: float, r2: float, delta_angle: float = 0.
         run += compute_dpt(r1, r2, theta)
 
     return points
+
+static func calculate_eccentric_anomaly(
+    eccentricity: float,
+    mean_anomaly: float,
+    tolerance: float = 1.0e-6,
+    limit: int = 100,
+) -> float:
+    var n = 0
+    var _ecc = 180 / PI * eccentricity
+    var _e = mean_anomaly + _ecc * sin(mean_anomaly)
+
+    var delta_m = 1.0
+    var delta_e = 1.0
+
+    while abs(delta_e) > tolerance:
+        if n >= limit:
+            Debug.warn("Failed to find eccentric anomaly solution within %d steps" % limit)
+            break
+
+        delta_m = mean_anomaly - (_e - _ecc * sin(_e))
+        delta_e = delta_m / (1 - eccentricity * cos(_e))
+        _e += delta_e
+        n += 1
+
+    return _e

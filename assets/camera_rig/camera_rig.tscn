@@ -16,6 +16,13 @@ shader_parameter/smoothing_max = 0.062000002945
 [sub_resource type="QuadMesh" id="QuadMesh_as7y3"]
 material = SubResource("ShaderMaterial_pneq3")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5va8v"]
+shading_mode = 0
+
+[sub_resource type="PrismMesh" id="PrismMesh_pneq3"]
+material = SubResource("StandardMaterial3D_5va8v")
+size = Vector3(0.8, 0.5, 0.5)
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_i66p4"]
 radius = 0.1
 
@@ -67,10 +74,14 @@ fov = 37.849285
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RotationRig/Camera3D" unique_id=1141266324]
 transform = Transform3D(1.665, 0, 0, 0, -1.665, 1.4555891e-07, 0, -1.4555891e-07, -1.665, 0, 0, -0.89861965)
+visible = false
 mesh = SubResource("QuadMesh_as7y3")
 
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="RotationRig/Camera3D" unique_id=50296724]
+transform = Transform3D(1, 0, 0, 0, -2.9802322e-08, -0.99999994, 0, 0.99999994, -2.9802322e-08, 0, 4.858233e-09, -0.22551519)
+mesh = SubResource("PrismMesh_pneq3")
+
 [node name="Target" type="Marker3D" parent="." unique_id=844119422]
-visible = false
 
 [node name="Area3D" type="Area3D" parent="Target" unique_id=40871583]
 
