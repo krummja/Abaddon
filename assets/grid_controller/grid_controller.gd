@@ -7,6 +7,8 @@ extends Node3D
 @export var grid_section: PackedScene
 @export var target: Node3D
 @export var section_scale: int = 100
+@export_range(0.1, 100.0, 0.01) var fade_end: float = 10.0
+@export_range(0.1, 100.0, 0.01) var fade_start: float = 0.0
 @export_range(0.1, 15.0, 0.1) var unit_size: float = 5.0
 
 var _directions: Array[Vector2] = [
@@ -28,10 +30,7 @@ func _process(_delta: float) -> void:
         return
 
     for section in get_tree().get_nodes_in_group("sections"):
-        section.update_shader(
-            target.global_position,
-            unit_size,
-        )
+        section.update_shader(target.global_position)
 
 func _physics_process(_delta: float) -> void:
     global_position.y = target.global_position.y
@@ -55,6 +54,7 @@ func create_section(direction: Vector2) -> GridSection:
     _last_id += 1
 
     section.set_size(section_scale)
+    section.initialize_shader(fade_end, fade_start, unit_size)
 
     section.position = (
         Vector3(
@@ -70,9 +70,6 @@ func create_section(direction: Vector2) -> GridSection:
     section.section_entered.connect(_section_entered)
     section.section_exited.connect(_section_exited)
     section.section_destroyed.connect(_section_destroyed)
-
-    if debug:
-        section.debug = true
 
     return section
 
@@ -96,4 +93,5 @@ func _section_destroyed(_section: GridSection) -> void:
         print("[%d][%d] %s Destroyed" % [_enter_call_id, _exit_call_id, _section.name])
 
 func _draw_debug() -> void:
-    DebugDraw3D.draw_position(global_transform)
+    for i in range(0, 6):
+        DebugDraw3D.draw_position(Transform3D(Basis(), Vector3(i * 100, 0, 0)))

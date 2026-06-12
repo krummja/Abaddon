@@ -3,12 +3,18 @@ extends Node3D
 
 const RAY_LENGTH = 1_000.0
 
+@export var debug: bool = false
+
 @export var camera: Camera3D
 @export var target: Marker3D
 
 var _mouse_pos: Vector2
 
 func _process(_delta: float) -> void:
+    if debug:
+        _draw_debug()
+
+func _draw_debug() -> void:
     var below_cam = Vector3(
         camera.global_position.x,
         target.global_position.y,

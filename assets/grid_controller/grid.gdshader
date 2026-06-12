@@ -10,9 +10,9 @@ uniform float minorLineThickness = 1.0;
 uniform float minorLineAlpha: hint_range(0.0, 1.0) = .3;
 
 uniform bool useFade = true;
-uniform float fadeStart = 0.0;
-uniform float fadeEnd = 10.0;
 
+instance uniform float fadeStart = 0.0;
+instance uniform float fadeEnd = 10.0;
 instance uniform float unitSize = 1.0;
 instance uniform vec3 centerOffset = vec3(0.0, 0.0, 0.0);
 

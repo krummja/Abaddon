@@ -113,6 +113,9 @@ environment = ExtResource("2_mc0qy")
 script = ExtResource("2_el2q1")
 grid_section = ExtResource("3_el2q1")
 target = NodePath("../CameraRig/Target")
+section_scale = 200
+fade_end = 80.0
+fade_start = 60.0
 unit_size = 15.0
 metadata/_custom_type_script = "uid://cvbyrpgvj0rko"
 
@@ -133,7 +136,7 @@ mesh = SubResource("SphereMesh_iwja3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.9687047, 0, 0)
 script = ExtResource("8_ik6f3")
 color = Color(1, 0.3254902, 1, 0.53333336)
-radius = 1.0
+radius = 0.3
 body_name = "Planet A"
 data_file = "res://data/199_20000101_20260101_1y.json"
 

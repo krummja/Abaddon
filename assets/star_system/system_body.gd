@@ -32,8 +32,6 @@ const OrbitEvents = preload("res://assets/star_system/events/orbit.gd")
 
 var _children: Array[SystemBody] = []
 
-var debug_indent: int = 0
-
 var body_parent: SystemBody:
     get:
         var _parent = get_parent()
@@ -52,26 +50,27 @@ func has_children() -> bool:
     return len(body_children) > 0
 
 func setup() -> void:
-    Debug.debug("SystemBody %s" % name)
+    pass
 
 func load_data() -> void:
     if data_file:
         var data = DataLoader.load_data_file(data_file)
         var elements = data[1]
         _initialize_elements(elements)
-        var event = OrbitEvents.ElementsCalculatedEvent.new()
-        EventBus.service().broadcast(event)
 
 func _ready() -> void:
+    Debug.debug("BEGIN SystemBody %s (%s)" % [name, body_name])
+
+    position = body_parent.position
+
     for child in get_children():
         if child is SystemBody:
-            child.debug_indent = debug_indent + 2
             _children.push_back(child)
 
     load_data()
     setup()
 
-    Debug.debug("SystemBody %s (%s)" % [name, body_name])
+    Debug.debug("  END SystemBody %s (%s)" % [name, body_name])
 
 func _process(_delta: float) -> void:
     if debug:
@@ -94,7 +93,6 @@ func _initialize_elements(data: Dictionary) -> void:
 
     semi_minor_axis = semi_major_axis * sqrt(abs(1 - pow(eccentricity, 2)))
     longitude_of_the_perifocus = longitude_of_the_ascending_node + argument_of_the_perifocus
-
     eccentric_anomaly =  OrbitSolver.calculate_eccentric_anomaly(eccentricity, mean_anomaly)
 
 func _draw_debug() -> void:

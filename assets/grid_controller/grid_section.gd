@@ -36,9 +36,19 @@ func _physics_process(_delta: float) -> void:
     if debug:
         _draw_debug()
 
-func update_shader(p_center_offset: Vector3, p_unit_size: float) -> void:
-    set_instance_shader_parameter("centerOffset", p_center_offset)
+func initialize_shader(p_fade_end: float, p_fade_start: float, p_unit_size: float) -> void:
+    set_instance_shader_parameter("fadeEnd", p_fade_end)
+    set_instance_shader_parameter("fadeStart", p_fade_start)
     set_instance_shader_parameter("unitSize", p_unit_size)
+
+    if debug:
+        var _fade_end = get_instance_shader_parameter("fadeEnd")
+        var _fade_start = get_instance_shader_parameter("fadeStart")
+        var _unit_size = get_instance_shader_parameter("unitSize")
+        Debug.debug("%d : %d : %d" % [_fade_end, _fade_start, _unit_size])
+
+func update_shader(p_center_offset: Vector3) -> void:
+    set_instance_shader_parameter("centerOffset", p_center_offset)
 
 func set_size(size: int) -> void:
     _size = size
